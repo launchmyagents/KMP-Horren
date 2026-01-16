@@ -3,6 +3,9 @@ import { createClient } from "@/lib/supabase/server";
 import { Header, Footer } from "@/components/layout";
 import { AccountSidebar } from "@/components/account/AccountSidebar";
 
+// Force dynamic rendering to avoid build-time errors
+export const dynamic = "force-dynamic";
+
 export default async function AccountLayout({
   children,
 }: {

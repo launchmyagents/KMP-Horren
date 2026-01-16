@@ -2,6 +2,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
+// Force dynamic rendering to avoid build-time errors
+export const dynamic = "force-dynamic";
+
 // Check if Supabase is properly configured (not just placeholder values)
 const isSupabaseConfigured = () => {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

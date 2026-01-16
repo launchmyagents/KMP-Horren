@@ -1,5 +1,8 @@
 import { Header, Footer } from "@/components/layout";
 
+// Force dynamic rendering to avoid build-time Supabase errors
+export const dynamic = "force-dynamic";
+
 export default function ShopLayout({
   children,
 }: {

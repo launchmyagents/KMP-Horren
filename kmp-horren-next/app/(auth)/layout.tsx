@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid build-time errors
+export const dynamic = "force-dynamic";
+
 export default function AuthLayout({
   children,
 }: {
