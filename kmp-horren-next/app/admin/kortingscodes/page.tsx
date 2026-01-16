@@ -20,7 +20,7 @@ import { DiscountCode } from "@/types";
 import { toast } from "sonner";
 
 export default function DiscountsPage() {
-  const [discounts, setDiscounts] = useState(DEMO_DISCOUNTS);
+  const [discounts, setDiscounts] = useState<DiscountCode[]>(DEMO_DISCOUNTS as DiscountCode[]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingDiscount, setEditingDiscount] = useState<DiscountCode | undefined>();
   const [deleteId, setDeleteId] = useState<string | null>(null);
