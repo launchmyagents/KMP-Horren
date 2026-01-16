@@ -1,0 +1,16 @@
+# ===========================================
+# KMP HORREN - NIXPACKS CONFIGURATION
+# ===========================================
+# Build configuration for Railway deployment
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd kmp-horren-next && npm ci"]
+
+[phases.build]
+cmds = ["cd kmp-horren-next && npm run build"]
+
+[start]
+cmd = "cd kmp-horren-next && npm run start"
