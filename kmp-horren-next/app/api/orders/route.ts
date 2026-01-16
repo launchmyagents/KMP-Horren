@@ -41,37 +41,37 @@ export async function POST(request: NextRequest) {
     }
 
     // Create order object
-    const order = {
+    const order: Order = {
       id: uuidv4(),
       orderNumber: generateOrderNumber(),
-      userId: null, // Guest checkout
+      userId: undefined, // Guest checkout
       customerEmail: customerDetails.email,
       customerFirstName: customerDetails.firstName,
       customerLastName: customerDetails.lastName,
       customerPhone: customerDetails.phone,
       shippingStreet: customerDetails.street,
       shippingHouseNumber: customerDetails.houseNumber,
-      shippingHouseNumberAddition: customerDetails.houseNumberAddition || null,
+      shippingHouseNumberAddition: customerDetails.houseNumberAddition || undefined,
       shippingPostalCode: customerDetails.postalCode,
       shippingCity: customerDetails.city,
       subtotal,
       discountAmount: discountAmount || 0,
-      discountCode: discountCode || null,
+      discountCode: discountCode || undefined,
       shippingCost,
       voorrijkosten: voorrijkosten || 0,
       totalPrice,
-      status: "pending",
+      status: "pending" as const,
       paymentMethod,
-      molliePaymentId: null,
-      paidAt: null,
-      customerNotes: customerDetails.notes || null,
-      adminNotes: null,
+      molliePaymentId: undefined,
+      paidAt: undefined,
+      customerNotes: customerDetails.notes || undefined,
+      adminNotes: undefined,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       items: items.map((item: Record<string, unknown>) => ({
         id: uuidv4(),
         ...item,
-      })),
+      })) as Order["items"],
     };
 
     // In production, save to Supabase:
@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
       const emailResult = await sendEmail({
         to: order.customerEmail,
         subject: `Orderbevestiging ${order.orderNumber} - KMP Horren`,
-        html: orderConfirmationEmail({ order: order as Order }),
+        html: orderConfirmationEmail({ order }),
       });
 
       if (emailResult.success) {
