@@ -29,9 +29,47 @@ export async function generateMetadata({
   };
 }
 
+// Demo order data types
+interface OrderItem {
+  id: string;
+  name: string;
+  dimensions: string;
+  color: string;
+  mesh: string;
+  profile: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+}
+
+interface DemoOrder {
+  orderNumber: string;
+  date: string;
+  status: "ordered" | "processing" | "shipped" | "delivered";
+  statusLabel: string;
+  trackingCode?: string;
+  customer: {
+    name: string;
+    email: string;
+    phone: string;
+  };
+  shippingAddress: {
+    street: string;
+    postalCode: string;
+    city: string;
+    country: string;
+  };
+  items: OrderItem[];
+  subtotal: number;
+  staffelDiscount: number;
+  shippingCost: number;
+  total: number;
+  timeline: { date: string; event: string }[];
+}
+
 // Demo order data - in production this would come from Supabase
-const getOrder = (orderNumber: string) => {
-  const orders: Record<string, unknown> = {
+const getOrder = (orderNumber: string): DemoOrder | undefined => {
+  const orders: Record<string, DemoOrder> = {
     KMP240115001: {
       orderNumber: "KMP240115001",
       date: "15 januari 2024",
@@ -86,7 +124,7 @@ const getOrder = (orderNumber: string) => {
     },
   };
 
-  return orders[orderNumber] as typeof orders.KMP240115001 | undefined;
+  return orders[orderNumber];
 };
 
 export default function OrderDetailPage({ params }: OrderDetailPageProps) {
