@@ -1,10 +1,30 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
+// Check if Supabase is properly configured (not just placeholder values)
+const isSupabaseConfigured = () => {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  
+  // Check if values exist and are not placeholder values
+  if (!url || !key) return false;
+  if (url === "your-supabase-url") return false;
+  if (url.includes("your-project")) return false;
+  if (key === "your-supabase-anon-key") return false;
+  if (!url.includes("supabase.co")) return false;
+  
+  return true;
+};
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
   });
+
+  // Skip Supabase session update if not configured
+  if (!isSupabaseConfigured()) {
+    return supabaseResponse;
+  }
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

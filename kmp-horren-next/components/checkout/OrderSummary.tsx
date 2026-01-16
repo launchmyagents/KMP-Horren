@@ -22,7 +22,7 @@ import {
 import { COSTS, STAFFEL_DISCOUNTS } from "@/types";
 
 export function OrderSummary() {
-  const { items, subtotal, shippingCost, mountingCost, totalItems } = useCartStore();
+  const { items, subtotal, shippingCost, voorrijkosten: mountingCost, itemCount } = useCartStore();
   const {
     customerDetails,
     discountCode,
@@ -42,7 +42,7 @@ export function OrderSummary() {
   // Calculate staffel discount
   let staffelDiscount = 0;
   for (const discount of STAFFEL_DISCOUNTS) {
-    if (totalItems >= discount.minItems) {
+    if (itemCount >= discount.minItems) {
       staffelDiscount = discount.discount;
       break;
     }
@@ -130,7 +130,7 @@ export function OrderSummary() {
           </div>
           <div>
             <h2 className="text-lg font-semibold text-kmp-blue">Uw Bestelling</h2>
-            <p className="text-sm text-gray-500">{totalItems} artikel(en)</p>
+            <p className="text-sm text-gray-500">{itemCount} artikel(en)</p>
           </div>
         </div>
 
@@ -277,7 +277,7 @@ export function OrderSummary() {
 
         <div className="space-y-3">
           <div className="flex justify-between text-gray-600">
-            <span>Subtotaal ({totalItems} artikelen)</span>
+            <span>Subtotaal ({itemCount} artikelen)</span>
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 

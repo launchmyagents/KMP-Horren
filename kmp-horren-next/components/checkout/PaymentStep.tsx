@@ -57,7 +57,7 @@ const paymentMethods: PaymentMethod[] = [
 ];
 
 export function PaymentStep() {
-  const { items, subtotal, shippingCost, mountingCost, totalItems, clearCart } =
+  const { items, subtotal, shippingCost, voorrijkosten: mountingCost, itemCount, clearCart } =
     useCartStore();
   const {
     customerDetails,
@@ -75,7 +75,7 @@ export function PaymentStep() {
   // Calculate staffel discount
   let staffelDiscount = 0;
   for (const discount of STAFFEL_DISCOUNTS) {
-    if (totalItems >= discount.minItems) {
+    if (itemCount >= discount.minItems) {
       staffelDiscount = discount.discount;
       break;
     }
@@ -224,7 +224,7 @@ export function PaymentStep() {
 
         <div className="space-y-3">
           <div className="flex justify-between text-gray-600">
-            <span>Subtotaal ({totalItems} artikelen)</span>
+            <span>Subtotaal ({itemCount} artikelen)</span>
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 

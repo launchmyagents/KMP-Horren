@@ -1,0 +1,29 @@
+# ===========================================
+# KMP HORREN - RAILWAY CONFIGURATION
+# ===========================================
+# This file configures Railway deployment settings
+
+[build]
+# Build command - Next.js production build
+builder = "nixpacks"
+buildCommand = "npm ci && npm run build"
+
+[deploy]
+# Start command - Next.js production server
+startCommand = "npm run start"
+
+# Number of replicas (adjust based on traffic)
+numReplicas = 1
+
+# Health check configuration
+healthcheckPath = "/api/health"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[env]
+# Node environment
+NODE_ENV = "production"
+
+# Port configuration (Railway sets PORT automatically)
+PORT = { default = "3000" }

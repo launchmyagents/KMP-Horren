@@ -3,11 +3,48 @@ import Image from "next/image";
 import Link from "next/link";
 import { Award, Users, Factory, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AboutBreadcrumb, OrganizationSchema } from "@/components/seo";
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Over Ons",
+  title: "Over Ons - KMP Horren | Al 20+ Jaar Specialist in Maatwerk Horren",
   description:
-    "Leer meer over KMP Horren - Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland.",
+    "Leer meer over KMP Horren - Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland. ✓ Eigen fabriek ✓ Nederlands vakmanschap ✓ Persoonlijke service",
+  keywords: [
+    "over kmp horren",
+    "horren fabriek",
+    "nederlands fabricaat",
+    "maatwerk horren",
+    "familiebedrijf",
+    "insectenwering specialist",
+  ],
+  alternates: {
+    canonical: `${BASE_URL}/over-ons`,
+  },
+  openGraph: {
+    type: "website",
+    locale: "nl_NL",
+    url: `${BASE_URL}/over-ons`,
+    siteName: "KMP Horren",
+    title: "Over Ons - KMP Horren",
+    description:
+      "Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland.",
+    images: [
+      {
+        url: `${BASE_URL}/og-about.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Over KMP Horren",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Over Ons - KMP Horren",
+    description:
+      "Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland.",
+  },
 };
 
 const milestones = [
@@ -44,6 +81,8 @@ const values = [
 export default function OverOnsPage() {
   return (
     <div className="bg-white">
+      <AboutBreadcrumb />
+      <OrganizationSchema />
       {/* Hero */}
       <section className="bg-kmp-blue text-white py-20 relative overflow-hidden">
         <div className="absolute right-0 top-0 w-1/3 h-full bg-[#1c263f] transform -skew-x-12 translate-x-20 hidden md:block" />

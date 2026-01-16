@@ -20,13 +20,13 @@ const customerSchema = z.object({
     .regex(/^[0-9+\-\s()]+$/, "Voer een geldig telefoonnummer in"),
   street: z.string().min(2, "Straatnaam is verplicht"),
   houseNumber: z.string().min(1, "Huisnummer is verplicht"),
-  houseNumberAddition: z.string().optional(),
+  houseNumberAddition: z.string(),
   postalCode: z
     .string()
     .regex(/^[1-9][0-9]{3}\s?[A-Za-z]{2}$/, "Voer een geldige postcode in (bijv. 1234 AB)"),
   city: z.string().min(2, "Plaatsnaam is verplicht"),
-  country: z.string().default("Nederland"),
-  notes: z.string().optional(),
+  country: z.string(),
+  notes: z.string(),
 });
 
 type CustomerFormData = z.infer<typeof customerSchema>;

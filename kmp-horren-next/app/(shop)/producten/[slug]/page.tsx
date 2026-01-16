@@ -5,9 +5,12 @@ import Image from "next/image";
 import { ChevronRight, Check, Ruler, Palette, Shield } from "lucide-react";
 import { getProductBySlug, PRODUCTS } from "@/data/products";
 import { ProductConfigurator } from "@/components/configurator";
+import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
+
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 interface ProductPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -19,7 +22,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
-  const product = getProductBySlug(params.slug);
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -27,19 +31,51 @@ export async function generateMetadata({
     };
   }
 
+  const productType = product.type === "WINDOW" ? "Raamhor" : "Deurhor";
+
   return {
-    title: product.name,
-    description: product.description,
+    title: `${product.name} - ${productType} op Maat | KMP Horren`,
+    description: `${product.description} Vanaf €${product.minPrice},-. ✓ Op maat gemaakt ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie`,
+    keywords: [
+      product.name.toLowerCase(),
+      productType.toLowerCase(),
+      "horren",
+      "maatwerk",
+      "op maat",
+      "insectenwering",
+      ...product.features.slice(0, 3).map((f) => f.toLowerCase()),
+    ],
+    alternates: {
+      canonical: `${BASE_URL}/producten/${product.slug}`,
+    },
     openGraph: {
-      title: `${product.name} | KMP Horren`,
+      type: "website",
+      locale: "nl_NL",
+      url: `${BASE_URL}/producten/${product.slug}`,
+      siteName: "KMP Horren",
+      title: `${product.name} - ${productType} op Maat`,
+      description: product.description,
+      images: [
+        {
+          url: product.imageUrl,
+          width: 800,
+          height: 800,
+          alt: product.name,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} - KMP Horren`,
       description: product.description,
       images: [product.imageUrl],
     },
   };
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = getProductBySlug(params.slug);
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  const product = getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -47,6 +83,8 @@ export default function ProductPage({ params }: ProductPageProps) {
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
+      <ProductSchema product={product} />
+      <ProductDetailBreadcrumb productName={product.name} productSlug={product.slug} />
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4 py-4">

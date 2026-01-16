@@ -1,0 +1,25 @@
+# ===========================================
+# KMP HORREN - NIXPACKS CONFIGURATION
+# ===========================================
+# This file configures the Nixpacks build system used by Railway
+
+# Use Node.js 20 LTS
+[phases.setup]
+nixPkgs = ["nodejs_20", "npm"]
+
+# Install dependencies with clean install
+[phases.install]
+cmds = ["npm ci"]
+
+# Build the Next.js application
+[phases.build]
+cmds = ["npm run build"]
+
+# Cache node_modules and .next/cache for faster builds
+[caches]
+npm = "/root/.npm"
+next = ".next/cache"
+
+# Start command
+[start]
+cmd = "npm run start"

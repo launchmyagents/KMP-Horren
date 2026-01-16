@@ -14,20 +14,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
-    setIsSubmitting(false);
-    setSubmitted(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Er ging iets mis");
+      }
+
+      setSubmitted(true);
+      toast.success("Bericht verzonden!");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Er ging iets mis bij het verzenden");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -134,7 +158,10 @@ export default function ContactPage() {
                   </p>
                   <Button
                     className="mt-8"
-                    onClick={() => setSubmitted(false)}
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({ name: "", email: "", subject: "", message: "" });
+                    }}
                   >
                     Nog een bericht sturen
                   </Button>
@@ -157,6 +184,8 @@ export default function ContactPage() {
                           type="text"
                           required
                           placeholder="Uw naam"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         />
                       </div>
                       <div className="space-y-2">
@@ -166,30 +195,35 @@ export default function ContactPage() {
                           type="email"
                           required
                           placeholder="uw@email.nl"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
                       <Label htmlFor="subject">Onderwerp</Label>
-                      <Select>
+                      <Select
+                        value={formData.subject}
+                        onValueChange={(value) => setFormData({ ...formData, subject: value })}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Selecteer een onderwerp" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="advies">
+                          <SelectItem value="Advies over product">
                             Advies over product
                           </SelectItem>
-                          <SelectItem value="bestelling">
+                          <SelectItem value="Vraag over bestelling">
                             Vraag over bestelling
                           </SelectItem>
-                          <SelectItem value="inmeetservice">
+                          <SelectItem value="Inmeetservice aanvragen">
                             Inmeetservice aanvragen
                           </SelectItem>
-                          <SelectItem value="garantie">
+                          <SelectItem value="Garantie / Reparatie">
                             Garantie / Reparatie
                           </SelectItem>
-                          <SelectItem value="overig">Overig</SelectItem>
+                          <SelectItem value="Overig">Overig</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -201,6 +235,8 @@ export default function ContactPage() {
                         required
                         rows={6}
                         placeholder="Typ hier uw bericht..."
+                        value={formData.message}
+                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       />
                     </div>
 

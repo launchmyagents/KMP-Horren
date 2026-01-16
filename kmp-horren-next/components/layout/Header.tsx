@@ -3,16 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingCart, Phone, ChevronDown } from "lucide-react";
+import {
+  Menu,
+  X,
+  ShoppingCart,
+  Phone,
+  ChevronDown,
+  User,
+  Package,
+  MapPin,
+  Settings,
+  LogOut,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useCartStore } from "@/store";
+import { useAuth } from "@/hooks/useAuth";
+import { useUser } from "@/hooks/useUser";
 
 const navigation = [
   {
@@ -44,8 +59,21 @@ const navigation = [
 ];
 
 export function Header() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount: cartItemCount } = useCartStore();
+  const { isAuthenticated, isLoading: authLoading, signOut } = useAuth();
+  const { profile } = useUser();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+  };
+
+  const userInitials = profile
+    ? `${profile.firstName?.charAt(0) || ""}${profile.lastName?.charAt(0) || ""}`.toUpperCase() ||
+      "U"
+    : "U";
 
   return (
     <header className="sticky top-0 z-50 w-full">
@@ -124,7 +152,94 @@ export function Header() {
             </nav>
 
             {/* Right side */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              {/* User Account */}
+              {!authLoading && (
+                <>
+                  {isAuthenticated ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="relative hover:bg-kmp-blue/5"
+                        >
+                          <div className="w-8 h-8 rounded-full bg-kmp-blue text-white flex items-center justify-center text-sm font-semibold">
+                            {userInitials}
+                          </div>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-56">
+                        <div className="px-2 py-1.5 text-sm">
+                          <p className="font-medium text-kmp-blue">
+                            {profile?.firstName} {profile?.lastName}
+                          </p>
+                          <p className="text-gray-500 text-xs truncate">
+                            {profile?.email}
+                          </p>
+                        </div>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/account"
+                            className="flex items-center gap-2"
+                          >
+                            <User className="w-4 h-4" />
+                            Mijn Account
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/account/bestellingen"
+                            className="flex items-center gap-2"
+                          >
+                            <Package className="w-4 h-4" />
+                            Mijn Bestellingen
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/account/adressen"
+                            className="flex items-center gap-2"
+                          >
+                            <MapPin className="w-4 h-4" />
+                            Adresboek
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            href="/account/instellingen"
+                            className="flex items-center gap-2"
+                          >
+                            <Settings className="w-4 h-4" />
+                            Instellingen
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={handleSignOut}
+                          className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                        >
+                          <LogOut className="w-4 h-4 mr-2" />
+                          Uitloggen
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Link href="/login" className="hidden sm:block">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-kmp-blue hover:text-kmp-orange hover:bg-kmp-blue/5"
+                      >
+                        <User className="w-4 h-4 mr-2" />
+                        Inloggen
+                      </Button>
+                    </Link>
+                  )}
+                </>
+              )}
+
               {/* Cart */}
               <Link href="/winkelwagen" className="relative group">
                 <Button
@@ -204,6 +319,57 @@ export function Header() {
                   )}
                 </div>
               ))}
+
+              {/* Mobile Auth Links */}
+              <div className="pt-4 border-t border-slate-200 mt-4">
+                {isAuthenticated ? (
+                  <>
+                    <Link
+                      href="/account"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 text-kmp-blue font-semibold hover:bg-slate-50 rounded-lg"
+                    >
+                      <User className="w-5 h-5" />
+                      Mijn Account
+                    </Link>
+                    <button
+                      onClick={() => {
+                        setMobileMenuOpen(false);
+                        handleSignOut();
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 text-red-600 font-semibold hover:bg-red-50 rounded-lg w-full"
+                    >
+                      <LogOut className="w-5 h-5" />
+                      Uitloggen
+                    </button>
+                  </>
+                ) : (
+                  <div className="flex gap-2">
+                    <Link
+                      href="/login"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex-1"
+                    >
+                      <Button
+                        variant="outline"
+                        className="w-full border-kmp-blue text-kmp-blue"
+                      >
+                        Inloggen
+                      </Button>
+                    </Link>
+                    <Link
+                      href="/registreren"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="flex-1"
+                    >
+                      <Button className="w-full bg-kmp-blue hover:bg-kmp-blue/90">
+                        Registreren
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               <div className="pt-4">
                 <Link href="/producten" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full bg-kmp-orange hover:bg-kmp-orange/90 text-white font-semibold uppercase tracking-wide">
