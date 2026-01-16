@@ -182,6 +182,122 @@ export async function getProductsByType(
 }
 
 // ============================================
+// ADMIN PRODUCT FUNCTIONS
+// ============================================
+
+export async function getAllProducts(): Promise<DbProduct[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .order("sort_order");
+
+  if (error) {
+    console.error("Error fetching all products:", error);
+    return [];
+  }
+  return data || [];
+}
+
+export async function getProductById(productId: string): Promise<DbProduct | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .eq("id", productId)
+    .single();
+
+  if (error) {
+    console.error("Error fetching product by id:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function createProduct(
+  product: InsertTables<"products">
+): Promise<DbProduct | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .insert(product)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error creating product:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function updateProduct(
+  productId: string,
+  updates: UpdateTables<"products">
+): Promise<DbProduct | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("products")
+    .update({ ...updates, updated_at: new Date().toISOString() })
+    .eq("id", productId)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating product:", error);
+    return null;
+  }
+  return data;
+}
+
+export async function deleteProduct(productId: string): Promise<boolean> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("products")
+    .delete()
+    .eq("id", productId);
+
+  if (error) {
+    console.error("Error deleting product:", error);
+    return false;
+  }
+  return true;
+}
+
+export async function uploadProductImage(
+  productId: string,
+  fileBuffer: Buffer,
+  fileName: string,
+  contentType: string
+): Promise<string | null> {
+  const supabase = await createClient();
+  
+  // Generate unique file name
+  const fileExtension = fileName.split(".").pop() || "jpg";
+  const uniqueFileName = `${productId}/${Date.now()}.${fileExtension}`;
+  
+  // Upload to Supabase Storage
+  const { error: uploadError } = await supabase.storage
+    .from("product-images")
+    .upload(uniqueFileName, fileBuffer, {
+      contentType,
+      upsert: true,
+    });
+
+  if (uploadError) {
+    console.error("Error uploading product image:", uploadError);
+    return null;
+  }
+
+  // Get public URL
+  const { data: urlData } = supabase.storage
+    .from("product-images")
+    .getPublicUrl(uniqueFileName);
+
+  return urlData.publicUrl;
+}
+
+// ============================================
 // CONFIGURATOR DATA FUNCTIONS
 // ============================================
 

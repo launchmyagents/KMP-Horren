@@ -1,22 +1,45 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useState, useMemo, useRef, useCallback } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Save, ExternalLink, Check } from "lucide-react";
+import {
+  ArrowLeft,
+  Save,
+  ExternalLink,
+  Check,
+  Plus,
+  X,
+  Upload,
+  Trash2,
+  Loader2,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { PRODUCTS } from "@/data/products";
 import { toast } from "sonner";
 
 export default function ProductEditPage() {
   const params = useParams();
+  const router = useRouter();
   const productId = params.id as string;
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const product = useMemo(
     () => PRODUCTS.find((p) => p.id === productId),
@@ -35,9 +58,14 @@ export default function ProductEditPage() {
     isActive: product?.isActive || false,
     sortOrder: product?.sortOrder || 0,
     features: product?.features || [],
+    imageUrl: product?.imageUrl || "",
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [newFeature, setNewFeature] = useState("");
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   if (!product) {
     return (
@@ -54,10 +82,67 @@ export default function ProductEditPage() {
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    toast.success("Product bijgewerkt");
-    setIsSaving(false);
+    try {
+      const response = await fetch(`/api/admin/products/${productId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          description: formData.description,
+          base_price_per_m2: formData.basePricePerM2,
+          min_price: formData.minPrice,
+          min_width_mm: formData.minWidthMm,
+          max_width_mm: formData.maxWidthMm,
+          min_height_mm: formData.minHeightMm,
+          max_height_mm: formData.maxHeightMm,
+          is_active: formData.isActive,
+          sort_order: formData.sortOrder,
+          features: formData.features,
+          image_url: formData.imageUrl,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Er ging iets mis");
+      }
+
+      toast.success("Product bijgewerkt");
+    } catch (error) {
+      console.error("Error saving product:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Er ging iets mis bij het opslaan"
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/admin/products/${productId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Er ging iets mis");
+      }
+
+      toast.success("Product verwijderd");
+      router.push("/admin/producten");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Er ging iets mis bij het verwijderen"
+      );
+      setIsDeleting(false);
+    }
   };
 
   const handleChange = (
@@ -65,6 +150,97 @@ export default function ProductEditPage() {
     value: string | number | boolean | string[]
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleAddFeature = () => {
+    if (newFeature.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        features: [...prev.features, newFeature.trim()],
+      }));
+      setNewFeature("");
+    }
+  };
+
+  const handleRemoveFeature = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      features: prev.features.filter((_, i) => i !== index),
+    }));
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleAddFeature();
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Show preview immediately
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
+    setIsUploading(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append("file", file);
+      formDataUpload.append("productId", productId);
+
+      const response = await fetch("/api/admin/products/upload", {
+        method: "POST",
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Upload mislukt");
+      }
+
+      const data = await response.json();
+      setFormData((prev) => ({ ...prev, imageUrl: data.imageUrl }));
+      setPreviewImage(null);
+      toast.success("Afbeelding geüpload");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Er ging iets mis bij het uploaden"
+      );
+      setPreviewImage(null);
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files?.[0];
+      if (file && file.type.startsWith("image/")) {
+        // Trigger the same upload logic
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        if (fileInputRef.current) {
+          fileInputRef.current.files = dataTransfer.files;
+          const event = new Event("change", { bubbles: true });
+          fileInputRef.current.dispatchEvent(event);
+        }
+      }
+    },
+    []
+  );
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
   };
 
   return (
@@ -95,7 +271,11 @@ export default function ProductEditPage() {
             disabled={isSaving}
             className="bg-kmp-orange hover:bg-kmp-orange/90 flex items-center gap-2"
           >
-            <Save className="w-4 h-4" />
+            {isSaving ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
             {isSaving ? "Opslaan..." : "Opslaan"}
           </Button>
         </div>
@@ -230,42 +410,101 @@ export default function ProductEditPage() {
             </div>
           </div>
 
-          {/* Features */}
+          {/* Features - Now Editable */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="font-semibold text-kmp-blue mb-4">Kenmerken</h2>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {formData.features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 text-gray-700"
+                  className="flex items-center gap-2 group bg-gray-50 rounded-lg px-3 py-2"
                 >
-                  <Check className="w-4 h-4 text-green-500" />
-                  <span>{feature}</span>
+                  <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                  <span className="flex-1 text-gray-700">{feature}</span>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveFeature(index)}
+                    className="opacity-0 group-hover:opacity-100 p-1 hover:bg-red-100 rounded transition-all"
+                    title="Verwijder kenmerk"
+                  >
+                    <X className="w-4 h-4 text-red-500" />
+                  </button>
                 </div>
               ))}
+              {formData.features.length === 0 && (
+                <p className="text-gray-500 text-sm italic">
+                  Nog geen kenmerken toegevoegd
+                </p>
+              )}
             </div>
-            <p className="text-sm text-gray-500 mt-4">
-              Kenmerken kunnen in een toekomstige versie bewerkt worden.
-            </p>
+            <div className="flex gap-2 mt-4">
+              <Input
+                placeholder="Nieuw kenmerk toevoegen..."
+                value={newFeature}
+                onChange={(e) => setNewFeature(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="flex-1"
+              />
+              <Button
+                type="button"
+                onClick={handleAddFeature}
+                variant="outline"
+                className="flex items-center gap-1"
+                disabled={!newFeature.trim()}
+              >
+                <Plus className="w-4 h-4" />
+                Toevoegen
+              </Button>
+            </div>
           </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Product Image */}
+          {/* Product Image - Now with Upload */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="font-semibold text-kmp-blue mb-4">Afbeelding</h2>
-            <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                fill
-                className="object-cover"
+            <div
+              className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 border-2 border-dashed border-gray-300 hover:border-kmp-orange transition-colors cursor-pointer"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {isUploading ? (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80">
+                  <Loader2 className="w-8 h-8 animate-spin text-kmp-orange mb-2" />
+                  <span className="text-sm text-gray-600">Uploaden...</span>
+                </div>
+              ) : previewImage ? (
+                <Image
+                  src={previewImage}
+                  alt="Preview"
+                  fill
+                  className="object-cover"
+                />
+              ) : formData.imageUrl ? (
+                <Image
+                  src={formData.imageUrl}
+                  alt={formData.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
+                  <Upload className="w-8 h-8 mb-2" />
+                  <span className="text-sm">Klik of sleep afbeelding</span>
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={handleImageUpload}
+                className="hidden"
               />
             </div>
-            <p className="text-sm text-gray-500 mt-4">
-              Afbeeldingen kunnen in een toekomstige versie geüpload worden via
-              Supabase Storage.
+            <p className="text-xs text-gray-500 mt-3 text-center">
+              JPG, PNG of WebP (max. 5MB)
             </p>
           </div>
 
@@ -329,6 +568,49 @@ export default function ProductEditPage() {
                 <span className="text-gray-700">{product.options.length}</span>
               </div>
             </div>
+          </div>
+
+          {/* Delete Product */}
+          <div className="bg-white rounded-xl border border-red-200 p-6">
+            <h2 className="font-semibold text-red-600 mb-4">Gevaarzone</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Het verwijderen van dit product is permanent en kan niet ongedaan
+              worden gemaakt.
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center justify-center gap-2"
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="w-4 h-4" />
+                  )}
+                  {isDeleting ? "Verwijderen..." : "Product verwijderen"}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Product verwijderen?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Weet je zeker dat je <strong>{product.name}</strong> wilt
+                    verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Annuleren</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleDelete}
+                    className="bg-red-600 hover:bg-red-700"
+                  >
+                    Verwijderen
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </div>
       </div>
