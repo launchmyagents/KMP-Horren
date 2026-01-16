@@ -18,10 +18,9 @@ export function Hero() {
       <div className="absolute inset-0 z-0">
         <div className="absolute right-0 top-0 w-1/2 h-full bg-[#1c263f] transform -skew-x-12 translate-x-20" />
         <div
-          className="absolute right-0 top-0 h-full w-1/2 bg-cover bg-center opacity-30 mix-blend-luminosity"
+          className="absolute right-0 top-0 h-full w-1/2 bg-cover bg-center opacity-40 mix-blend-luminosity"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1505330622279-bf7d7fc918f4?q=80&w=2070&auto=format&fit=crop')",
+            backgroundImage: "url('/images/hero-installer.jpg')",
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-kmp-blue via-kmp-blue/95 to-transparent z-10" />

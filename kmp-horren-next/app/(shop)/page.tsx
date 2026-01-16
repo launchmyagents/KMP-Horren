@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { Hero, FeaturedProducts, USPSection, CTASection } from "@/components/home";
+import { Hero, CategoriesSection, USPSection, CTASection } from "@/components/home";
 import { OrganizationSchema, LocalBusinessSchema, HomeBreadcrumb } from "@/components/seo";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
@@ -56,7 +56,7 @@ export default function HomePage() {
       <LocalBusinessSchema />
       <HomeBreadcrumb />
       <Hero />
-      <FeaturedProducts />
+      <CategoriesSection />
       <USPSection />
       <CTASection />
     </>
