@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Edit, Trash2, Check, X, Calendar, Tag } from "lucide-react";
+import { Plus, Edit, Trash2, Calendar, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import {
@@ -35,7 +35,7 @@ export default function DiscountsPage() {
     );
   };
 
-  const handleSave = (data: any) => {
+  const handleSave = (data: Omit<DiscountCode, 'id' | 'usedCount'>) => {
     if (editingDiscount) {
       // Update existing
       setDiscounts((prev) =>

@@ -92,7 +92,6 @@ export function contactAdminNotificationEmail({
 // Confirmation email to customer after submitting contact form
 export function contactCustomerConfirmationEmail({
   name,
-  email,
   subject,
   message,
 }: ContactNotificationProps): string {

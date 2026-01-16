@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Save, ExternalLink, Check } from "lucide-react";
@@ -16,7 +16,6 @@ import { toast } from "sonner";
 
 export default function ProductEditPage() {
   const params = useParams();
-  const router = useRouter();
   const productId = params.id as string;
 
   const product = useMemo(

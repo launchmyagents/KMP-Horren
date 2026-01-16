@@ -6,8 +6,6 @@ import Image from "next/image";
 import {
   Search,
   Edit,
-  Eye,
-  EyeOff,
   GripVertical,
   ExternalLink,
 } from "lucide-react";
@@ -105,11 +103,10 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {windowProducts.map((product, index) => (
+                {windowProducts.map((product) => (
                   <ProductRow
                     key={product.id}
                     product={product}
-                    index={index + 1}
                     onToggleActive={handleToggleActive}
                   />
                 ))}
@@ -151,11 +148,10 @@ export default function ProductsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {doorProducts.map((product, index) => (
+                {doorProducts.map((product) => (
                   <ProductRow
                     key={product.id}
                     product={product}
-                    index={index + 1}
                     onToggleActive={handleToggleActive}
                   />
                 ))}
@@ -176,11 +172,9 @@ export default function ProductsPage() {
 
 function ProductRow({
   product,
-  index,
   onToggleActive,
 }: {
   product: Product;
-  index: number;
   onToggleActive: (id: string) => void;
 }) {
   return (

@@ -11,7 +11,6 @@ import {
   ShoppingBag,
   Tag,
   MessageSquare,
-  Settings,
   LogOut,
   ChevronRight,
   ExternalLink,

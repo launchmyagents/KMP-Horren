@@ -1,4 +1,4 @@
-import { baseLayout, styles, formatPrice, formatDate } from "./base-layout";
+import { baseLayout, styles, formatDate } from "./base-layout";
 import { Order, OrderItem } from "@/types";
 
 interface ShippingNotificationProps {

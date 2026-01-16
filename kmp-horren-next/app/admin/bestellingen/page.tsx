@@ -2,8 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import { Search, Filter, Download, Plus } from "lucide-react";
+import { Search, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { OrdersTable, StatusBadge } from "@/components/admin";
+import { OrdersTable } from "@/components/admin";
 import { DEMO_ORDERS } from "@/data/demo-orders";
 import { OrderStatus } from "@/types";
 

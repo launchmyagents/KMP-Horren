@@ -8,7 +8,6 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import {
@@ -119,8 +118,9 @@ export default function SettingsPage() {
 
       toast.success("Profiel succesvol bijgewerkt");
       router.refresh();
-    } catch (error: any) {
-      toast.error(error.message || "Er ging iets mis");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Er ging iets mis";
+      toast.error(message);
     } finally {
       setIsLoadingProfile(false);
     }
@@ -152,8 +152,9 @@ export default function SettingsPage() {
 
       toast.success("Wachtwoord succesvol gewijzigd");
       passwordForm.reset();
-    } catch (error: any) {
-      toast.error(error.message || "Er ging iets mis");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Er ging iets mis";
+      toast.error(message);
     } finally {
       setIsLoadingPassword(false);
     }
@@ -166,8 +167,9 @@ export default function SettingsPage() {
       // In production, this would call an API endpoint that uses the service role
       // to delete the user and their data
       toast.info("Account verwijderen is tijdelijk uitgeschakeld in demo modus");
-    } catch (error: any) {
-      toast.error(error.message || "Er ging iets mis");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Er ging iets mis";
+      toast.error(message);
     } finally {
       setIsDeletingAccount(false);
     }

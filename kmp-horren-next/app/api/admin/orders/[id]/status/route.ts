@@ -25,7 +25,7 @@ export async function PATCH(
   try {
     const { id } = await params;
     const body: StatusUpdateBody = await request.json();
-    const { status, trackingNumber, trackingUrl, carrier, estimatedDelivery, adminNotes, sendEmail: shouldSendEmail = true } = body;
+    const { status, trackingNumber, trackingUrl, carrier, estimatedDelivery, sendEmail: shouldSendEmail = true } = body;
 
     // Validate status
     const validStatuses: OrderStatus[] = ["pending", "paid", "processing", "shipped", "delivered", "cancelled"];
