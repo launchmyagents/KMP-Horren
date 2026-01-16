@@ -9,7 +9,6 @@ import type {
   DbFrameType,
   DiscountCode,
   DbOrder,
-  DbOrderItem,
   ContactMessage,
   InmeetserviceRequest,
   OrderWithItems,
