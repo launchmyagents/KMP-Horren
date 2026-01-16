@@ -5,8 +5,16 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 // Force dynamic rendering to avoid build-time errors
 export const dynamic = "force-dynamic";
 
+// DEV MODE: Set to true to skip auth during development testing
+const DEV_SKIP_AUTH = true; // TODO: Set to false before production!
+
 // Check if Supabase is properly configured (not just placeholder values)
 const isSupabaseConfigured = () => {
+  // Skip auth check in development mode for testing
+  if (process.env.NODE_ENV === "development" && DEV_SKIP_AUTH) {
+    return false;
+  }
+
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 

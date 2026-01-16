@@ -1,20 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useRef, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import {
   ArrowLeft,
   Save,
-  ExternalLink,
   Check,
   Plus,
   X,
   Upload,
-  Trash2,
   Loader2,
-  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,122 +20,80 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 
-interface DbProduct {
-  id: string;
-  name: string;
-  slug: string;
-  type: "WINDOW" | "DOOR";
-  description: string;
-  features: string[];
-  base_price_per_m2: number;
-  min_price: number;
-  min_width_mm: number;
-  max_width_mm: number;
-  min_height_mm: number;
-  max_height_mm: number;
-  image_url: string;
-  gallery_urls: string[] | null;
-  options: string[];
-  is_active: boolean;
-  sort_order: number;
-  created_at: string;
-  updated_at: string;
+function generateSlug(name: string): string {
+  return name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
-export default function ProductEditPage() {
-  const params = useParams();
-  const router = useRouter();
-  const productId = params.id as string;
-  const fileInputRef = useRef<HTMLInputElement>(null);
+function generateId(): string {
+  return `prod_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+}
 
-  const [product, setProduct] = useState<DbProduct | null>(null);
-  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
-  const [loadError, setLoadError] = useState<string | null>(null);
+export default function NewProductPage() {
+  const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     name: "",
+    slug: "",
+    type: "WINDOW" as "WINDOW" | "DOOR",
     description: "",
     basePricePerM2: 0,
     minPrice: 0,
-    minWidthMm: 0,
-    maxWidthMm: 0,
-    minHeightMm: 0,
-    maxHeightMm: 0,
-    isActive: false,
+    minWidthMm: 300,
+    maxWidthMm: 1500,
+    minHeightMm: 300,
+    maxHeightMm: 2500,
+    isActive: true,
     sortOrder: 0,
     features: [] as string[],
     imageUrl: "",
+    options: [] as string[],
   });
 
   const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [newFeature, setNewFeature] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  // Fetch product from API
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setIsLoadingProduct(true);
-      setLoadError(null);
-      try {
-        const response = await fetch(`/api/admin/products/${productId}`);
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || "Product niet gevonden");
-        }
-        const data = await response.json();
-        const p = data.product as DbProduct;
-        setProduct(p);
-        setFormData({
-          name: p.name || "",
-          description: p.description || "",
-          basePricePerM2: p.base_price_per_m2 || 0,
-          minPrice: p.min_price || 0,
-          minWidthMm: p.min_width_mm || 0,
-          maxWidthMm: p.max_width_mm || 0,
-          minHeightMm: p.min_height_mm || 0,
-          maxHeightMm: p.max_height_mm || 0,
-          isActive: p.is_active || false,
-          sortOrder: p.sort_order || 0,
-          features: p.features || [],
-          imageUrl: p.image_url || "",
-        });
-      } catch (err) {
-        console.error("Error fetching product:", err);
-        setLoadError(err instanceof Error ? err.message : "Er ging iets mis");
-      } finally {
-        setIsLoadingProduct(false);
-      }
-    };
-
-    if (productId) {
-      fetchProduct();
-    }
-  }, [productId]);
+  const [autoSlug, setAutoSlug] = useState(true);
 
   const handleSave = async () => {
+    // Validatie
+    if (!formData.name.trim()) {
+      toast.error("Productnaam is verplicht");
+      return;
+    }
+    if (!formData.slug.trim()) {
+      toast.error("Slug is verplicht");
+      return;
+    }
+    if (!formData.type) {
+      toast.error("Producttype is verplicht");
+      return;
+    }
+
     setIsSaving(true);
     try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
-        method: "PUT",
+      const response = await fetch("/api/admin/products", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          id: generateId(),
           name: formData.name,
+          slug: formData.slug,
+          type: formData.type,
           description: formData.description,
           base_price_per_m2: formData.basePricePerM2,
           min_price: formData.minPrice,
@@ -150,6 +105,7 @@ export default function ProductEditPage() {
           sort_order: formData.sortOrder,
           features: formData.features,
           image_url: formData.imageUrl,
+          options: formData.options,
         }),
       });
 
@@ -158,39 +114,15 @@ export default function ProductEditPage() {
         throw new Error(data.error || "Er ging iets mis");
       }
 
-      toast.success("Product bijgewerkt");
+      toast.success("Product aangemaakt");
+      router.push("/admin/producten");
     } catch (error) {
-      console.error("Error saving product:", error);
+      console.error("Error creating product:", error);
       toast.error(
-        error instanceof Error ? error.message : "Er ging iets mis bij het opslaan"
+        error instanceof Error ? error.message : "Er ging iets mis bij het aanmaken"
       );
     } finally {
       setIsSaving(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      const response = await fetch(`/api/admin/products/${productId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Er ging iets mis");
-      }
-
-      toast.success("Product verwijderd");
-      router.push("/admin/producten");
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Er ging iets mis bij het verwijderen"
-      );
-      setIsDeleting(false);
     }
   };
 
@@ -198,7 +130,19 @@ export default function ProductEditPage() {
     field: string,
     value: string | number | boolean | string[]
   ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
+    setFormData((prev) => {
+      const updated = { ...prev, [field]: value };
+      // Auto-generate slug when name changes
+      if (field === "name" && autoSlug) {
+        updated.slug = generateSlug(value as string);
+      }
+      return updated;
+    });
+  };
+
+  const handleSlugChange = (value: string) => {
+    setAutoSlug(false);
+    setFormData((prev) => ({ ...prev, slug: generateSlug(value) }));
   };
 
   const handleAddFeature = () => {
@@ -240,7 +184,7 @@ export default function ProductEditPage() {
     try {
       const formDataUpload = new FormData();
       formDataUpload.append("file", file);
-      formDataUpload.append("productId", productId);
+      formDataUpload.append("productId", "new");
 
       const response = await fetch("/api/admin/products/upload", {
         method: "POST",
@@ -270,59 +214,23 @@ export default function ProductEditPage() {
     }
   };
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      const file = e.dataTransfer.files?.[0];
-      if (file && file.type.startsWith("image/")) {
-        // Trigger the same upload logic
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(file);
-        if (fileInputRef.current) {
-          fileInputRef.current.files = dataTransfer.files;
-          const event = new Event("change", { bubbles: true });
-          fileInputRef.current.dispatchEvent(event);
-        }
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      if (fileInputRef.current) {
+        fileInputRef.current.files = dataTransfer.files;
+        const event = new Event("change", { bubbles: true });
+        fileInputRef.current.dispatchEvent(event);
       }
-    },
-    []
-  );
+    }
+  }, []);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
-
-  // Loading state
-  if (isLoadingProduct) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <div className="text-center">
-          <Loader2 className="w-8 h-8 animate-spin text-kmp-orange mx-auto mb-4" />
-          <p className="text-gray-600">Product laden...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Error state
-  if (loadError || !product) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <div className="text-center max-w-md">
-          <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
-            Product niet gevonden
-          </h2>
-          <p className="text-gray-600 mb-6">
-            {loadError || "Het opgevraagde product bestaat niet of is verwijderd."}
-          </p>
-          <Link href="/admin/producten">
-            <Button>Terug naar producten</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-6">
@@ -336,16 +244,13 @@ export default function ProductEditPage() {
             <ArrowLeft className="w-5 h-5 text-gray-600" />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-kmp-blue">{product.name}</h1>
-            <p className="text-gray-600 mt-1">Product bewerken</p>
+            <h1 className="text-3xl font-bold text-kmp-blue">Nieuw product</h1>
+            <p className="text-gray-600 mt-1">Voeg een nieuw product toe aan de catalogus</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <Link href={`/producten/${product.slug}`} target="_blank">
-            <Button variant="outline" className="flex items-center gap-2">
-              <ExternalLink className="w-4 h-4" />
-              Bekijk op website
-            </Button>
+          <Link href="/admin/producten">
+            <Button variant="outline">Annuleren</Button>
           </Link>
           <Button
             onClick={handleSave}
@@ -357,7 +262,7 @@ export default function ProductEditPage() {
             ) : (
               <Save className="w-4 h-4" />
             )}
-            {isSaving ? "Opslaan..." : "Opslaan"}
+            {isSaving ? "Opslaan..." : "Product aanmaken"}
           </Button>
         </div>
       </div>
@@ -372,13 +277,42 @@ export default function ProductEditPage() {
             </h2>
             <div className="space-y-4">
               <div>
-                <Label htmlFor="name">Productnaam</Label>
+                <Label htmlFor="name">Productnaam *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => handleChange("name", e.target.value)}
+                  placeholder="Bijv. Inzethor Basic"
                   className="mt-1"
                 />
+              </div>
+              <div>
+                <Label htmlFor="slug">URL Slug *</Label>
+                <Input
+                  id="slug"
+                  value={formData.slug}
+                  onChange={(e) => handleSlugChange(e.target.value)}
+                  placeholder="bijv-inzethor-basic"
+                  className="mt-1 font-mono text-sm"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  Dit wordt gebruikt in de URL: /producten/{formData.slug || "..."}
+                </p>
+              </div>
+              <div>
+                <Label htmlFor="type">Producttype *</Label>
+                <Select
+                  value={formData.type}
+                  onValueChange={(value) => handleChange("type", value)}
+                >
+                  <SelectTrigger className="mt-1">
+                    <SelectValue placeholder="Selecteer type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="WINDOW">Raamhor</SelectItem>
+                    <SelectItem value="DOOR">Deurhor</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor="description">Beschrijving</Label>
@@ -387,6 +321,7 @@ export default function ProductEditPage() {
                   value={formData.description}
                   onChange={(e) => handleChange("description", e.target.value)}
                   rows={4}
+                  placeholder="Beschrijf het product..."
                   className="mt-1"
                 />
               </div>
@@ -491,7 +426,7 @@ export default function ProductEditPage() {
             </div>
           </div>
 
-          {/* Features - Editable */}
+          {/* Features */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="font-semibold text-kmp-blue mb-4">Kenmerken</h2>
             <div className="space-y-3">
@@ -542,7 +477,7 @@ export default function ProductEditPage() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {/* Product Image - with Upload */}
+          {/* Product Image */}
           <div className="bg-white rounded-xl border border-gray-200 p-6">
             <h2 className="font-semibold text-kmp-blue mb-4">Afbeelding</h2>
             <div
@@ -573,7 +508,9 @@ export default function ProductEditPage() {
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">
                   <Upload className="w-8 h-8 mb-2" />
-                  <span className="text-sm">Klik of sleep afbeelding</span>
+                  <span className="text-sm text-center px-4">
+                    Klik of sleep afbeelding
+                  </span>
                 </div>
               )}
               <input
@@ -597,7 +534,7 @@ export default function ProductEditPage() {
                 <div>
                   <p className="font-medium text-gray-900">Product actief</p>
                   <p className="text-sm text-gray-500">
-                    Zichtbaar op de website
+                    Direct zichtbaar op de website
                   </p>
                 </div>
                 <Switch
@@ -626,72 +563,15 @@ export default function ProductEditPage() {
             </div>
           </div>
 
-          {/* Product Info */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="font-semibold text-kmp-blue mb-4">Product info</h2>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">ID</span>
-                <span className="font-mono text-gray-700">{product.id}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Slug</span>
-                <span className="font-mono text-gray-700">{product.slug}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Type</span>
-                <span className="text-gray-700">
-                  {product.type === "WINDOW" ? "Raamhor" : "Deurhor"}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Opties</span>
-                <span className="text-gray-700">{product.options?.length || 0}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Delete Product */}
-          <div className="bg-white rounded-xl border border-red-200 p-6">
-            <h2 className="font-semibold text-red-600 mb-4">Gevaarzone</h2>
-            <p className="text-sm text-gray-600 mb-4">
-              Het verwijderen van dit product is permanent en kan niet ongedaan
-              worden gemaakt.
-            </p>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 flex items-center justify-center gap-2"
-                  disabled={isDeleting}
-                >
-                  {isDeleting ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Trash2 className="w-4 h-4" />
-                  )}
-                  {isDeleting ? "Verwijderen..." : "Product verwijderen"}
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Product verwijderen?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    Weet je zeker dat je <strong>{product.name}</strong> wilt
-                    verwijderen? Deze actie kan niet ongedaan worden gemaakt.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Annuleren</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDelete}
-                    className="bg-red-600 hover:bg-red-700"
-                  >
-                    Verwijderen
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+          {/* Tips */}
+          <div className="bg-blue-50 rounded-xl border border-blue-200 p-6">
+            <h2 className="font-semibold text-blue-800 mb-3">💡 Tips</h2>
+            <ul className="text-sm text-blue-700 space-y-2">
+              <li>• Gebruik duidelijke en beschrijvende productnamen</li>
+              <li>• Voeg minimaal 3 kenmerken toe voor betere SEO</li>
+              <li>• Upload afbeeldingen in hoge kwaliteit (min. 800x800px)</li>
+              <li>• Stel realistische afmetingen in voor de configurator</li>
+            </ul>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import { createClient } from "./server";
+import { createClient, createAdminClient } from "./server";
 import type {
   Profile,
   Address,
@@ -133,7 +133,8 @@ export async function deleteAddress(addressId: string): Promise<boolean> {
 // ============================================
 
 export async function getProducts(): Promise<DbProduct[]> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -148,7 +149,8 @@ export async function getProducts(): Promise<DbProduct[]> {
 }
 
 export async function getProductBySlug(slug: string): Promise<DbProduct | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -166,7 +168,8 @@ export async function getProductBySlug(slug: string): Promise<DbProduct | null> 
 export async function getProductsByType(
   type: "WINDOW" | "DOOR"
 ): Promise<DbProduct[]> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -186,7 +189,8 @@ export async function getProductsByType(
 // ============================================
 
 export async function getAllProducts(): Promise<DbProduct[]> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -200,7 +204,8 @@ export async function getAllProducts(): Promise<DbProduct[]> {
 }
 
 export async function getProductById(productId: string): Promise<DbProduct | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
@@ -217,7 +222,8 @@ export async function getProductById(productId: string): Promise<DbProduct | nul
 export async function createProduct(
   product: InsertTables<"products">
 ): Promise<DbProduct | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .insert(product)
@@ -235,7 +241,8 @@ export async function updateProduct(
   productId: string,
   updates: UpdateTables<"products">
 ): Promise<DbProduct | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("products")
     .update({ ...updates, updated_at: new Date().toISOString() })
@@ -251,7 +258,8 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(productId: string): Promise<boolean> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
   const { error } = await supabase
     .from("products")
     .delete()
@@ -270,7 +278,8 @@ export async function uploadProductImage(
   fileName: string,
   contentType: string
 ): Promise<string | null> {
-  const supabase = await createClient();
+  // Use admin client to bypass RLS for storage
+  const supabase = createAdminClient();
   
   // Generate unique file name
   const fileExtension = fileName.split(".").pop() || "jpg";

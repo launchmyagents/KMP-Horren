@@ -3,7 +3,9 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { ProductGrid } from "@/components/products";
 import { getProductsByType, PRODUCTS } from "@/data/products";
+import { getProducts, getProductsByType as getDbProductsByType } from "@/lib/supabase/database";
 import { ProductsBreadcrumb, ProductListSchema } from "@/components/seo";
+import { Product } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
@@ -49,10 +51,75 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ProductsPage() {
-  const windowProducts = getProductsByType("WINDOW");
-  const doorProducts = getProductsByType("DOOR");
-  const activeProducts = PRODUCTS.filter((p) => p.isActive);
+// Transform DB product to frontend Product type
+function transformDbProduct(dbProduct: {
+  id: string;
+  name: string;
+  slug: string;
+  type: "WINDOW" | "DOOR";
+  description: string;
+  features: string[];
+  base_price_per_m2: number;
+  min_price: number;
+  min_width_mm: number;
+  max_width_mm: number;
+  min_height_mm: number;
+  max_height_mm: number;
+  image_url: string;
+  options: string[];
+  is_active: boolean;
+  sort_order: number;
+}): Product {
+  return {
+    id: dbProduct.id,
+    name: dbProduct.name,
+    slug: dbProduct.slug,
+    type: dbProduct.type,
+    description: dbProduct.description,
+    features: dbProduct.features || [],
+    basePricePerM2: dbProduct.base_price_per_m2,
+    minPrice: dbProduct.min_price,
+    minWidthMm: dbProduct.min_width_mm,
+    maxWidthMm: dbProduct.max_width_mm,
+    minHeightMm: dbProduct.min_height_mm,
+    maxHeightMm: dbProduct.max_height_mm,
+    imageUrl: dbProduct.image_url,
+    options: dbProduct.options || [],
+    isActive: dbProduct.is_active,
+    sortOrder: dbProduct.sort_order,
+  };
+}
+
+export default async function ProductsPage() {
+  // Try to fetch from database first
+  let windowProducts: Product[] = [];
+  let doorProducts: Product[] = [];
+  let activeProducts: Product[] = [];
+
+  try {
+    const [dbWindowProducts, dbDoorProducts] = await Promise.all([
+      getDbProductsByType("WINDOW"),
+      getDbProductsByType("DOOR"),
+    ]);
+
+    // If database has products, use them
+    if (dbWindowProducts.length > 0 || dbDoorProducts.length > 0) {
+      windowProducts = dbWindowProducts.map(transformDbProduct);
+      doorProducts = dbDoorProducts.map(transformDbProduct);
+      activeProducts = [...windowProducts, ...doorProducts];
+    } else {
+      // Fallback to static data
+      windowProducts = getProductsByType("WINDOW");
+      doorProducts = getProductsByType("DOOR");
+      activeProducts = PRODUCTS.filter((p) => p.isActive);
+    }
+  } catch (error) {
+    // Fallback to static data on error
+    console.error("Error fetching products from database:", error);
+    windowProducts = getProductsByType("WINDOW");
+    doorProducts = getProductsByType("DOOR");
+    activeProducts = PRODUCTS.filter((p) => p.isActive);
+  }
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">

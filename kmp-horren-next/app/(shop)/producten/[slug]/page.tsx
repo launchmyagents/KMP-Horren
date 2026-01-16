@@ -4,8 +4,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronRight, Check, Ruler, Palette, Shield } from "lucide-react";
 import { getProductBySlug, PRODUCTS } from "@/data/products";
+import { getProductBySlug as getDbProductBySlug, getProducts } from "@/lib/supabase/database";
 import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
+import { Product } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
@@ -13,7 +15,72 @@ interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
+// Transform DB product to frontend Product type
+function transformDbProduct(dbProduct: {
+  id: string;
+  name: string;
+  slug: string;
+  type: "WINDOW" | "DOOR";
+  description: string;
+  features: string[];
+  base_price_per_m2: number;
+  min_price: number;
+  min_width_mm: number;
+  max_width_mm: number;
+  min_height_mm: number;
+  max_height_mm: number;
+  image_url: string;
+  options: string[];
+  is_active: boolean;
+  sort_order: number;
+}): Product {
+  return {
+    id: dbProduct.id,
+    name: dbProduct.name,
+    slug: dbProduct.slug,
+    type: dbProduct.type,
+    description: dbProduct.description,
+    features: dbProduct.features || [],
+    basePricePerM2: dbProduct.base_price_per_m2,
+    minPrice: dbProduct.min_price,
+    minWidthMm: dbProduct.min_width_mm,
+    maxWidthMm: dbProduct.max_width_mm,
+    minHeightMm: dbProduct.min_height_mm,
+    maxHeightMm: dbProduct.max_height_mm,
+    imageUrl: dbProduct.image_url,
+    options: dbProduct.options || [],
+    isActive: dbProduct.is_active,
+    sortOrder: dbProduct.sort_order,
+  };
+}
+
+// Get product with database fallback to static
+async function getProduct(slug: string): Promise<Product | undefined> {
+  try {
+    const dbProduct = await getDbProductBySlug(slug);
+    if (dbProduct) {
+      return transformDbProduct(dbProduct);
+    }
+  } catch (error) {
+    console.error("Error fetching product from database:", error);
+  }
+  // Fallback to static data
+  return getProductBySlug(slug);
+}
+
 export async function generateStaticParams() {
+  // Try to get slugs from database, fallback to static
+  try {
+    const dbProducts = await getProducts();
+    if (dbProducts.length > 0) {
+      return dbProducts.map((product) => ({
+        slug: product.slug,
+      }));
+    }
+  } catch (error) {
+    console.error("Error fetching products for static params:", error);
+  }
+  
   return PRODUCTS.map((product) => ({
     slug: product.slug,
   }));
@@ -23,7 +90,7 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProduct(slug);
 
   if (!product) {
     return {
@@ -75,7 +142,7 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();
