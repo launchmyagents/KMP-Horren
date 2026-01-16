@@ -1,0 +1,8 @@
+{
+  "name": "KMP Horren",
+  "description": "Modern e-commerce platform for custom insect screens (horren) featuring an AI-powered product configurator and visual advisory system.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
