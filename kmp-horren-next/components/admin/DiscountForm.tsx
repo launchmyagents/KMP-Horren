@@ -36,7 +36,7 @@ const discountSchema = z.object({
   maxUses: z.number().min(1).optional(),
   validFrom: z.string().optional(),
   validUntil: z.string().optional(),
-  isActive: z.boolean().default(true),
+  isActive: z.boolean(),
 });
 
 type DiscountFormData = z.infer<typeof discountSchema>;
