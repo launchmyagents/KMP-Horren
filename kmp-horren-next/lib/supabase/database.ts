@@ -405,7 +405,7 @@ export async function getUserOrders(userId: string): Promise<OrderWithItems[]> {
 
   // Fetch items for each order
   const ordersWithItems = await Promise.all(
-    orders.map(async (order) => {
+    orders.map(async (order: DbOrder) => {
       const { data: items } = await supabase
         .from("order_items")
         .select("*")
@@ -500,7 +500,7 @@ export async function getAllOrders(
 
   // Fetch items for each order
   const ordersWithItems = await Promise.all(
-    orders.map(async (order) => {
+    orders.map(async (order: DbOrder) => {
       const { data: items } = await supabase
         .from("order_items")
         .select("*")
