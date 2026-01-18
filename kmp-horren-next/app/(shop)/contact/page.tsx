@@ -86,27 +86,27 @@ export default function ContactPage() {
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-kmp-blue min-w-[80px]">Adres:</span>
                   <span>
-                    Industrieweg 10
+                    100land 111
                     <br />
-                    1234 AB, Amsterdam
+                    2676 LT, Maasdijk
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-kmp-blue min-w-[80px]">Tel:</span>
                   <a
-                    href="tel:0881234567"
+                    href="tel:+31643065041"
                     className="hover:text-kmp-orange transition-colors"
                   >
-                    088 - 123 45 67
+                    +31 6 43 06 50 41
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-kmp-blue min-w-[80px]">Email:</span>
                   <a
-                    href="mailto:info@kmp-horren.nl"
+                    href="mailto:Info@kozijnmontagepartners.nl"
                     className="hover:text-kmp-orange transition-colors"
                   >
-                    info@kmp-horren.nl
+                    Info@kozijnmontagepartners.nl
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
@@ -127,11 +127,11 @@ export default function ContactPage() {
               <ul className="space-y-2 text-sm text-slate-600">
                 <li className="flex justify-between border-b border-slate-50 pb-2">
                   <span>Maandag - Vrijdag</span>
-                  <span className="font-bold text-kmp-blue">08:30 - 17:00</span>
+                  <span className="font-bold text-kmp-blue">09:00 - 18:00</span>
                 </li>
                 <li className="flex justify-between border-b border-slate-50 pb-2 pt-2">
                   <span>Zaterdag</span>
-                  <span className="font-bold text-kmp-blue">10:00 - 16:00</span>
+                  <span className="font-bold text-kmp-blue">09:00 - 18:00</span>
                 </li>
                 <li className="flex justify-between pt-2">
                   <span>Zondag</span>

@@ -69,7 +69,7 @@ Ga naar je project in Railway → **Variables** tab en voeg de volgende variabel
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | `eyJhbGciOiJI...` |
 | `MOLLIE_API_KEY` | Mollie API key (live) | `live_xxx...` |
 | `RESEND_API_KEY` | Resend API key | `re_xxx...` |
-| `EMAIL_FROM` | Afzender e-mailadres | `info@kmp-horren.nl` |
+| `EMAIL_FROM` | Afzender e-mailadres | `Info@kozijnmontagepartners.nl` |
 | `NEXT_PUBLIC_APP_URL` | Publieke URL van je app | `https://kmp-horren.nl` |
 
 ### Optionele Variabelen

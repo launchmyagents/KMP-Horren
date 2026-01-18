@@ -16,6 +16,7 @@ export {
   ContactBreadcrumb,
   FAQBreadcrumb,
   AboutBreadcrumb,
+  InmeetserviceBreadcrumb,
 } from "./BreadcrumbSchema";
 
 // FAQ schemas

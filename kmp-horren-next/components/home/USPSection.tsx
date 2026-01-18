@@ -58,7 +58,7 @@ export function USPSection() {
             Waarom KMP Horren?
           </h2>
           <p className="text-slate-500 text-lg">
-            Al meer dan 20 jaar de specialist in maatwerk insectenwering
+            De specialist in maatwerk insectenwering
           </p>
         </motion.div>
 

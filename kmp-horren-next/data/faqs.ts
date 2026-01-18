@@ -86,7 +86,7 @@ export const FAQS: FAQ[] = [
     category: "Bestellen & Levering",
     question: "Kan ik mijn bestelling ophalen?",
     answer:
-      "Ja, u kunt uw bestelling gratis ophalen op ons adres in Amsterdam. Selecteer deze optie tijdens het afrekenen en wij nemen contact op zodra uw bestelling klaar ligt.",
+      "Ja, u kunt uw bestelling gratis ophalen op ons adres in Maasdijk. Selecteer deze optie tijdens het afrekenen en wij nemen contact op zodra uw bestelling klaar ligt.",
   },
 
   // Garantie & Service

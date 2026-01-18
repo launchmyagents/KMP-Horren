@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
     const formData = await request.formData();
     const file = formData.get("file") as File | null;
     const productId = formData.get("productId") as string | null;
+    const isGallery = formData.get("isGallery") === "true";
 
     if (!file) {
       return NextResponse.json(
@@ -80,10 +81,15 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes);
 
     // Upload to Supabase Storage
+    // For gallery images, add a unique suffix to prevent overwriting
+    const fileName = isGallery 
+      ? `gallery_${Date.now()}_${file.name}`
+      : file.name;
+    
     const imageUrl = await uploadProductImage(
       productId,
       buffer,
-      file.name,
+      fileName,
       file.type
     );
 
@@ -94,7 +100,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update product with new image URL
+    // For gallery images, don't update the product - let the frontend handle it
+    if (isGallery) {
+      return NextResponse.json({
+        message: "Galerij afbeelding geüpload",
+        imageUrl,
+      });
+    }
+
+    // Update product with new image URL (only for main image)
     const updatedProduct = await updateProduct(productId, {
       image_url: imageUrl,
     });

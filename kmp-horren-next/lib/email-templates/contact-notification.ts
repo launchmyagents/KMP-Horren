@@ -124,11 +124,11 @@ export function contactCustomerConfirmationEmail({
     </p>
     
     <div style="text-align: center; margin: 20px 0;">
-      <a href="tel:0881234567" style="font-size: 24px; font-weight: 700; color: #161f35; text-decoration: none;">
-        088 - 123 45 67
+      <a href="tel:+31643065041" style="font-size: 24px; font-weight: 700; color: #161f35; text-decoration: none;">
+        +31 6 43 06 50 41
       </a>
       <p style="margin: 10px 0 0 0; font-size: 14px; color: #6b7280;">
-        Ma - Vr: 08:30 - 17:00 | Za: 10:00 - 16:00
+        Ma - Za: 09:00 - 18:00
       </p>
     </div>
     

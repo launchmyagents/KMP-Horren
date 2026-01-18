@@ -6,7 +6,7 @@ import { ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const features = [
-  "Gratis Verzending",
+  "Gratis Verzending vanaf €250",
   "3 Jaar Garantie",
   "Snelle Levering",
 ];
@@ -33,17 +33,6 @@ export function Hero() {
           transition={{ duration: 0.6 }}
           className="max-w-3xl"
         >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="inline-flex items-center gap-2 bg-kmp-orange/10 border border-kmp-orange/20 px-4 py-2 text-kmp-orange text-sm font-bold uppercase tracking-wider mb-8 rounded-full"
-          >
-            <span className="w-2 h-2 bg-kmp-orange rounded-full animate-pulse" />
-            Nu met AI-Inmeethulp
-          </motion.div>
-
           {/* Heading */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -90,7 +79,7 @@ export function Hero() {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-kmp-blue px-10 text-lg"
+                className="w-full sm:w-auto text-kmp-blue bg-white border-white hover:bg-white/90 hover:text-kmp-blue px-10 text-lg"
               >
                 Inmeetservice
               </Button>

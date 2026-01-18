@@ -86,11 +86,11 @@ export function Header() {
             <span className="text-slate-300">3 jaar garantie</span>
           </div>
           <a
-            href="tel:0881234567"
+            href="tel:+31643065041"
             className="flex items-center gap-2 hover:text-kmp-orange transition-colors"
           >
             <Phone size={14} />
-            <span className="font-semibold">088 - 123 45 67</span>
+            <span className="font-semibold">+31 6 43 06 50 41</span>
           </a>
         </div>
       </div>
@@ -259,13 +259,6 @@ export function Header() {
                 </Button>
               </Link>
 
-              {/* CTA Button - Desktop */}
-              <Link href="/producten" className="hidden md:block">
-                <Button className="bg-kmp-orange hover:bg-kmp-orange/90 text-white font-semibold uppercase tracking-wide">
-                  Configureer Nu
-                </Button>
-              </Link>
-
               {/* Mobile menu button */}
               <Button
                 variant="ghost"
@@ -370,13 +363,6 @@ export function Header() {
                 )}
               </div>
 
-              <div className="pt-4">
-                <Link href="/producten" onClick={() => setMobileMenuOpen(false)}>
-                  <Button className="w-full bg-kmp-orange hover:bg-kmp-orange/90 text-white font-semibold uppercase tracking-wide">
-                    Configureer Nu
-                  </Button>
-                </Link>
-              </div>
             </nav>
           </motion.div>
         )}

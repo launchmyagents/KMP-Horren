@@ -10,7 +10,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 export const metadata: Metadata = {
   title: "Over Ons - KMP Horren | Al 20+ Jaar Specialist in Maatwerk Horren",
   description:
-    "Leer meer over KMP Horren - Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland. ✓ Eigen fabriek ✓ Nederlands vakmanschap ✓ Persoonlijke service",
+    "Leer meer over KMP Horren - De specialist in maatwerk insectenwering uit Nederland. ✓ Eigen fabriek ✓ Nederlands vakmanschap ✓ Persoonlijke service",
   keywords: [
     "over kmp horren",
     "horren fabriek",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     siteName: "KMP Horren",
     title: "Over Ons - KMP Horren",
     description:
-      "Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland.",
+      "De specialist in maatwerk insectenwering uit Nederland.",
     images: [
       {
         url: `${BASE_URL}/og-about.jpg`,
@@ -43,17 +43,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Over Ons - KMP Horren",
     description:
-      "Al meer dan 20 jaar de specialist in maatwerk insectenwering uit Nederland.",
+      "De specialist in maatwerk insectenwering uit Nederland.",
   },
 };
-
-const milestones = [
-  { year: "2003", title: "Oprichting", description: "Start van KMP Horren als familiebedrijf" },
-  { year: "2008", title: "Eigen Fabriek", description: "Verhuizing naar eigen productiefaciliteit" },
-  { year: "2015", title: "Online Configurator", description: "Lancering van onze eerste online tool" },
-  { year: "2020", title: "Landelijke Dekking", description: "Inmeetservice door heel Nederland" },
-  { year: "2024", title: "AI-Innovatie", description: "Introductie van AI-gestuurde productadvies" },
-];
 
 const values = [
   {
@@ -91,7 +83,7 @@ export default function OverOnsPage() {
             Over KMP Horren
           </h1>
           <p className="text-xl text-slate-300 max-w-2xl">
-            Al meer dan 20 jaar de specialist in maatwerk insectenwering. 
+            De specialist in maatwerk insectenwering. 
             Een familiebedrijf met passie voor kwaliteit en vakmanschap.
           </p>
         </div>
@@ -107,29 +99,22 @@ export default function OverOnsPage() {
               </h2>
               <div className="space-y-4 text-slate-600 leading-relaxed">
                 <p>
-                  KMP Horren is in 2003 opgericht als klein familiebedrijf met een grote droom: 
-                  de beste maatwerk horren van Nederland maken. Wat begon in een kleine werkplaats 
-                  is uitgegroeid tot een moderne productiefaciliteit waar dagelijks tientallen 
-                  horren op maat worden gemaakt.
+                  Ons verhaal begint met een passie voor het transformeren van woningen door middel van prachtige kozijnen. Met jarenlange ervaring in de branche hebben we een diepgaand begrip ontwikkeld van de subtiele nuances en technieken die betrokken zijn bij kozijn montage. Of het nu gaat om renovatieprojecten die historische charme behouden of nieuwbouwprojecten die moderne esthetiek omarmen, ons deskundige team staat klaar om uw visie werkelijkheid te maken.
                 </p>
                 <p>
-                  Onze filosofie is eenvoudig: wij geloven dat iedereen recht heeft op horren 
-                  die perfect passen. Geen standaardmaten, maar maatwerk tot op de millimeter. 
-                  Geen compromissen op kwaliteit, maar alleen de beste materialen.
+                  Bij Kozijn Montage Partners streven we ernaar om meer te zijn dan alleen een serviceprovider. We zijn uw partner gedurende het hele proces, van concept tot voltooiing. Onze toewijding aan klanttevredenheid drijft ons om voortdurend te streven naar uitmuntendheid, met aandacht voor detail en een focus op het leveren van resultaten die uw verwachtingen overtreffen.
                 </p>
                 <p>
-                  Vandaag de dag zijn wij trots op ons team van vakkundige medewerkers, 
-                  onze moderne productieprocessen en de duizenden tevreden klanten door heel 
-                  Nederland en België.
+                  We geloven in open communicatie, transparantie en eerlijkheid in alles wat we doen. Ons team staat klaar om naar uw ideeën te luisteren, uw vragen te beantwoorden en samen met u een plan te ontwikkelen dat aan al uw behoeften voldoet. We zijn er trots op dat we niet alleen prachtige kozijnen creëren, maar ook langdurige relaties opbouwen met onze gewaardeerde klanten.
                 </p>
               </div>
               <div className="mt-8 flex gap-8">
                 <div>
-                  <div className="text-4xl font-black text-kmp-orange">20+</div>
+                  <div className="text-4xl font-black text-kmp-orange">10+</div>
                   <div className="text-sm text-slate-500 uppercase font-semibold">Jaar ervaring</div>
                 </div>
                 <div>
-                  <div className="text-4xl font-black text-kmp-orange">50.000+</div>
+                  <div className="text-4xl font-black text-kmp-orange">500+</div>
                   <div className="text-sm text-slate-500 uppercase font-semibold">Tevreden klanten</div>
                 </div>
                 <div>
@@ -140,7 +125,7 @@ export default function OverOnsPage() {
             </div>
             <div className="relative aspect-square rounded-2xl overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800"
+                src="/KMP.jpg"
                 alt="KMP Horren productie"
                 fill
                 className="object-cover"
@@ -176,38 +161,6 @@ export default function OverOnsPage() {
                 <p className="text-slate-600 text-sm leading-relaxed">
                   {value.description}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-black text-kmp-blue uppercase tracking-tight mb-4">
-              Onze Geschiedenis
-            </h2>
-            <p className="text-slate-500">
-              Van kleine werkplaats tot moderne productiefaciliteit.
-            </p>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            {milestones.map((milestone) => (
-              <div key={milestone.year} className="flex gap-8 mb-8 last:mb-0">
-                <div className="w-24 shrink-0 text-right">
-                  <span className="text-2xl font-black text-kmp-orange">
-                    {milestone.year}
-                  </span>
-                </div>
-                <div className="relative pb-8 border-l-2 border-slate-200 pl-8">
-                  <div className="absolute left-0 top-0 w-4 h-4 bg-kmp-orange rounded-full -translate-x-[9px]" />
-                  <h3 className="font-bold text-kmp-blue text-lg mb-1">
-                    {milestone.title}
-                  </h3>
-                  <p className="text-slate-600">{milestone.description}</p>
-                </div>
               </div>
             ))}
           </div>

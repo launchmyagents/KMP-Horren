@@ -194,18 +194,18 @@ function OrderConfirmationContent() {
             </h2>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="tel:0881234567"
+                href="tel:+31643065041"
                 className="flex items-center gap-2 text-gray-600 hover:text-kmp-orange transition-colors"
               >
                 <Phone className="w-5 h-5" />
-                <span>088 - 123 45 67</span>
+                <span>+31 6 43 06 50 41</span>
               </a>
               <a
-                href="mailto:info@kmp-horren.nl"
+                href="mailto:Info@kozijnmontagepartners.nl"
                 className="flex items-center gap-2 text-gray-600 hover:text-kmp-orange transition-colors"
               >
                 <Mail className="w-5 h-5" />
-                <span>info@kmp-horren.nl</span>
+                <span>Info@kozijnmontagepartners.nl</span>
               </a>
             </div>
           </motion.div>

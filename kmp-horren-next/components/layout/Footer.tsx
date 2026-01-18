@@ -46,18 +46,18 @@ export function Footer() {
               </p>
               <div className="space-y-3">
                 <a
-                  href="tel:0881234567"
+                  href="tel:+31643065041"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Phone size={16} />
-                  <span>088 - 123 45 67</span>
+                  <span>+31 6 43 06 50 41</span>
                 </a>
                 <a
-                  href="mailto:info@kmp-horren.nl"
+                  href="mailto:Info@kozijnmontagepartners.nl"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Mail size={16} />
-                  <span>info@kmp-horren.nl</span>
+                  <span>Info@kozijnmontagepartners.nl</span>
                 </a>
               </div>
             </div>
@@ -109,15 +109,15 @@ export function Footer() {
                 <div className="flex items-start gap-3 text-slate-400">
                   <MapPin size={16} className="mt-1 flex-shrink-0" />
                   <div>
-                    <p>Industrieweg 10</p>
-                    <p>1234 AB, Amsterdam</p>
+                    <p>100land 111</p>
+                    <p>2676 LT, Maasdijk</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 text-slate-400">
                   <Clock size={16} className="mt-1 flex-shrink-0" />
                   <div>
-                    <p>Ma - Vr: 08:30 - 17:00</p>
-                    <p>Za: 10:00 - 16:00</p>
+                    <p>Ma - Za: 09:00 - 18:00</p>
+                    <p>Zo: Gesloten</p>
                   </div>
                 </div>
               </div>

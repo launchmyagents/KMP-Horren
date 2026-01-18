@@ -100,9 +100,9 @@ export default function FAQPage() {
                 Contact Opnemen
               </Button>
             </Link>
-            <a href="tel:0881234567">
+            <a href="tel:+31643065041">
               <Button variant="outline">
-                Bel 088 - 123 45 67
+                Bel +31 6 43 06 50 41
               </Button>
             </a>
           </div>

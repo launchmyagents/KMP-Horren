@@ -1,12 +1,12 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { ChevronRight, Check, Ruler, Palette, Shield } from "lucide-react";
 import { getProductBySlug, PRODUCTS } from "@/data/products";
 import { getProductBySlug as getDbProductBySlug, getProducts } from "@/lib/supabase/database";
 import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
+import { ProductImageGallery } from "@/components/products";
 import { Product } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
@@ -30,6 +30,7 @@ function transformDbProduct(dbProduct: {
   min_height_mm: number;
   max_height_mm: number;
   image_url: string;
+  gallery_urls: string[] | null;
   options: string[];
   is_active: boolean;
   sort_order: number;
@@ -48,6 +49,7 @@ function transformDbProduct(dbProduct: {
     minHeightMm: dbProduct.min_height_mm,
     maxHeightMm: dbProduct.max_height_mm,
     imageUrl: dbProduct.image_url,
+    galleryUrls: dbProduct.gallery_urls || [],
     options: dbProduct.options || [],
     isActive: dbProduct.is_active,
     sortOrder: dbProduct.sort_order,
@@ -183,19 +185,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4 py-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Product Image */}
-            <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-100">
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute top-4 left-4 bg-kmp-blue text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-md">
-                {product.type === "WINDOW" ? "Raamhor" : "Deurhor"}
-              </div>
-            </div>
+            {/* Product Image Gallery */}
+            <ProductImageGallery
+              mainImage={product.imageUrl}
+              galleryImages={product.galleryUrls || []}
+              productName={product.name}
+              productType={product.type}
+            />
 
             {/* Product Info */}
             <div>

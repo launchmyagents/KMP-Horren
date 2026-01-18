@@ -109,15 +109,15 @@ const Footer = () => (
                 <ul className="space-y-3 text-sm text-slate-400">
                     <li className="flex items-start gap-3">
                         <span className="text-white font-bold min-w-[60px]">Tel:</span> 
-                        <span>088 - 123 45 67</span>
+                        <span>+31 6 43 06 50 41</span>
                     </li>
                     <li className="flex items-start gap-3">
                          <span className="text-white font-bold min-w-[60px]">Email:</span> 
-                         <span>info@kmp-horren.nl</span>
+                         <span>Info@kozijnmontagepartners.nl</span>
                     </li>
                     <li className="flex items-start gap-3">
                          <span className="text-white font-bold min-w-[60px]">Adres:</span> 
-                         <span>Industrieweg 10<br/>1234 AB, Amsterdam</span>
+                         <span>100land 111<br/>2676 LT, Maasdijk</span>
                     </li>
                 </ul>
             </div>

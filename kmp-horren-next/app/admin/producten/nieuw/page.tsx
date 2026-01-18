@@ -42,6 +42,7 @@ function generateId(): string {
 export default function NewProductPage() {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -58,11 +59,13 @@ export default function NewProductPage() {
     sortOrder: 0,
     features: [] as string[],
     imageUrl: "",
+    galleryUrls: [] as string[],
     options: [] as string[],
   });
 
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isUploadingGallery, setIsUploadingGallery] = useState(false);
   const [newFeature, setNewFeature] = useState("");
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [autoSlug, setAutoSlug] = useState(true);
@@ -105,6 +108,7 @@ export default function NewProductPage() {
           sort_order: formData.sortOrder,
           features: formData.features,
           image_url: formData.imageUrl,
+          gallery_urls: formData.galleryUrls,
           options: formData.options,
         }),
       });
@@ -230,6 +234,53 @@ export default function NewProductPage() {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
+  };
+
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingGallery(true);
+    try {
+      const formDataUpload = new FormData();
+      formDataUpload.append("file", file);
+      formDataUpload.append("productId", "new");
+      formDataUpload.append("isGallery", "true");
+
+      const response = await fetch("/api/admin/products/upload", {
+        method: "POST",
+        body: formDataUpload,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Upload mislukt");
+      }
+
+      const data = await response.json();
+      setFormData((prev) => ({
+        ...prev,
+        galleryUrls: [...prev.galleryUrls, data.imageUrl],
+      }));
+      toast.success("Afbeelding toegevoegd aan galerij");
+    } catch (error) {
+      console.error("Error uploading gallery image:", error);
+      toast.error(
+        error instanceof Error ? error.message : "Er ging iets mis bij het uploaden"
+      );
+    } finally {
+      setIsUploadingGallery(false);
+      if (galleryInputRef.current) {
+        galleryInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleRemoveGalleryImage = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      galleryUrls: prev.galleryUrls.filter((_, i) => i !== index),
+    }));
   };
 
   return (
@@ -523,6 +574,57 @@ export default function NewProductPage() {
             </div>
             <p className="text-xs text-gray-500 mt-3 text-center">
               JPG, PNG of WebP (max. 5MB)
+            </p>
+          </div>
+
+          {/* Gallery Images */}
+          <div className="bg-white rounded-xl border border-gray-200 p-6">
+            <h2 className="font-semibold text-kmp-blue mb-4">Galerij</h2>
+            <div className="grid grid-cols-2 gap-3 mb-4">
+              {formData.galleryUrls.map((url, index) => (
+                <div
+                  key={index}
+                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group"
+                >
+                  <Image
+                    src={url}
+                    alt={`Galerij ${index + 1}`}
+                    fill
+                    className="object-cover"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveGalleryImage(index)}
+                    className="absolute top-2 right-2 p-1.5 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </div>
+              ))}
+              {/* Add new image button */}
+              <div
+                className="aspect-square rounded-lg border-2 border-dashed border-gray-300 hover:border-kmp-orange transition-colors cursor-pointer flex flex-col items-center justify-center text-gray-400"
+                onClick={() => galleryInputRef.current?.click()}
+              >
+                {isUploadingGallery ? (
+                  <Loader2 className="w-6 h-6 animate-spin text-kmp-orange" />
+                ) : (
+                  <>
+                    <Plus className="w-6 h-6 mb-1" />
+                    <span className="text-xs">Toevoegen</span>
+                  </>
+                )}
+              </div>
+            </div>
+            <input
+              ref={galleryInputRef}
+              type="file"
+              accept="image/jpeg,image/jpg,image/png,image/webp"
+              onChange={handleGalleryUpload}
+              className="hidden"
+            />
+            <p className="text-xs text-gray-500 text-center">
+              Extra afbeeldingen voor de productpagina
             </p>
           </div>
 

@@ -21,7 +21,7 @@ export const Header: React.FC = () => {
             <span className="flex items-center gap-1.5 opacity-90 hover:opacity-100 transition-opacity"><Check size={14} className="text-kmp-orange" strokeWidth={3} /> Gratis verzending vanaf €250</span>
           </div>
           <div className="flex items-center gap-2 font-semibold">
-            <Phone size={14} className="text-kmp-orange" /> 088 - 123 45 67
+            <Phone size={14} className="text-kmp-orange" /> +31 6 43 06 50 41
           </div>
         </div>
       </div>

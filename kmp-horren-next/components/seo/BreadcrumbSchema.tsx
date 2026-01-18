@@ -96,3 +96,14 @@ export function AboutBreadcrumb() {
     />
   );
 }
+
+export function InmeetserviceBreadcrumb() {
+  return (
+    <BreadcrumbSchema
+      items={[
+        { name: "Home", url: "/" },
+        { name: "Inmeetservice", url: "/inmeetservice" },
+      ]}
+    />
+  );
+}
