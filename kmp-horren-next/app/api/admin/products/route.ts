@@ -1,42 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { getAllProducts, createProduct } from "@/lib/supabase/database";
 import { PRODUCTS } from "@/data/products";
-
-// DEV MODE: Set to true to skip auth during development testing
-const DEV_SKIP_AUTH = process.env.NODE_ENV === "development"; // TODO: Set to false before production!
 
 // GET all products (including inactive)
 export async function GET() {
   try {
-    // Skip auth check in development mode
-    if (!DEV_SKIP_AUTH) {
-      const supabase = await createClient();
-
-      // Check authentication
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        return NextResponse.json({ error: "Niet geautoriseerd" }, { status: 401 });
-      }
-
-      // Check admin role
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      const isAdmin = profile?.role === "admin" || user.user_metadata?.role === "admin";
-
-      if (!isAdmin) {
-        return NextResponse.json(
-          { error: "Geen toegang tot admin functies" },
-          { status: 403 }
-        );
-      }
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
     // Try to fetch from database first
@@ -82,34 +58,13 @@ export async function GET() {
 // POST create new product
 export async function POST(request: NextRequest) {
   try {
-    // Skip auth check in development mode
-    if (!DEV_SKIP_AUTH) {
-      const supabase = await createClient();
-
-      // Check authentication
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        return NextResponse.json({ error: "Niet geautoriseerd" }, { status: 401 });
-      }
-
-      // Check admin role
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      const isAdmin = profile?.role === "admin" || user.user_metadata?.role === "admin";
-
-      if (!isAdmin) {
-        return NextResponse.json(
-          { error: "Geen toegang tot admin functies" },
-          { status: 403 }
-        );
-      }
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
     const body = await request.json();

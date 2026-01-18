@@ -1,54 +1,32 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { createClient, createAdminClient } from "@/lib/supabase/server";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
 
 // Force dynamic rendering to avoid build-time errors
 export const dynamic = "force-dynamic";
 
-// DEV MODE: Set to true to skip auth during development testing
-const DEV_SKIP_AUTH = true; // TODO: Set to false before production!
+// Check if we're in production
+const isProduction = process.env.NODE_ENV === "production";
 
-// Check if Supabase is properly configured (not just placeholder values)
-const isSupabaseConfigured = () => {
-  // Skip auth check in development mode for testing
-  if (process.env.NODE_ENV === "development" && DEV_SKIP_AUTH) {
-    return false;
-  }
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  // Check if values exist
-  if (!url || !key) return false;
-
-  // Check for common placeholder patterns
-  if (url.includes("your-project")) return false;
-  if (url.includes("your-supabase")) return false;
-  if (key.includes("your-")) return false;
-  if (key === "your-anon-key") return false;
-
-  // Must be a real supabase URL (contains actual project ID)
-  if (!url.includes(".supabase.co")) return false;
-  
-  // Check if URL has a real project ID (not placeholder)
-  const projectId = url.replace("https://", "").split(".")[0];
-  if (projectId.length < 10) return false; // Real project IDs are longer
-
-  return true;
-};
+// Check if admin client is properly configured (has service role key)
+function isAdminClientConfigured(): boolean {
+  return !!process.env.SUPABASE_SERVICE_ROLE_KEY;
+}
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  let userName = "Demo Admin";
-  let userEmail = "admin@demo.kmphorren.nl";
+  // In production, ALWAYS require authentication - no demo mode
+  if (isProduction) {
+    // Check if service role key is configured
+    if (!isAdminClientConfigured()) {
+      // Service role key not configured - block access entirely
+      redirect("/?error=admin-not-configured");
+    }
 
-  // Only check auth if Supabase is configured
-  if (isSupabaseConfigured()) {
     const supabase = await createClient();
-
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -58,17 +36,62 @@ export default async function AdminLayout({
       redirect("/login?redirect=/admin");
     }
 
-    // Check if user has admin role
-    // In production, this would check the user's role in the database
-    // For demo purposes, we check user_metadata or allow all authenticated users
-    const isAdmin = user.user_metadata?.role === "admin" || true; // Demo: allow all users
+    // Use admin client to bypass RLS for role verification
+    const adminClient = createAdminClient();
+    const { data: profile } = await adminClient
+      .from("profiles")
+      .select("role, first_name, last_name")
+      .eq("id", user.id)
+      .single();
+
+    // Check if user has admin role in the profiles table
+    const isAdmin = profile?.role === "admin";
 
     if (!isAdmin) {
       redirect("/?error=unauthorized");
     }
 
-    userName = user.user_metadata?.first_name
-      ? `${user.user_metadata.first_name} ${user.user_metadata.last_name || ""}`
+    const userName = profile?.first_name
+      ? `${profile.first_name} ${profile.last_name || ""}`
+      : "Admin";
+    const userEmail = user.email || "admin@kmphorren.nl";
+
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <AdminSidebar userName={userName} userEmail={userEmail} />
+        <main className="pl-64">
+          <div className="p-8">{children}</div>
+        </main>
+      </div>
+    );
+  }
+
+  // Development mode - allow demo access if Supabase is not fully configured
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let userName = "Demo Admin";
+  let userEmail = "admin@demo.kmphorren.nl";
+
+  if (user && isAdminClientConfigured()) {
+    // User is logged in and admin client is configured - verify admin role
+    const adminClient = createAdminClient();
+    const { data: profile } = await adminClient
+      .from("profiles")
+      .select("role, first_name, last_name")
+      .eq("id", user.id)
+      .single();
+
+    const isAdmin = profile?.role === "admin";
+
+    if (!isAdmin) {
+      redirect("/?error=unauthorized");
+    }
+
+    userName = profile?.first_name
+      ? `${profile.first_name} ${profile.last_name || ""}`
       : "Admin";
     userEmail = user.email || "admin@kmphorren.nl";
   }

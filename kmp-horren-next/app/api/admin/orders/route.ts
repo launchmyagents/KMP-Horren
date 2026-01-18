@@ -1,27 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { DEMO_ORDERS } from "@/data/demo-orders";
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient();
-
-    // Check authentication
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Niet geautoriseerd" }, { status: 401 });
-    }
-
-    // Check admin role
-    const isAdmin = user.user_metadata?.role === "admin" || true;
-
-    if (!isAdmin) {
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
       return NextResponse.json(
-        { error: "Geen toegang tot admin functies" },
-        { status: 403 }
+        { error: authResult.error },
+        { status: authResult.status }
       );
     }
 
