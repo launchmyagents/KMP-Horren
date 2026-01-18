@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Download } from "lucide-react";
+import { Search, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,8 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { OrdersTable } from "@/components/admin";
-import { DEMO_ORDERS } from "@/data/demo-orders";
-import { OrderStatus } from "@/types";
+import { Order, OrderStatus } from "@/types";
 
 const statusOptions: { value: OrderStatus | "all"; label: string }[] = [
   { value: "all", label: "Alle statussen" },
@@ -30,49 +29,83 @@ export default function OrdersPage() {
   const searchParams = useSearchParams();
   const initialStatus = searchParams.get("status") as OrderStatus | null;
 
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [totalOrders, setTotalOrders] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">(
     initialStatus || "all"
   );
   const [sortBy, setSortBy] = useState<"date" | "total">("date");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [statusCounts, setStatusCounts] = useState<Record<string, number>>({ all: 0 });
 
-  const filteredOrders = useMemo(() => {
-    let orders = [...DEMO_ORDERS];
-
-    // Filter by status
-    if (statusFilter !== "all") {
-      orders = orders.filter((order) => order.status === statusFilter);
-    }
-
-    // Filter by search query
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      orders = orders.filter(
-        (order) =>
-          order.orderNumber.toLowerCase().includes(query) ||
-          order.customerEmail.toLowerCase().includes(query) ||
-          `${order.customerFirstName} ${order.customerLastName}`
-            .toLowerCase()
-            .includes(query)
-      );
-    }
-
-    // Sort
-    orders.sort((a, b) => {
-      if (sortBy === "date") {
-        const dateA = new Date(a.createdAt).getTime();
-        const dateB = new Date(b.createdAt).getTime();
-        return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
-      } else {
-        return sortOrder === "desc"
-          ? b.totalPrice - a.totalPrice
-          : a.totalPrice - b.totalPrice;
+  // Fetch orders from API
+  const fetchOrders = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const params = new URLSearchParams();
+      if (statusFilter !== "all") {
+        params.set("status", statusFilter);
       }
-    });
+      if (searchQuery) {
+        params.set("search", searchQuery);
+      }
+      
+      const response = await fetch(`/api/admin/orders?${params.toString()}`);
+      const data = await response.json();
+      
+      if (data.orders) {
+        let sortedOrders = [...data.orders];
+        
+        // Sort locally
+        sortedOrders.sort((a: Order, b: Order) => {
+          if (sortBy === "date") {
+            const dateA = new Date(a.createdAt).getTime();
+            const dateB = new Date(b.createdAt).getTime();
+            return sortOrder === "desc" ? dateB - dateA : dateA - dateB;
+          } else {
+            return sortOrder === "desc"
+              ? b.totalPrice - a.totalPrice
+              : a.totalPrice - b.totalPrice;
+          }
+        });
+        
+        setOrders(sortedOrders);
+        setTotalOrders(data.pagination?.total || sortedOrders.length);
+      }
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [statusFilter, searchQuery, sortBy, sortOrder]);
 
-    return orders;
-  }, [searchQuery, statusFilter, sortBy, sortOrder]);
+  // Fetch status counts
+  const fetchStatusCounts = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/orders");
+      const data = await response.json();
+      
+      if (data.orders) {
+        const counts: Record<string, number> = { all: data.pagination?.total || data.orders.length };
+        data.orders.forEach((order: Order) => {
+          counts[order.status] = (counts[order.status] || 0) + 1;
+        });
+        setStatusCounts(counts);
+      }
+    } catch (error) {
+      console.error("Error fetching status counts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  useEffect(() => {
+    fetchStatusCounts();
+  }, [fetchStatusCounts]);
 
   const handleExportCSV = () => {
     const headers = [
@@ -83,7 +116,7 @@ export default function OrdersPage() {
       "Status",
       "Totaal",
     ];
-    const rows = filteredOrders.map((order) => [
+    const rows = orders.map((order) => [
       order.orderNumber,
       `${order.customerFirstName} ${order.customerLastName}`,
       order.customerEmail,
@@ -103,15 +136,6 @@ export default function OrdersPage() {
     link.download = `bestellingen-${new Date().toISOString().split("T")[0]}.csv`;
     link.click();
   };
-
-  // Count orders by status
-  const statusCounts = useMemo(() => {
-    const counts: Record<string, number> = { all: DEMO_ORDERS.length };
-    DEMO_ORDERS.forEach((order) => {
-      counts[order.status] = (counts[order.status] || 0) + 1;
-    });
-    return counts;
-  }, []);
 
   return (
     <div className="space-y-6">
@@ -196,12 +220,18 @@ export default function OrdersPage() {
 
       {/* Orders Table */}
       <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-        <OrdersTable orders={filteredOrders} />
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-8 h-8 animate-spin text-kmp-orange" />
+          </div>
+        ) : (
+          <OrdersTable orders={orders} />
+        )}
       </div>
 
       {/* Results Count */}
       <div className="text-sm text-gray-500 text-center">
-        {filteredOrders.length} van {DEMO_ORDERS.length} bestellingen
+        {orders.length} van {totalOrders} bestellingen
       </div>
     </div>
   );

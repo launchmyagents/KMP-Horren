@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -17,6 +17,7 @@ import {
   User,
   Save,
   Printer,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,8 +31,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { StatusBadge } from "@/components/admin";
-import { DEMO_ORDERS } from "@/data/demo-orders";
-import { OrderStatus } from "@/types";
+import { Order, OrderStatus } from "@/types";
 import { toast } from "sonner";
 
 const statusOptions: { value: OrderStatus; label: string; icon: React.ElementType }[] = [
@@ -47,16 +47,48 @@ export default function OrderDetailPage() {
   const params = useParams();
   const orderId = params.id as string;
 
-  const order = useMemo(
-    () => DEMO_ORDERS.find((o) => o.id === orderId || o.orderNumber === orderId),
-    [orderId]
-  );
-
-  const [status, setStatus] = useState<OrderStatus>(order?.status || "pending");
-  const [adminNotes, setAdminNotes] = useState(order?.adminNotes || "");
+  const [order, setOrder] = useState<Order | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [status, setStatus] = useState<OrderStatus>("pending");
+  const [adminNotes, setAdminNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState("");
   const [sendEmailNotification, setSendEmailNotification] = useState(true);
+  const [originalStatus, setOriginalStatus] = useState<OrderStatus>("pending");
+
+  // Fetch order from API
+  const fetchOrder = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/admin/orders/${orderId}`);
+      const data = await response.json();
+      
+      if (data.order) {
+        setOrder(data.order);
+        setStatus(data.order.status);
+        setOriginalStatus(data.order.status);
+        setAdminNotes(data.order.adminNotes || "");
+      } else if (data.error) {
+        console.error("Error fetching order:", data.error);
+      }
+    } catch (error) {
+      console.error("Error fetching order:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [orderId]);
+
+  useEffect(() => {
+    fetchOrder();
+  }, [fetchOrder]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-8 h-8 animate-spin text-kmp-orange" />
+      </div>
+    );
+  }
 
   if (!order) {
     return (
@@ -94,11 +126,17 @@ export default function OrderDetailPage() {
         throw new Error(data.error || "Er ging iets mis");
       }
 
-      if (sendEmailNotification && (status === "paid" || status === "shipped" || status === "delivered")) {
+      // Update original status after successful save
+      setOriginalStatus(status);
+
+      if (sendEmailNotification && (status === "paid" || status === "shipped" || status === "delivered") && status !== originalStatus) {
         toast.success(`Bestelling bijgewerkt en e-mail verzonden naar ${order.customerEmail}`);
       } else {
         toast.success("Bestelling bijgewerkt");
       }
+
+      // Refresh order data to get latest from database
+      await fetchOrder();
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Er ging iets mis bij het opslaan");
     } finally {
@@ -200,7 +238,7 @@ export default function OrderDetailPage() {
               )}
 
               {/* Email notification toggle */}
-              {(status === "paid" || status === "shipped" || status === "delivered") && status !== order.status && (
+              {(status === "paid" || status === "shipped" || status === "delivered") && status !== originalStatus && (
                 <div className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg">
                   <input
                     type="checkbox"

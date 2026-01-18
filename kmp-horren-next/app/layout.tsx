@@ -103,7 +103,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         
         {/* Favicon and app icons */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         
         {/* Manifest for PWA */}

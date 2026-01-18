@@ -54,7 +54,10 @@ function transformDbOrder(dbOrder: Record<string, unknown>): Order {
   };
 }
 
-export async function GET(request: NextRequest) {
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     // Check admin authentication
     const authResult = await requireAdmin();
@@ -64,63 +67,43 @@ export async function GET(request: NextRequest) {
         { status: authResult.status }
       );
     }
-    
-    // Get query parameters
-    const { searchParams } = new URL(request.url);
-    const status = searchParams.get("status");
-    const search = searchParams.get("search");
-    const page = parseInt(searchParams.get("page") || "1");
-    const limit = parseInt(searchParams.get("limit") || "20");
 
+    const { id } = await params;
     const supabase = createAdminClient();
 
-    // Build query
-    let query = supabase
+    // Try to find order by id first
+    let { data: dbOrder, error } = await supabase
       .from("orders")
-      .select("*, order_items(*)", { count: "exact" })
-      .order("created_at", { ascending: false });
+      .select("*, order_items(*)")
+      .eq("id", id)
+      .single();
 
-    // Filter by status
-    if (status && status !== "all") {
-      query = query.eq("status", status);
+    // If not found by id, try by order_number
+    if (!dbOrder || error) {
+      const result = await supabase
+        .from("orders")
+        .select("*, order_items(*)")
+        .eq("order_number", id)
+        .single();
+      
+      dbOrder = result.data;
+      error = result.error;
     }
 
-    // Filter by search
-    if (search) {
-      query = query.or(
-        `order_number.ilike.%${search}%,customer_email.ilike.%${search}%,customer_first_name.ilike.%${search}%,customer_last_name.ilike.%${search}%`
-      );
-    }
-
-    // Paginate
-    const start = (page - 1) * limit;
-    query = query.range(start, start + limit - 1);
-
-    const { data: dbOrders, error, count } = await query;
-
-    if (error) {
-      console.error("Error fetching orders from Supabase:", error);
+    if (error || !dbOrder) {
       return NextResponse.json(
-        { error: "Er ging iets mis bij het ophalen van bestellingen" },
-        { status: 500 }
+        { error: "Bestelling niet gevonden" },
+        { status: 404 }
       );
     }
 
-    const orders = (dbOrders || []).map(transformDbOrder);
-    
     return NextResponse.json({
-      orders,
-      pagination: {
-        page,
-        limit,
-        total: count || orders.length,
-        totalPages: Math.ceil((count || orders.length) / limit),
-      },
+      order: transformDbOrder(dbOrder),
     });
   } catch (error) {
-    console.error("Error fetching admin orders:", error);
+    console.error("Error fetching order:", error);
     return NextResponse.json(
-      { error: "Er ging iets mis bij het ophalen van bestellingen" },
+      { error: "Er ging iets mis bij het ophalen van de bestelling" },
       { status: 500 }
     );
   }
