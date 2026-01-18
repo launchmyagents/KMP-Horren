@@ -118,7 +118,7 @@ export default function ProductsPage() {
       }
 
       toast.success(`${product.name} is nu ${newActiveState ? "actief" : "inactief"}`);
-    } catch (err) {
+    } catch {
       // Revert on error
       setProducts((prev) =>
         prev.map((p) =>

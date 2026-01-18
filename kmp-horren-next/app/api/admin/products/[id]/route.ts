@@ -84,6 +84,7 @@ export async function PUT(
     const body = await request.json();
     
     // Remove fields that shouldn't be updated directly
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { id: _id, created_at: _createdAt, ...updateData } = body;
 
     const product = await updateProduct(id, updateData);

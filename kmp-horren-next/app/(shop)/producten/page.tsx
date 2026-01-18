@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { ProductGrid } from "@/components/products";
 import { getProductsByType, PRODUCTS } from "@/data/products";
-import { getProducts, getProductsByType as getDbProductsByType } from "@/lib/supabase/database";
+import { getProductsByType as getDbProductsByType } from "@/lib/supabase/database";
 import { ProductsBreadcrumb, ProductListSchema } from "@/components/seo";
 import { Product } from "@/types";
 
