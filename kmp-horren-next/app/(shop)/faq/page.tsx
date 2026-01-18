@@ -91,8 +91,7 @@ export default function FAQPage() {
             Staat uw vraag er niet tussen?
           </h3>
           <p className="text-slate-600 mb-6">
-            Neem contact op met onze klantenservice of start een chat met onze
-            AI-adviseur.
+            Neem contact op met onze klantenservice.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">

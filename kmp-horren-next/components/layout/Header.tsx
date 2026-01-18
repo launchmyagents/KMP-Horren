@@ -83,9 +83,9 @@ export function Header() {
               <Image
                 src="/logo.svg"
                 alt="KMP Horren"
-                width={160}
-                height={40}
-                className="h-10 w-auto"
+                width={180}
+                height={48}
+                className="h-9 md:h-10 lg:h-12 w-auto"
                 priority
               />
             </Link>
