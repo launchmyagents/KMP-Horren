@@ -154,8 +154,8 @@ export interface OrderItem {
   colorName: string;
   meshTypeId: string;
   meshTypeName: string;
-  profileDepthId: string;
-  profileDepthMm: number;
+  profileDepthId?: string;
+  profileDepthMm?: number;
   frameTypeId?: string;
   frameTypeName?: string;
   customOptions: Record<string, string>;
