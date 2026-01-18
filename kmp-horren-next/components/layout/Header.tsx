@@ -10,7 +10,6 @@ import {
   X,
   ShoppingCart,
   Phone,
-  ChevronDown,
   User,
   Package,
   MapPin,
@@ -30,28 +29,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/hooks/useUser";
 
 const navigation = [
-  {
-    name: "Raamhorren",
-    href: "/producten/raamhorren",
-    children: [
-      { name: "Luxe Inzethor", href: "/producten/luxe-inzethor" },
-      { name: "Inzet Plissé Hor", href: "/producten/inzet-plisse-hor" },
-      { name: "Luxe Rolhor", href: "/producten/luxe-rolhor" },
-      { name: "Luxe Klemhor", href: "/producten/luxe-klemhor" },
-      { name: "Plissé Hor Dakraam", href: "/producten/plisse-hor-dakraam" },
-    ],
-  },
-  {
-    name: "Deurhorren",
-    href: "/producten/deurhorren",
-    children: [
-      { name: "Plissé Hordeur", href: "/producten/plisse-hordeur-enkel" },
-      { name: "Dubbele Plissé Hordeur", href: "/producten/plisse-hordeur-dubbel" },
-      { name: "Scharnier Hordeur", href: "/producten/scharnier-hordeur" },
-      { name: "Royal 22 Hordeur", href: "/producten/royal-22-enkel" },
-      { name: "Schuifpui Hor", href: "/producten/schuifpui-hor" },
-    ],
-  },
+  { name: "Raamhorren", href: "/producten#raamhorren" },
+  { name: "Deurhorren", href: "/producten#deurhorren" },
   { name: "Inmeetservice", href: "/inmeetservice" },
   { name: "Over Ons", href: "/over-ons" },
   { name: "Contact", href: "/contact" },
@@ -113,42 +92,15 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center gap-1">
-              {navigation.map((item) =>
-                item.children ? (
-                  <DropdownMenu key={item.name}>
-                    <DropdownMenuTrigger asChild>
-                      <button className="flex items-center gap-1 px-4 py-2 text-sm font-semibold text-kmp-blue hover:text-kmp-orange transition-colors uppercase tracking-wide">
-                        {item.name}
-                        <ChevronDown size={16} />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="w-56">
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href={item.href}
-                          className="font-semibold text-kmp-blue"
-                        >
-                          Alle {item.name}
-                        </Link>
-                      </DropdownMenuItem>
-                      <div className="my-1 h-px bg-slate-100" />
-                      {item.children.map((child) => (
-                        <DropdownMenuItem key={child.name} asChild>
-                          <Link href={child.href}>{child.name}</Link>
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="px-4 py-2 text-sm font-semibold text-kmp-blue hover:text-kmp-orange transition-colors uppercase tracking-wide"
-                  >
-                    {item.name}
-                  </Link>
-                )
-              )}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="px-4 py-2 text-sm font-semibold text-kmp-blue hover:text-kmp-orange transition-colors uppercase tracking-wide"
+                >
+                  {item.name}
+                </Link>
+              ))}
             </nav>
 
             {/* Right side */}
@@ -288,29 +240,14 @@ export function Header() {
           >
             <nav className="container mx-auto px-4 py-4 space-y-1">
               {navigation.map((item) => (
-                <div key={item.name}>
-                  <Link
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-3 text-kmp-blue font-semibold uppercase tracking-wide hover:bg-slate-50 rounded-lg"
-                  >
-                    {item.name}
-                  </Link>
-                  {item.children && (
-                    <div className="ml-4 mt-1 space-y-1">
-                      {item.children.map((child) => (
-                        <Link
-                          key={child.name}
-                          href={child.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block px-4 py-2 text-slate-600 hover:text-kmp-orange hover:bg-slate-50 rounded-lg text-sm"
-                        >
-                          {child.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-kmp-blue font-semibold uppercase tracking-wide hover:bg-slate-50 rounded-lg"
+                >
+                  {item.name}
+                </Link>
               ))}
 
               {/* Mobile Auth Links */}

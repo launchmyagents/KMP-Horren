@@ -50,7 +50,7 @@ export function CTASection() {
               <Button
                 variant="outline"
                 size="lg"
-                className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-kmp-blue px-10 text-lg"
+                className="w-full sm:w-auto bg-transparent text-white border-white border-2 hover:bg-white hover:text-kmp-blue px-10 text-lg font-semibold"
               >
                 <Phone className="mr-2" size={20} />
                 Bel ons
