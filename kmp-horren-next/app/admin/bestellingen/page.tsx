@@ -56,7 +56,7 @@ export default function OrdersPage() {
       const data = await response.json();
       
       if (data.orders) {
-        let sortedOrders = [...data.orders];
+        const sortedOrders = [...data.orders];
         
         // Sort locally
         sortedOrders.sort((a: Order, b: Order) => {
