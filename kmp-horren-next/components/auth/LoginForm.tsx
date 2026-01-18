@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -21,8 +21,12 @@ type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Get redirect URL from query params (e.g., /login?redirect=/admin)
+  const redirectTo = searchParams.get("redirect") || "/account";
 
   const {
     register,
@@ -52,7 +56,8 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/account");
+      // Redirect to the intended destination (or /account by default)
+      router.push(redirectTo);
       router.refresh();
     } catch {
       setError("Er ging iets mis. Probeer het opnieuw.");
