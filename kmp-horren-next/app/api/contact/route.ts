@@ -5,6 +5,7 @@ import {
   contactAdminNotificationEmail,
   contactCustomerConfirmationEmail,
 } from "@/lib/email-templates/contact-notification";
+import { createAdminClient } from "@/lib/supabase/server";
 
 // Validation
 function validateContactForm(data: {
@@ -51,12 +52,20 @@ export async function POST(request: NextRequest) {
       email: email.trim().toLowerCase(),
       subject: subject?.trim() || null,
       message: message.trim(),
-      isRead: false,
-      createdAt: new Date().toISOString(),
+      is_read: false,
+      created_at: new Date().toISOString(),
     };
 
-    // In production, save to Supabase:
-    // const { error } = await supabase.from('contact_messages').insert(contactMessage);
+    // Save to Supabase
+    const supabase = createAdminClient();
+    const { error: dbError } = await supabase
+      .from("contact_messages")
+      .insert(contactMessage);
+
+    if (dbError) {
+      console.error("Failed to save contact message:", dbError);
+      // Continue anyway - we still want to send emails
+    }
 
     console.log("Contact message received:", {
       id: contactMessage.id,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Mail,
   MailOpen,
@@ -9,6 +9,8 @@ import {
   Trash2,
   Check,
   Search,
+  RefreshCw,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -22,18 +24,72 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { DEMO_MESSAGES } from "@/data/demo-orders";
 import { ContactMessage } from "@/types";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
+
+// Transform database row to ContactMessage type
+function transformMessage(row: {
+  id: string;
+  name: string;
+  email: string;
+  subject: string | null;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+}): ContactMessage {
+  return {
+    id: row.id,
+    name: row.name,
+    email: row.email,
+    subject: row.subject || undefined,
+    message: row.message,
+    isRead: row.is_read,
+    createdAt: row.created_at,
+  };
+}
 
 export default function MessagesPage() {
-  const [messages, setMessages] = useState(DEMO_MESSAGES);
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMessage, setSelectedMessage] = useState<ContactMessage | null>(
     null
   );
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const supabase = createClient();
+
+  // Fetch messages from Supabase
+  const fetchMessages = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("contact_messages")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error fetching messages:", error);
+        toast.error("Kon berichten niet laden");
+        return;
+      }
+
+      setMessages((data || []).map(transformMessage));
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      toast.error("Kon berichten niet laden");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Load messages on mount
+  useEffect(() => {
+    fetchMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredMessages = searchQuery
     ? messages.filter(
@@ -47,27 +103,74 @@ export default function MessagesPage() {
 
   const unreadCount = messages.filter((m) => !m.isRead).length;
 
-  const handleMarkAsRead = (id: string) => {
+  const handleMarkAsRead = async (id: string) => {
+    // Optimistic update
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, isRead: true } : m))
     );
+
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ is_read: true })
+      .eq("id", id);
+
+    if (error) {
+      console.error("Error marking message as read:", error);
+      // Revert on error
+      setMessages((prev) =>
+        prev.map((m) => (m.id === id ? { ...m, isRead: false } : m))
+      );
+      toast.error("Kon bericht niet markeren als gelezen");
+      return;
+    }
+
     toast.success("Bericht gemarkeerd als gelezen");
   };
 
-  const handleMarkAllAsRead = () => {
+  const handleMarkAllAsRead = async () => {
+    const unreadIds = messages.filter((m) => !m.isRead).map((m) => m.id);
+    if (unreadIds.length === 0) return;
+
+    // Optimistic update
     setMessages((prev) => prev.map((m) => ({ ...m, isRead: true })));
+
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ is_read: true })
+      .in("id", unreadIds);
+
+    if (error) {
+      console.error("Error marking all messages as read:", error);
+      // Refetch on error
+      fetchMessages();
+      toast.error("Kon berichten niet markeren als gelezen");
+      return;
+    }
+
     toast.success("Alle berichten gemarkeerd als gelezen");
   };
 
-  const handleDelete = () => {
-    if (deleteId) {
-      setMessages((prev) => prev.filter((m) => m.id !== deleteId));
-      if (selectedMessage?.id === deleteId) {
-        setSelectedMessage(null);
-      }
-      toast.success("Bericht verwijderd");
+  const handleDelete = async () => {
+    if (!deleteId) return;
+
+    const { error } = await supabase
+      .from("contact_messages")
+      .delete()
+      .eq("id", deleteId);
+
+    if (error) {
+      console.error("Error deleting message:", error);
+      toast.error("Kon bericht niet verwijderen");
       setDeleteId(null);
+      return;
     }
+
+    setMessages((prev) => prev.filter((m) => m.id !== deleteId));
+    if (selectedMessage?.id === deleteId) {
+      setSelectedMessage(null);
+    }
+    toast.success("Bericht verwijderd");
+    setDeleteId(null);
   };
 
   const formatDate = (dateString: string) => {
@@ -101,17 +204,29 @@ export default function MessagesPage() {
         <div>
           <h1 className="text-3xl font-bold text-kmp-blue">Berichten</h1>
           <p className="text-gray-600 mt-1">
-            {unreadCount > 0
-              ? `${unreadCount} ongelezen bericht${unreadCount > 1 ? "en" : ""}`
-              : "Alle berichten gelezen"}
+            {isLoading
+              ? "Laden..."
+              : unreadCount > 0
+                ? `${unreadCount} ongelezen bericht${unreadCount > 1 ? "en" : ""}`
+                : "Alle berichten gelezen"}
           </p>
         </div>
-        {unreadCount > 0 && (
-          <Button variant="outline" onClick={handleMarkAllAsRead}>
-            <Check className="w-4 h-4 mr-2" />
-            Alles als gelezen markeren
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            onClick={fetchMessages}
+            disabled={isLoading}
+          >
+            <RefreshCw className={cn("w-4 h-4", isLoading && "animate-spin")} />
           </Button>
-        )}
+          {unreadCount > 0 && (
+            <Button variant="outline" onClick={handleMarkAllAsRead}>
+              <Check className="w-4 h-4 mr-2" />
+              Alles als gelezen markeren
+            </Button>
+          )}
+        </div>
       </div>
 
       {/* Search */}
@@ -132,7 +247,11 @@ export default function MessagesPage() {
         {/* Messages List */}
         <div className="lg:col-span-1 bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="max-h-[600px] overflow-y-auto divide-y divide-gray-100">
-            {filteredMessages.length > 0 ? (
+            {isLoading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+              </div>
+            ) : filteredMessages.length > 0 ? (
               filteredMessages.map((message) => (
                 <button
                   key={message.id}
@@ -198,7 +317,7 @@ export default function MessagesPage() {
               ))
             ) : (
               <div className="text-center py-12 text-gray-500">
-                Geen berichten gevonden
+                {searchQuery ? "Geen berichten gevonden" : "Nog geen berichten"}
               </div>
             )}
           </div>
