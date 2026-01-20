@@ -1,23 +1,57 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Order } from "@/types";
 import { StatusBadge } from "./StatusBadge";
 import { Button } from "@/components/ui/button";
-import { Eye, MoreHorizontal } from "lucide-react";
+import { Eye, MoreHorizontal, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface OrdersTableProps {
   orders: Order[];
   showActions?: boolean;
+  onDelete?: (orderId: string) => Promise<void>;
 }
 
-export function OrdersTable({ orders, showActions = true }: OrdersTableProps) {
+export function OrdersTable({ orders, showActions = true, onDelete }: OrdersTableProps) {
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteClick = (order: Order) => {
+    setOrderToDelete(order);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!orderToDelete || !onDelete) return;
+    
+    setIsDeleting(true);
+    try {
+      await onDelete(orderToDelete.id);
+    } finally {
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
+      setOrderToDelete(null);
+    }
+  };
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("nl-NL", {
       day: "numeric",
@@ -101,6 +135,18 @@ export function OrdersTable({ orders, showActions = true }: OrdersTableProps) {
                           Bekijken
                         </Link>
                       </DropdownMenuItem>
+                      {onDelete && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem
+                            onClick={() => handleDeleteClick(order)}
+                            className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Verwijderen
+                          </DropdownMenuItem>
+                        </>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </td>
@@ -115,6 +161,31 @@ export function OrdersTable({ orders, showActions = true }: OrdersTableProps) {
           Geen bestellingen gevonden
         </div>
       )}
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bestelling verwijderen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Weet je zeker dat je bestelling{" "}
+              <span className="font-semibold">{orderToDelete?.orderNumber}</span>{" "}
+              wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+              Alle gekoppelde orderregels worden ook verwijderd.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Annuleren</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmDelete}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {isDeleting ? "Verwijderen..." : "Verwijderen"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

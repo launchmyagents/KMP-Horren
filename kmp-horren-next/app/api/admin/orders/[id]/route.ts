@@ -108,3 +108,61 @@ export async function GET(
     );
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
+    }
+
+    const { id } = await params;
+    const supabase = createAdminClient();
+
+    // First check if order exists
+    const { data: existingOrder, error: findError } = await supabase
+      .from("orders")
+      .select("id, order_number")
+      .eq("id", id)
+      .single();
+
+    if (findError || !existingOrder) {
+      return NextResponse.json(
+        { error: "Bestelling niet gevonden" },
+        { status: 404 }
+      );
+    }
+
+    // Delete the order (order_items will be deleted via CASCADE)
+    const { error: deleteError } = await supabase
+      .from("orders")
+      .delete()
+      .eq("id", id);
+
+    if (deleteError) {
+      console.error("Error deleting order:", deleteError);
+      return NextResponse.json(
+        { error: "Er ging iets mis bij het verwijderen van de bestelling" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: `Bestelling ${existingOrder.order_number} is verwijderd`,
+    });
+  } catch (error) {
+    console.error("Error deleting order:", error);
+    return NextResponse.json(
+      { error: "Er ging iets mis bij het verwijderen van de bestelling" },
+      { status: 500 }
+    );
+  }
+}

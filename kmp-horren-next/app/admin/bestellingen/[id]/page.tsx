@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -18,6 +18,7 @@ import {
   Save,
   Printer,
   Loader2,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -30,6 +31,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { StatusBadge } from "@/components/admin";
 import { Order, OrderStatus } from "@/types";
 import { toast } from "sonner";
@@ -45,6 +56,7 @@ const statusOptions: { value: OrderStatus; label: string; icon: React.ElementTyp
 
 export default function OrderDetailPage() {
   const params = useParams();
+  const router = useRouter();
   const orderId = params.id as string;
 
   const [order, setOrder] = useState<Order | null>(null);
@@ -55,6 +67,8 @@ export default function OrderDetailPage() {
   const [trackingNumber, setTrackingNumber] = useState("");
   const [sendEmailNotification, setSendEmailNotification] = useState(true);
   const [originalStatus, setOriginalStatus] = useState<OrderStatus>("pending");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Fetch order from API
   const fetchOrder = useCallback(async () => {
@@ -156,6 +170,31 @@ export default function OrderDetailPage() {
 
   const currentStatusIndex = statusOptions.findIndex((s) => s.value === status);
 
+  const handleDelete = async () => {
+    if (!order) return;
+    
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/admin/orders/${order.id}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Er ging iets mis");
+      }
+
+      toast.success(data.message || "Bestelling verwijderd");
+      router.push("/admin/bestellingen");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Er ging iets mis bij het verwijderen");
+    } finally {
+      setIsDeleting(false);
+      setDeleteDialogOpen(false);
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -177,6 +216,14 @@ export default function OrderDetailPage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <Button 
+            variant="outline" 
+            className="flex items-center gap-2 text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300"
+            onClick={() => setDeleteDialogOpen(true)}
+          >
+            <Trash2 className="w-4 h-4" />
+            Verwijderen
+          </Button>
           <Button variant="outline" className="flex items-center gap-2">
             <Printer className="w-4 h-4" />
             Print
@@ -496,6 +543,31 @@ export default function OrderDetailPage() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bestelling verwijderen?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Weet je zeker dat je bestelling{" "}
+              <span className="font-semibold">{order.orderNumber}</span>{" "}
+              wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.
+              Alle gekoppelde orderregels worden ook verwijderd.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting}>Annuleren</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="bg-red-600 hover:bg-red-700 focus:ring-red-600"
+            >
+              {isDeleting ? "Verwijderen..." : "Verwijderen"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

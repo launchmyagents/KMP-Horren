@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { OrdersTable } from "@/components/admin";
 import { Order, OrderStatus } from "@/types";
+import { toast } from "sonner";
 
 const statusOptions: { value: OrderStatus | "all"; label: string }[] = [
   { value: "all", label: "Alle statussen" },
@@ -106,6 +107,29 @@ export default function OrdersPage() {
   useEffect(() => {
     fetchStatusCounts();
   }, [fetchStatusCounts]);
+
+  const handleDeleteOrder = async (orderId: string) => {
+    try {
+      const response = await fetch(`/api/admin/orders/${orderId}`, {
+        method: "DELETE",
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Er ging iets mis");
+      }
+
+      toast.success(data.message || "Bestelling verwijderd");
+      
+      // Refresh orders and counts
+      fetchOrders();
+      fetchStatusCounts();
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Er ging iets mis bij het verwijderen");
+      throw error; // Re-throw to let the dialog know it failed
+    }
+  };
 
   const handleExportCSV = () => {
     const headers = [
@@ -225,7 +249,7 @@ export default function OrdersPage() {
             <Loader2 className="w-8 h-8 animate-spin text-kmp-orange" />
           </div>
         ) : (
-          <OrdersTable orders={orders} />
+          <OrdersTable orders={orders} onDelete={handleDeleteOrder} />
         )}
       </div>
 
