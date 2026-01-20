@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
         email: contactMessage.email,
         subject: contactMessage.subject || undefined,
         message: contactMessage.message,
-        createdAt: contactMessage.createdAt,
+        createdAt: contactMessage.created_at,
       }),
       contactMessage.email // Reply-to customer email
     );
