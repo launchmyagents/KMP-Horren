@@ -95,7 +95,7 @@ export async function GET(request: NextRequest) {
     });
 
     // Convert map to array and sort by last order date (newest first)
-    let customers = Array.from(customerMap.values());
+    const customers = Array.from(customerMap.values());
     customers.sort(
       (a, b) =>
         new Date(b.lastOrderDate).getTime() - new Date(a.lastOrderDate).getTime()
