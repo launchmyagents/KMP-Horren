@@ -9,14 +9,26 @@ export function createAdminClient() {
 
   if (!supabaseUrl || !supabaseServiceKey) {
     // Return a mock client if env vars are missing
+    // This mock supports method chaining
+    const mockQueryBuilder = {
+      select: () => mockQueryBuilder,
+      insert: () => mockQueryBuilder,
+      update: () => mockQueryBuilder,
+      delete: () => mockQueryBuilder,
+      eq: () => mockQueryBuilder,
+      in: () => mockQueryBuilder,
+      order: () => mockQueryBuilder,
+      single: () => mockQueryBuilder,
+      limit: () => mockQueryBuilder,
+      range: () => mockQueryBuilder,
+      then: (resolve: (value: { data: null; error: null }) => void) => {
+        resolve({ data: null, error: null });
+      },
+      data: null,
+      error: null,
+    };
     return {
-      from: () => ({
-        select: () => ({ data: null, error: null }),
-        insert: () => ({ data: null, error: null }),
-        update: () => ({ data: null, error: null }),
-        delete: () => ({ data: null, error: null }),
-        eq: () => ({ data: null, error: null }),
-      }),
+      from: () => mockQueryBuilder,
       storage: {
         from: () => ({
           upload: async () => ({ data: null, error: null }),
@@ -40,18 +52,30 @@ export async function createClient() {
 
   // Return a mock client during build if env vars are missing
   if (!supabaseUrl || !supabaseAnonKey) {
+    const mockQueryBuilder = {
+      select: () => mockQueryBuilder,
+      insert: () => mockQueryBuilder,
+      update: () => mockQueryBuilder,
+      delete: () => mockQueryBuilder,
+      eq: () => mockQueryBuilder,
+      in: () => mockQueryBuilder,
+      order: () => mockQueryBuilder,
+      single: () => mockQueryBuilder,
+      limit: () => mockQueryBuilder,
+      range: () => mockQueryBuilder,
+      then: (resolve: (value: { data: null; error: null }) => void) => {
+        resolve({ data: null, error: null });
+      },
+      data: null,
+      error: null,
+    };
     return {
       auth: {
         getUser: async () => ({ data: { user: null }, error: null }),
         getSession: async () => ({ data: { session: null }, error: null }),
         signOut: async () => ({ error: null }),
       },
-      from: () => ({
-        select: () => ({ data: null, error: null }),
-        insert: () => ({ data: null, error: null }),
-        update: () => ({ data: null, error: null }),
-        delete: () => ({ data: null, error: null }),
-      }),
+      from: () => mockQueryBuilder,
     } as unknown as ReturnType<typeof createServerClient>;
   }
 

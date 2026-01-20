@@ -27,7 +27,6 @@ import {
 import { ContactMessage } from "@/types";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { createClient } from "@/lib/supabase/client";
 
 // Transform database row to ContactMessage type
 function transformMessage(row: {
@@ -59,24 +58,20 @@ export default function MessagesPage() {
   );
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const supabase = createClient();
-
-  // Fetch messages from Supabase
+  // Fetch messages from API
   const fetchMessages = async () => {
     setIsLoading(true);
     try {
-      const { data, error } = await supabase
-        .from("contact_messages")
-        .select("*")
-        .order("created_at", { ascending: false });
+      const response = await fetch("/api/admin/messages");
+      const result = await response.json();
 
-      if (error) {
-        console.error("Error fetching messages:", error);
-        toast.error("Kon berichten niet laden");
+      if (!response.ok) {
+        console.error("Error fetching messages:", result.error);
+        toast.error(result.error || "Kon berichten niet laden");
         return;
       }
 
-      setMessages((data || []).map(transformMessage));
+      setMessages((result.data || []).map(transformMessage));
     } catch (error) {
       console.error("Error fetching messages:", error);
       toast.error("Kon berichten niet laden");
@@ -88,7 +83,6 @@ export default function MessagesPage() {
   // Load messages on mount
   useEffect(() => {
     fetchMessages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const filteredMessages = searchQuery
@@ -109,22 +103,32 @@ export default function MessagesPage() {
       prev.map((m) => (m.id === id ? { ...m, isRead: true } : m))
     );
 
-    const { error } = await supabase
-      .from("contact_messages")
-      .update({ is_read: true })
-      .eq("id", id);
+    try {
+      const response = await fetch("/api/admin/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, is_read: true }),
+      });
 
-    if (error) {
+      if (!response.ok) {
+        const result = await response.json();
+        // Revert on error
+        setMessages((prev) =>
+          prev.map((m) => (m.id === id ? { ...m, isRead: false } : m))
+        );
+        toast.error(result.error || "Kon bericht niet markeren als gelezen");
+        return;
+      }
+
+      toast.success("Bericht gemarkeerd als gelezen");
+    } catch (error) {
       console.error("Error marking message as read:", error);
       // Revert on error
       setMessages((prev) =>
         prev.map((m) => (m.id === id ? { ...m, isRead: false } : m))
       );
       toast.error("Kon bericht niet markeren als gelezen");
-      return;
     }
-
-    toast.success("Bericht gemarkeerd als gelezen");
   };
 
   const handleMarkAllAsRead = async () => {
@@ -134,43 +138,55 @@ export default function MessagesPage() {
     // Optimistic update
     setMessages((prev) => prev.map((m) => ({ ...m, isRead: true })));
 
-    const { error } = await supabase
-      .from("contact_messages")
-      .update({ is_read: true })
-      .in("id", unreadIds);
+    try {
+      const response = await fetch("/api/admin/messages", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: unreadIds, is_read: true }),
+      });
 
-    if (error) {
+      if (!response.ok) {
+        const result = await response.json();
+        // Refetch on error
+        fetchMessages();
+        toast.error(result.error || "Kon berichten niet markeren als gelezen");
+        return;
+      }
+
+      toast.success("Alle berichten gemarkeerd als gelezen");
+    } catch (error) {
       console.error("Error marking all messages as read:", error);
-      // Refetch on error
       fetchMessages();
       toast.error("Kon berichten niet markeren als gelezen");
-      return;
     }
-
-    toast.success("Alle berichten gemarkeerd als gelezen");
   };
 
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const { error } = await supabase
-      .from("contact_messages")
-      .delete()
-      .eq("id", deleteId);
+    try {
+      const response = await fetch(`/api/admin/messages?id=${deleteId}`, {
+        method: "DELETE",
+      });
 
-    if (error) {
+      if (!response.ok) {
+        const result = await response.json();
+        toast.error(result.error || "Kon bericht niet verwijderen");
+        setDeleteId(null);
+        return;
+      }
+
+      setMessages((prev) => prev.filter((m) => m.id !== deleteId));
+      if (selectedMessage?.id === deleteId) {
+        setSelectedMessage(null);
+      }
+      toast.success("Bericht verwijderd");
+    } catch (error) {
       console.error("Error deleting message:", error);
       toast.error("Kon bericht niet verwijderen");
+    } finally {
       setDeleteId(null);
-      return;
     }
-
-    setMessages((prev) => prev.filter((m) => m.id !== deleteId));
-    if (selectedMessage?.id === deleteId) {
-      setSelectedMessage(null);
-    }
-    toast.success("Bericht verwijderd");
-    setDeleteId(null);
   };
 
   const formatDate = (dateString: string) => {
@@ -208,7 +224,9 @@ export default function MessagesPage() {
               ? "Laden..."
               : unreadCount > 0
                 ? `${unreadCount} ongelezen bericht${unreadCount > 1 ? "en" : ""}`
-                : "Alle berichten gelezen"}
+                : messages.length > 0
+                  ? "Alle berichten gelezen"
+                  : "Nog geen berichten"}
           </p>
         </div>
         <div className="flex items-center gap-2">
