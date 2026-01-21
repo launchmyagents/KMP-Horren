@@ -113,7 +113,7 @@ export default function InmeetservicePage() {
 
       toast.success("Status bijgewerkt");
       fetchRequests();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Kon status niet bijwerken");
     }
   };
@@ -133,7 +133,7 @@ export default function InmeetservicePage() {
       toast.success("Notities opgeslagen");
       setEditingNotes(null);
       fetchRequests();
-    } catch (error) {
+    } catch (_error) {
       toast.error("Kon notities niet opslaan");
     }
   };
