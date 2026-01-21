@@ -133,7 +133,7 @@ export function PaymentStep() {
 
       const orderData = await orderResponse.json();
 
-      // Create payment via Mollie
+      // Create payment via Stripe
       const paymentResponse = await fetch("/api/payments/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -153,7 +153,7 @@ export function PaymentStep() {
 
       const paymentData = await paymentResponse.json();
 
-      // Clear cart and redirect to Mollie
+      // Clear cart and redirect to Stripe
       clearCart();
       resetCheckout();
 
@@ -200,9 +200,14 @@ export function PaymentStep() {
                   : "border-gray-200 hover:border-gray-300"
               )}
             >
-              <div className="w-12 h-8 relative flex items-center justify-center bg-white rounded">
-                {/* Placeholder for payment icons - in production use actual icons */}
-                <CreditCard className="w-6 h-6 text-gray-400" />
+              <div className="w-12 h-8 relative flex items-center justify-center bg-white rounded overflow-hidden">
+                <Image
+                  src={method.icon}
+                  alt={method.name}
+                  width={48}
+                  height={32}
+                  className="object-contain"
+                />
               </div>
               <div className="flex-1 text-left">
                 <p className="font-medium text-kmp-blue">{method.name}</p>
@@ -276,7 +281,7 @@ export function PaymentStep() {
       <div className="flex items-center gap-3 p-4 bg-green-50 border border-green-200 rounded-lg">
         <Lock className="w-5 h-5 text-green-600 flex-shrink-0" />
         <p className="text-sm text-green-800">
-          Uw betaling wordt verwerkt via Mollie, een veilige en betrouwbare
+          Uw betaling wordt verwerkt via Stripe, een veilige en betrouwbare
           betaalprovider. Uw gegevens worden versleuteld verzonden.
         </p>
       </div>
@@ -323,8 +328,8 @@ export function PaymentStep() {
       {/* Trust Badges */}
       <div className="flex items-center justify-center gap-4 pt-4">
         <Image
-          src="/images/payment/mollie-badge.svg"
-          alt="Mollie"
+          src="/images/payment/stripe-badge.svg"
+          alt="Stripe"
           width={80}
           height={30}
           className="opacity-60"

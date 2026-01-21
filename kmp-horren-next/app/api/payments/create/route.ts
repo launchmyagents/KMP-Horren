@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PaymentMethod } from "@mollie/api-client";
-import { getMollieClient, formatAmountForMollie } from "@/lib/mollie";
+import { getStripe, formatAmountForStripe, mapPaymentMethodToStripe } from "@/lib/stripe";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { orderId, orderNumber, amount, method } = body;
+    const { orderId, orderNumber, amount, method, customerEmail, customerName } = body;
 
     // Validate required fields
     if (!orderId || !orderNumber || !amount) {
@@ -17,9 +16,9 @@ export async function POST(request: NextRequest) {
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
-    // Check if Mollie is configured
-    if (!process.env.MOLLIE_API_KEY) {
-      console.log("Mollie not configured, returning demo checkout URL");
+    // Check if Stripe is configured
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.log("Stripe not configured, returning demo checkout URL");
       // Return demo URL for development
       return NextResponse.json({
         id: `demo_${orderId}`,
@@ -29,37 +28,52 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const mollieClient = getMollieClient();
+      const stripe = getStripe();
 
-      // Create Mollie payment
-      const payment = await mollieClient.payments.create({
-        amount: {
-          currency: "EUR",
-          value: formatAmountForMollie(amount),
-        },
-        description: `KMP Horren - Bestelling ${orderNumber}`,
-        redirectUrl: `${appUrl}/bestelling/bevestiging?order=${orderNumber}`,
-        webhookUrl: `${appUrl}/api/webhooks/mollie`,
+      // Create Stripe Checkout Session
+      const session = await stripe.checkout.sessions.create({
+        mode: "payment",
+        payment_method_types: mapPaymentMethodToStripe(method),
+        customer_email: customerEmail,
+        client_reference_id: orderId,
         metadata: {
           orderId,
           orderNumber,
+          customerName: customerName || "",
         },
-        method: mapPaymentMethod(method),
+        line_items: [
+          {
+            price_data: {
+              currency: "eur",
+              product_data: {
+                name: `KMP Horren - Bestelling ${orderNumber}`,
+                description: "Maatwerk horren op maat gemaakt",
+              },
+              unit_amount: formatAmountForStripe(amount),
+            },
+            quantity: 1,
+          },
+        ],
+        success_url: `${appUrl}/bestelling/bevestiging?order=${orderNumber}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${appUrl}/checkout?cancelled=true`,
+        locale: "nl",
+        // Expiration time: 30 minutes
+        expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
       });
 
-      // In production, update order with Mollie payment ID:
-      // await supabase.from('orders').update({ molliePaymentId: payment.id }).eq('id', orderId);
+      // In production, update order with Stripe session ID:
+      // await supabase.from('orders').update({ stripeSessionId: session.id }).eq('id', orderId);
 
-      console.log("Mollie payment created:", payment.id);
+      console.log("Stripe checkout session created:", session.id);
 
       return NextResponse.json({
-        id: payment.id,
-        checkoutUrl: payment.getCheckoutUrl(),
-        status: payment.status,
+        id: session.id,
+        checkoutUrl: session.url,
+        status: session.status,
       });
-    } catch (mollieError) {
-      console.error("Mollie error:", mollieError);
-      // Fallback to demo mode if Mollie fails
+    } catch (stripeError) {
+      console.error("Stripe error:", stripeError);
+      // Fallback to demo mode if Stripe fails
       return NextResponse.json({
         id: `fallback_${orderId}`,
         checkoutUrl: `${appUrl}/bestelling/bevestiging?order=${orderNumber}&demo=true`,
@@ -73,15 +87,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-}
-
-function mapPaymentMethod(method: string): PaymentMethod | undefined {
-  const methodMap: Record<string, PaymentMethod> = {
-    ideal: PaymentMethod.ideal,
-    bancontact: PaymentMethod.bancontact,
-    creditcard: PaymentMethod.creditcard,
-    paypal: PaymentMethod.paypal,
-    klarna: PaymentMethod.klarnapaylater,
-  };
-  return methodMap[method];
 }

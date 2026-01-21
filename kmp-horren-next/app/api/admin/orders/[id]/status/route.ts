@@ -120,7 +120,7 @@ export async function PATCH(
       totalPrice: parseFloat(dbOrder.total_price),
       status: dbOrder.status,
       paymentMethod: dbOrder.payment_method,
-      molliePaymentId: dbOrder.mollie_payment_id,
+      stripePaymentId: dbOrder.stripe_payment_id,
       paidAt: dbOrder.paid_at,
       customerNotes: dbOrder.customer_notes,
       adminNotes: dbOrder.admin_notes,

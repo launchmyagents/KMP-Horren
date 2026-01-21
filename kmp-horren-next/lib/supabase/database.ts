@@ -574,7 +574,7 @@ export async function updateOrderStatus(
 
 export async function updateOrderPayment(
   orderId: string,
-  molliePaymentId: string,
+  stripePaymentId: string,
   paymentMethod?: string
 ): Promise<DbOrder | null> {
   const supabase = await createClient();
@@ -582,7 +582,7 @@ export async function updateOrderPayment(
   const { data, error } = await supabase
     .from("orders")
     .update({
-      mollie_payment_id: molliePaymentId,
+      stripe_payment_id: stripePaymentId,
       payment_method: paymentMethod,
     })
     .eq("id", orderId)

@@ -14,3 +14,6 @@ export { contactAdminNotificationEmail, contactCustomerConfirmationEmail } from 
 
 // Auth emails
 export { passwordResetEmail, welcomeEmail } from "./password-reset";
+
+// Inmeetservice emails
+export { inmeetserviceAdminNotificationEmail, inmeetserviceCustomerConfirmationEmail } from "./inmeetservice-notification";

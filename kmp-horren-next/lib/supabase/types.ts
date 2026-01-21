@@ -335,7 +335,7 @@ export interface Database {
           total_price: number;
           status: "pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled";
           payment_method: string | null;
-          mollie_payment_id: string | null;
+          stripe_payment_id: string | null;
           paid_at: string | null;
           customer_notes: string | null;
           admin_notes: string | null;
@@ -364,7 +364,7 @@ export interface Database {
           total_price: number;
           status?: "pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled";
           payment_method?: string | null;
-          mollie_payment_id?: string | null;
+          stripe_payment_id?: string | null;
           paid_at?: string | null;
           customer_notes?: string | null;
           admin_notes?: string | null;
@@ -393,7 +393,7 @@ export interface Database {
           total_price?: number;
           status?: "pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled";
           payment_method?: string | null;
-          mollie_payment_id?: string | null;
+          stripe_payment_id?: string | null;
           paid_at?: string | null;
           customer_notes?: string | null;
           admin_notes?: string | null;

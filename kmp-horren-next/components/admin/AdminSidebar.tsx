@@ -11,6 +11,7 @@ import {
   ShoppingBag,
   Tag,
   MessageSquare,
+  Calendar,
   LogOut,
   ChevronRight,
   ExternalLink,
@@ -48,6 +49,11 @@ const navigation = [
     name: "Berichten",
     href: "/admin/berichten",
     icon: MessageSquare,
+  },
+  {
+    name: "Inmeetservice",
+    href: "/admin/inmeetservice",
+    icon: Calendar,
   },
 ];
 

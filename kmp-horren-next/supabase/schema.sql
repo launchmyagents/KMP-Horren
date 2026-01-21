@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS orders (
   -- Status & Payment
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'processing', 'shipped', 'delivered', 'cancelled')),
   payment_method TEXT,
-  mollie_payment_id TEXT,
+  stripe_payment_id TEXT,
   paid_at TIMESTAMPTZ,
   
   -- Notes

@@ -1,4 +1,6 @@
-import { Metadata } from "next";
+"use client";
+
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import {
   Euro,
@@ -9,19 +11,87 @@ import {
   Clock,
   ArrowRight,
   Package,
+  Loader2,
+  Calendar,
 } from "lucide-react";
 import { StatsCard, OrdersTable } from "@/components/admin";
 import { Button } from "@/components/ui/button";
-import { DEMO_ORDERS, getDemoStats } from "@/data/demo-orders";
+import { Order } from "@/types";
 
-export const metadata: Metadata = {
-  title: "Admin Dashboard | KMP Horren",
-  description: "KMP Horren Admin Dashboard",
+interface Stats {
+  totalOrders: number;
+  pendingOrders: number;
+  processingOrders: number;
+  totalRevenue: number;
+  totalCustomers: number;
+  newCustomersThisMonth: number;
+  unreadMessages: number;
+  pendingInmeetservice: number;
+  revenueToday: number;
+  revenueThisWeek: number;
+  revenueThisMonth: number;
+  ordersToday: number;
+  ordersThisWeek: number;
+  ordersThisMonth: number;
+}
+
+const defaultStats: Stats = {
+  totalOrders: 0,
+  pendingOrders: 0,
+  processingOrders: 0,
+  totalRevenue: 0,
+  totalCustomers: 0,
+  newCustomersThisMonth: 0,
+  unreadMessages: 0,
+  pendingInmeetservice: 0,
+  revenueToday: 0,
+  revenueThisWeek: 0,
+  revenueThisMonth: 0,
+  ordersToday: 0,
+  ordersThisWeek: 0,
+  ordersThisMonth: 0,
 };
 
 export default function AdminDashboardPage() {
-  const stats = getDemoStats();
-  const recentOrders = DEMO_ORDERS.slice(0, 5);
+  const [stats, setStats] = useState<Stats>(defaultStats);
+  const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchData = useCallback(async () => {
+    try {
+      // Fetch stats and recent orders in parallel
+      const [statsResponse, ordersResponse] = await Promise.all([
+        fetch("/api/admin/stats"),
+        fetch("/api/admin/orders?limit=5"),
+      ]);
+
+      if (statsResponse.ok) {
+        const statsData = await statsResponse.json();
+        setStats(statsData);
+      }
+
+      if (ordersResponse.ok) {
+        const ordersData = await ordersResponse.json();
+        setRecentOrders(ordersData.orders || []);
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="w-8 h-8 animate-spin text-kmp-orange" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -41,7 +111,6 @@ export default function AdminDashboardPage() {
           subtitle={`${stats.ordersToday} bestelling(en)`}
           icon={Euro}
           color="green"
-          trend={{ value: 12, isPositive: true }}
         />
         <StatsCard
           title="Omzet deze week"
@@ -49,7 +118,6 @@ export default function AdminDashboardPage() {
           subtitle={`${stats.ordersThisWeek} bestellingen`}
           icon={TrendingUp}
           color="blue"
-          trend={{ value: 8, isPositive: true }}
         />
         <StatsCard
           title="In behandeling"
@@ -68,7 +136,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Secondary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <StatsCard
           title="Totaal bestellingen"
           value={stats.totalOrders}
@@ -87,6 +155,13 @@ export default function AdminDashboardPage() {
           value={`€${stats.totalRevenue.toFixed(2)}`}
           icon={Euro}
           color="orange"
+        />
+        <StatsCard
+          title="Inmeetservice"
+          value={stats.pendingInmeetservice}
+          subtitle="Openstaande aanvragen"
+          icon={Calendar}
+          color="purple"
         />
       </div>
 
@@ -171,7 +246,13 @@ export default function AdminDashboardPage() {
             </Button>
           </Link>
         </div>
-        <OrdersTable orders={recentOrders} />
+        {recentOrders.length > 0 ? (
+          <OrdersTable orders={recentOrders} />
+        ) : (
+          <div className="p-8 text-center text-gray-500">
+            Nog geen bestellingen
+          </div>
+        )}
       </div>
     </div>
   );

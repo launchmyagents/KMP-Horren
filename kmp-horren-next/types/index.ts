@@ -133,7 +133,7 @@ export interface Order {
   totalPrice: number;
   status: OrderStatus;
   paymentMethod?: string;
-  molliePaymentId?: string;
+  stripePaymentId?: string;
   paidAt?: string;
   customerNotes?: string;
   adminNotes?: string;

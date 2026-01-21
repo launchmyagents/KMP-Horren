@@ -4,14 +4,16 @@ import { NextResponse } from "next/server";
 // This endpoint is called periodically to verify the application is running
 
 interface HealthStatus {
-  status: "healthy" | "unhealthy";
+  status: "healthy" | "unhealthy" | "degraded";
   timestamp: string;
   version: string;
   environment: string;
   uptime: number;
   checks: {
     server: "ok" | "error";
-    database?: "ok" | "error" | "not_configured";
+    database: "ok" | "error" | "not_configured";
+    stripe: "configured" | "not_configured";
+    resend: "configured" | "not_configured";
   };
 }
 
@@ -26,31 +28,61 @@ export async function GET() {
     uptime: process.uptime(),
     checks: {
       server: "ok",
+      database: "not_configured",
+      stripe: "not_configured",
+      resend: "not_configured",
     },
   };
 
-  // Check Supabase connection if configured
-  if (
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    !process.env.NEXT_PUBLIC_SUPABASE_URL.includes("your-project")
-  ) {
+  // Check Supabase connection
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseConfigured =
+    supabaseUrl &&
+    !supabaseUrl.includes("your-project") &&
+    supabaseUrl.includes("supabase.co");
+
+  if (supabaseConfigured) {
     try {
-      // Simple connectivity check - just verify the URL is reachable
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
       const response = await fetch(`${supabaseUrl}/rest/v1/`, {
         method: "HEAD",
         headers: {
           apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
         },
-        signal: AbortSignal.timeout(5000), // 5 second timeout
+        signal: AbortSignal.timeout(5000),
       });
       healthStatus.checks.database = response.ok ? "ok" : "error";
+      if (!response.ok) {
+        healthStatus.status = "degraded";
+      }
     } catch {
       healthStatus.checks.database = "error";
-      healthStatus.status = "unhealthy";
+      healthStatus.status = "degraded";
     }
-  } else {
-    healthStatus.checks.database = "not_configured";
+  }
+
+  // Check Stripe configuration
+  const stripeKey = process.env.STRIPE_SECRET_KEY;
+  if (stripeKey && stripeKey.startsWith("sk_") && stripeKey.length > 20) {
+    healthStatus.checks.stripe = "configured";
+  }
+
+  // Check Resend configuration
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey && resendKey.startsWith("re_") && resendKey.length > 20) {
+    healthStatus.checks.resend = "configured";
+  }
+
+  // Determine overall status
+  if (healthStatus.checks.database === "error") {
+    healthStatus.status = "unhealthy";
+  } else if (
+    healthStatus.checks.database === "not_configured" ||
+    healthStatus.checks.stripe === "not_configured"
+  ) {
+    // In production, missing critical configs means degraded
+    if (process.env.NODE_ENV === "production") {
+      healthStatus.status = "degraded";
+    }
   }
 
   // Calculate response time
@@ -58,7 +90,12 @@ export async function GET() {
   const responseTimeMs = (seconds * 1000 + nanoseconds / 1e6).toFixed(2);
 
   // Return appropriate status code
-  const statusCode = healthStatus.status === "healthy" ? 200 : 503;
+  let statusCode = 200;
+  if (healthStatus.status === "unhealthy") {
+    statusCode = 503;
+  } else if (healthStatus.status === "degraded") {
+    statusCode = 200; // Still return 200 for degraded to prevent restarts
+  }
 
   return NextResponse.json(
     {

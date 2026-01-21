@@ -19,7 +19,7 @@ Voordat je begint, zorg dat je het volgende hebt:
 
 - [ ] Een [Railway](https://railway.app) account
 - [ ] Een [Supabase](https://supabase.com) project (voor database en auth)
-- [ ] Een [Mollie](https://mollie.com) account (voor betalingen)
+- [ ] Een [Stripe](https://stripe.com) account (voor betalingen)
 - [ ] Een [Resend](https://resend.com) account (voor e-mails)
 - [ ] Je code in een GitHub repository
 
@@ -67,17 +67,19 @@ Ga naar je project in Railway → **Variables** tab en voeg de volgende variabel
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | `https://xxx.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon/public key | `eyJhbGciOiJI...` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key | `eyJhbGciOiJI...` |
-| `MOLLIE_API_KEY` | Mollie API key (live) | `live_xxx...` |
+| `STRIPE_SECRET_KEY` | Stripe secret API key | `sk_live_xxx...` |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | `whsec_xxx...` |
 | `RESEND_API_KEY` | Resend API key | `re_xxx...` |
-| `EMAIL_FROM` | Afzender e-mailadres | `Info@kozijnmontagepartners.nl` |
+| `EMAIL_FROM` | Afzender e-mailadres | `info@kozijnmontagepartners.nl` |
+| `ADMIN_EMAIL` | Admin notificatie e-mail | `info@kozijnmontagepartners.nl` |
 | `NEXT_PUBLIC_APP_URL` | Publieke URL van je app | `https://kmp-horren.nl` |
 
 ### Optionele Variabelen
 
 | Variabele | Beschrijving | Default |
 |-----------|--------------|---------|
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key | `pk_live_xxx...` |
 | `GOOGLE_AI_API_KEY` | Google Gemini API key | - |
-| `MOLLIE_WEBHOOK_URL` | Mollie webhook URL | `{APP_URL}/api/webhooks/mollie` |
 | `NODE_ENV` | Environment | `production` |
 
 ### Variabelen Instellen
@@ -231,12 +233,13 @@ Railway biedt ingebouwde metrics:
 
 ### Betalingen Werken Niet
 
-**Probleem:** Mollie betalingen falen
+**Probleem:** Stripe betalingen falen
 
 **Oplossing:**
 1. Verifieer dat je een **live** API key gebruikt (niet test)
-2. Controleer of `MOLLIE_WEBHOOK_URL` correct is
-3. Test de webhook URL handmatig
+2. Controleer of `STRIPE_WEBHOOK_SECRET` correct is ingesteld
+3. Controleer in Stripe Dashboard of de webhook endpoint actief is
+4. De webhook URL moet zijn: `{APP_URL}/api/webhooks/stripe`
 
 ---
 
@@ -265,7 +268,7 @@ Als een deployment problemen veroorzaakt:
 - [ ] Custom domain geconfigureerd
 - [ ] SSL certificaat actief
 - [ ] Health check endpoint werkt (`/api/health`)
-- [ ] Mollie webhook URL geconfigureerd
+- [ ] Stripe webhook geconfigureerd in Stripe Dashboard
 - [ ] E-mail versturen werkt (test via contact formulier)
 - [ ] Betalingen werken (test met echte betaling)
 - [ ] Supabase database tabellen aangemaakt

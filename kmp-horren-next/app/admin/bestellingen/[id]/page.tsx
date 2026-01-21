@@ -531,11 +531,11 @@ export default function OrderDetailPage() {
                   <span className="text-sm">{formatDate(order.paidAt)}</span>
                 </div>
               )}
-              {order.molliePaymentId && (
+              {order.stripePaymentId && (
                 <div className="flex justify-between">
-                  <span>Mollie ID</span>
+                  <span>Stripe ID</span>
                   <span className="font-mono text-xs">
-                    {order.molliePaymentId}
+                    {order.stripePaymentId}
                   </span>
                 </div>
               )}

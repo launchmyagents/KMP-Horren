@@ -25,7 +25,7 @@ function transformDbOrder(dbOrder: Record<string, unknown>): Order {
     totalPrice: parseFloat(dbOrder.total_price as string),
     status: dbOrder.status as Order["status"],
     paymentMethod: dbOrder.payment_method as string | undefined,
-    molliePaymentId: dbOrder.mollie_payment_id as string | undefined,
+    stripePaymentId: dbOrder.stripe_payment_id as string | undefined,
     paidAt: dbOrder.paid_at as string | undefined,
     customerNotes: dbOrder.customer_notes as string | undefined,
     adminNotes: dbOrder.admin_notes as string | undefined,

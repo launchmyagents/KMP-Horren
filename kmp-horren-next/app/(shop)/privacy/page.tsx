@@ -105,7 +105,7 @@ export default function PrivacyPage() {
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-4">
                 <li><strong>Bezorgdiensten:</strong> voor het afleveren van uw bestelling</li>
-                <li><strong>Betalingsproviders:</strong> voor het verwerken van betalingen (Mollie)</li>
+                <li><strong>Betalingsproviders:</strong> voor het verwerken van betalingen (Stripe)</li>
                 <li><strong>Hostingpartij:</strong> voor het hosten van onze website</li>
                 <li><strong>Boekhoudsoftware:</strong> voor onze financiële administratie</li>
               </ul>

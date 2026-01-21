@@ -114,7 +114,7 @@ export const FAQS: FAQ[] = [
     category: "Betaling",
     question: "Welke betaalmethodes accepteren jullie?",
     answer:
-      "Wij accepteren iDEAL, creditcard (Visa, Mastercard), Bancontact en PayPal. Alle betalingen worden veilig verwerkt via Mollie.",
+      "Wij accepteren iDEAL, creditcard (Visa, Mastercard), Bancontact, Klarna en PayPal. Alle betalingen worden veilig verwerkt via Stripe.",
   },
   {
     category: "Betaling",
