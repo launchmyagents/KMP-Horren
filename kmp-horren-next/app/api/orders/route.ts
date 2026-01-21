@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
-import { sendEmail } from "@/lib/resend";
+import { sendEmail, sendAdminNotification } from "@/lib/resend";
 import { orderConfirmationEmail } from "@/lib/email-templates/order-confirmation";
+import { orderAdminNotificationEmail } from "@/lib/email-templates/order-admin-notification";
 import { Order } from "@/types";
 
 // Generate a unique order number
@@ -80,7 +81,7 @@ export async function POST(request: NextRequest) {
     // For now, return the order object (demo mode)
     console.log("Order created:", order.orderNumber);
 
-    // Send order confirmation email
+    // Send order confirmation email to customer
     if (order.customerEmail) {
       const emailResult = await sendEmail({
         to: order.customerEmail,
@@ -93,6 +94,19 @@ export async function POST(request: NextRequest) {
       } else {
         console.error(`Failed to send order confirmation: ${emailResult.error}`);
       }
+    }
+
+    // Send notification email to admin
+    const adminEmailResult = await sendAdminNotification(
+      `Nieuwe bestelling ${order.orderNumber}`,
+      orderAdminNotificationEmail({ order }),
+      order.customerEmail // Reply-to customer email
+    );
+
+    if (adminEmailResult.success) {
+      console.log(`Admin notification email sent for order ${order.orderNumber}`);
+    } else {
+      console.error(`Failed to send admin notification: ${adminEmailResult.error}`);
     }
 
     return NextResponse.json({

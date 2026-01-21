@@ -3,6 +3,7 @@ export { baseLayout, styles, formatPrice, formatDate, formatDateTime } from "./b
 
 // Order emails
 export { orderConfirmationEmail } from "./order-confirmation";
+export { orderAdminNotificationEmail } from "./order-admin-notification";
 export { paymentConfirmationEmail } from "./payment-confirmation";
 
 // Shipping emails
