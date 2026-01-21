@@ -1,48 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient, createAdminClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/supabase/admin-auth";
 
 // GET - Fetch all contact messages
 export async function GET() {
   try {
-    // Check if Supabase is configured
-    const hasSupabaseConfig = !!(
-      process.env.NEXT_PUBLIC_SUPABASE_URL &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY
-    );
-
-    if (!hasSupabaseConfig) {
-      console.warn("Supabase not configured, returning empty messages array");
-      return NextResponse.json({ data: [] });
-    }
-
-    // Verify user is admin
-    const supabase = await createClient();
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-
-    if (authError) {
-      console.error("Auth error:", authError);
-      return NextResponse.json({ error: "Authenticatie fout" }, { status: 401 });
-    }
-
-    if (!user) {
-      return NextResponse.json({ error: "Niet ingelogd" }, { status: 401 });
-    }
-
-    // Check admin role
-    const { data: profile, error: profileError } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (profileError) {
-      console.error("Profile error:", profileError);
-      // If profile doesn't exist, user is not admin
-      return NextResponse.json({ error: "Geen toegang" }, { status: 403 });
-    }
-
-    if (profile?.role !== "admin") {
-      return NextResponse.json({ error: "Geen toegang" }, { status: 403 });
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
     // Use admin client to bypass RLS
@@ -76,22 +45,13 @@ export async function PATCH(request: NextRequest) {
     const body = await request.json();
     const { id, ids, is_read } = body;
 
-    // Verify user is admin
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Niet ingelogd" }, { status: 401 });
-    }
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (profile?.role !== "admin") {
-      return NextResponse.json({ error: "Geen toegang" }, { status: 403 });
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
     const adminClient = createAdminClient();
@@ -153,22 +113,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Verify user is admin
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: "Niet ingelogd" }, { status: 401 });
-    }
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (profile?.role !== "admin") {
-      return NextResponse.json({ error: "Geen toegang" }, { status: 403 });
+    // Check admin authentication
+    const authResult = await requireAdmin();
+    if (!authResult.authorized) {
+      return NextResponse.json(
+        { error: authResult.error },
+        { status: authResult.status }
+      );
     }
 
     const adminClient = createAdminClient();
