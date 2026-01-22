@@ -95,17 +95,23 @@ export default function OverOnsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-3xl font-black text-kmp-blue uppercase tracking-tight mb-6">
-                Ons Verhaal
+                Ons Verhaal – Vakmanschap Tot In Het Kleinste Detail
               </h2>
               <div className="space-y-4 text-slate-600 leading-relaxed">
                 <p>
-                  Ons verhaal begint met een passie voor het transformeren van woningen door middel van prachtige kozijnen. Met jarenlange ervaring in de branche hebben we een diepgaand begrip ontwikkeld van de subtiele nuances en technieken die betrokken zijn bij kozijn montage. Of het nu gaat om renovatieprojecten die historische charme behouden of nieuwbouwprojecten die moderne esthetiek omarmen, ons deskundige team staat klaar om uw visie werkelijkheid te maken.
+                  Ons verhaal begint met een passie voor perfect afgewerkte woningen. Niet alleen met mooie kozijnen, maar met alles wat bijdraagt aan comfort, uitstraling en gebruiksgemak. Vanuit diezelfde passie zijn wij ons steeds verder gaan specialiseren in het fabriceren en monteren van hoogwaardige insectenhorren.
                 </p>
                 <p>
-                  Bij Kozijn Montage Partners streven we ernaar om meer te zijn dan alleen een serviceprovider. We zijn uw partner gedurende het hele proces, van concept tot voltooiing. Onze toewijding aan klanttevredenheid drijft ons om voortdurend te streven naar uitmuntendheid, met aandacht voor detail en een focus op het leveren van resultaten die uw verwachtingen overtreffen.
+                  Met jarenlange ervaring in de montagewereld weten we als geen ander hoe belangrijk maatwerk is. Geen raam is hetzelfde, geen situatie identiek. Daarom produceren wij onze horren volledig op maat, met oog voor detail, duurzaamheid en een strakke afwerking die naadloos aansluit op het kozijn. Of het nu gaat om nieuwbouw of renovatie — wij zorgen ervoor dat alles klopt.
                 </p>
                 <p>
-                  We geloven in open communicatie, transparantie en eerlijkheid in alles wat we doen. Ons team staat klaar om naar uw ideeën te luisteren, uw vragen te beantwoorden en samen met u een plan te ontwikkelen dat aan al uw behoeften voldoet. We zijn er trots op dat we niet alleen prachtige kozijnen creëren, maar ook langdurige relaties opbouwen met onze gewaardeerde klanten.
+                  Bij Kozijn Montage Partners geloven we dat kwaliteit zit in de combinatie van vakmanschap en betrouwbaarheid. We begeleiden het volledige traject: van inmeten en adviseren tot het vakkundig monteren van de horren. Onze monteurs werken nauwkeurig, netjes en met respect voor de woning van de klant.
+                </p>
+                <p>
+                  Wat ons onderscheidt, is onze manier van samenwerken. We denken mee, communiceren helder en doen wat we beloven. Geen standaardoplossingen, maar maatwerk dat past bij de woning én bij de wensen van de bewoner. Zo leveren we niet alleen perfect functionerende insectenhorren, maar ook rust, comfort en jarenlang woonplezier.
+                </p>
+                <p>
+                  Bij Kozijn Montage Partners bouwen we niet alleen aan producten — we bouwen aan duurzame relaties en oplossingen waar u op kunt vertrouwen.
                 </p>
               </div>
               <div className="mt-8 flex gap-8">
