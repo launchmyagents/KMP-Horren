@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Check, Ruler, Users, Calendar, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { InmeetserviceBreadcrumb } from "@/components/seo";
+import { InmeetserviceForm } from "@/components/inmeetservice";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
@@ -141,7 +142,7 @@ export default function InmeetservicePage() {
                 </div>
               ))}
             </div>
-            <Link href="/contact?subject=Inmeetservice+aanvragen">
+            <a href="#aanvraag-formulier">
               <Button
                 size="lg"
                 className="bg-kmp-orange hover:bg-kmp-orange/90 text-white"
@@ -149,7 +150,7 @@ export default function InmeetservicePage() {
                 <Calendar className="mr-2" size={20} />
                 Afspraak Maken
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -185,6 +186,15 @@ export default function InmeetservicePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Request Form Section */}
+      <section id="aanvraag-formulier" className="py-20 bg-slate-50 scroll-mt-20">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <InmeetserviceForm />
           </div>
         </div>
       </section>
@@ -275,7 +285,7 @@ export default function InmeetservicePage() {
             voor uw ramen en deuren.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/contact?subject=Inmeetservice+aanvragen">
+            <a href="#aanvraag-formulier">
               <Button
                 size="lg"
                 className="bg-kmp-orange hover:bg-kmp-orange/90 text-white min-w-[200px]"
@@ -283,7 +293,7 @@ export default function InmeetservicePage() {
                 <Calendar className="mr-2" size={20} />
                 Afspraak Maken
               </Button>
-            </Link>
+            </a>
             <a href="tel:0643065041" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
               <Phone size={20} />
               <span className="font-semibold">0643065041</span>

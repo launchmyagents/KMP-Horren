@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import {
   Calendar,
   Phone,
@@ -13,6 +14,7 @@ import {
   Search,
   ChevronDown,
   ChevronUp,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -69,6 +71,7 @@ export default function InmeetservicePage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesValue, setNotesValue] = useState("");
+  const [authError, setAuthError] = useState(false);
 
   const fetchRequests = useCallback(async () => {
     try {
@@ -78,8 +81,26 @@ export default function InmeetservicePage() {
         params.set("status", statusFilter);
       }
 
-      const response = await fetch(`/api/admin/inmeetservice?${params.toString()}`);
+      const response = await fetch(`/api/admin/inmeetservice?${params.toString()}`, {
+        credentials: "include", // Include cookies for authentication
+      });
+      
       const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 401 || response.status === 403) {
+          setAuthError(true);
+          toast.error("Niet geautoriseerd. Log opnieuw in als admin.");
+          console.error("Authentication error:", data);
+        } else {
+          toast.error(data.error || "Kon aanvragen niet laden");
+          console.error("API error:", data);
+        }
+        setRequests([]);
+        return;
+      }
+
+      setAuthError(false);
 
       if (data.requests) {
         setRequests(data.requests);
@@ -90,6 +111,7 @@ export default function InmeetservicePage() {
     } catch (error) {
       console.error("Error fetching inmeetservice requests:", error);
       toast.error("Kon aanvragen niet laden");
+      setRequests([]);
     } finally {
       setIsLoading(false);
     }
@@ -104,16 +126,23 @@ export default function InmeetservicePage() {
       const response = await fetch("/api/admin/inmeetservice", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ id, status: newStatus }),
       });
 
       if (!response.ok) {
-        throw new Error("Kon status niet bijwerken");
+        if (response.status === 401) {
+          toast.error("Niet geautoriseerd. Log opnieuw in als admin.");
+        } else {
+          toast.error("Kon status niet bijwerken");
+        }
+        return;
       }
 
       toast.success("Status bijgewerkt");
       fetchRequests();
-    } catch {
+    } catch (error) {
+      console.error("Error updating status:", error);
       toast.error("Kon status niet bijwerken");
     }
   };
@@ -123,17 +152,24 @@ export default function InmeetservicePage() {
       const response = await fetch("/api/admin/inmeetservice", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ id, adminNotes: notesValue }),
       });
 
       if (!response.ok) {
-        throw new Error("Kon notities niet opslaan");
+        if (response.status === 401) {
+          toast.error("Niet geautoriseerd. Log opnieuw in als admin.");
+        } else {
+          toast.error("Kon notities niet opslaan");
+        }
+        return;
       }
 
       toast.success("Notities opgeslagen");
       setEditingNotes(null);
       fetchRequests();
-    } catch {
+    } catch (error) {
+      console.error("Error saving notes:", error);
       toast.error("Kon notities niet opslaan");
     }
   };
@@ -177,6 +213,29 @@ export default function InmeetservicePage() {
         </p>
       </div>
 
+      {/* Auth Error Banner */}
+      {authError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-6">
+          <div className="flex items-start gap-4">
+            <AlertCircle className="w-6 h-6 text-red-600 shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="font-semibold text-red-900 mb-2">
+                Authenticatie vereist
+              </h3>
+              <p className="text-red-700 mb-4">
+                Je bent niet ingelogd als admin of je sessie is verlopen. Log opnieuw in om
+                de inmeetservice aanvragen te kunnen bekijken.
+              </p>
+              <Link href="/login?redirect=/admin/inmeetservice">
+                <Button className="bg-red-600 hover:bg-red-700 text-white">
+                  Inloggen als admin
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Status Tabs */}
       <div className="flex flex-wrap gap-2">
         {statusOptions.map((option) => (
@@ -216,16 +275,27 @@ export default function InmeetservicePage() {
         <div className="flex items-center justify-center py-12">
           <Loader2 className="w-8 h-8 animate-spin text-kmp-orange" />
         </div>
-      ) : filteredRequests.length === 0 ? (
+      ) : requests.length === 0 && !searchQuery ? (
+        <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
+          <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-gray-600 mb-2">
+            Geen aanvragen gevonden
+          </h3>
+          <p className="text-gray-500 mb-4">
+            Er zijn nog geen inmeetservice aanvragen, of je hebt geen toegang.
+          </p>
+          <p className="text-sm text-gray-400">
+            Controleer of je ingelogd bent als admin en of er aanvragen zijn in de database.
+          </p>
+        </div>
+      ) : filteredRequests.length === 0 && searchQuery ? (
         <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
           <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-gray-600 mb-2">
             Geen aanvragen gevonden
           </h3>
           <p className="text-gray-500">
-            {searchQuery
-              ? "Probeer andere zoektermen"
-              : "Er zijn nog geen inmeetservice aanvragen"}
+            Probeer andere zoektermen
           </p>
         </div>
       ) : (

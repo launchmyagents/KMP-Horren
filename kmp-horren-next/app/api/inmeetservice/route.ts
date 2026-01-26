@@ -10,6 +10,15 @@ import { InsertTables } from "@/lib/supabase/types";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    console.log("Inmeetservice request received:", {
+      hasName: !!body.name,
+      hasEmail: !!body.email,
+      hasPhone: !!body.phone,
+      hasStreet: !!body.street,
+      hasHouseNumber: !!body.houseNumber,
+      hasPostalCode: !!body.postalCode,
+      hasCity: !!body.city,
+    });
 
     const {
       name,
@@ -42,6 +51,15 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createAdminClient();
+    
+    // Check if admin client is properly initialized
+    if (!supabase) {
+      console.error("Supabase admin client is not initialized");
+      return NextResponse.json(
+        { error: "Database verbinding niet beschikbaar" },
+        { status: 500 }
+      );
+    }
 
     // Prepare request data for database
     const requestData: InsertTables<"inmeetservice_requests"> = {
@@ -58,6 +76,11 @@ export async function POST(request: NextRequest) {
       status: "pending",
     };
 
+    console.log("Attempting to insert request:", {
+      ...requestData,
+      email: requestData.email.substring(0, 3) + "***", // Log partial email for privacy
+    });
+
     // Insert request into database
     const { data: savedRequest, error: dbError } = await supabase
       .from("inmeetservice_requests")
@@ -65,15 +88,39 @@ export async function POST(request: NextRequest) {
       .select()
       .single();
 
-    if (dbError || !savedRequest) {
-      console.error("Error saving inmeetservice request:", dbError);
+    if (dbError) {
+      console.error("Error saving inmeetservice request:", {
+        error: dbError,
+        message: dbError.message,
+        details: dbError.details,
+        hint: dbError.hint,
+        code: dbError.code,
+        requestData,
+      });
       return NextResponse.json(
-        { error: "Kon aanvraag niet opslaan" },
+        { 
+          error: "Kon aanvraag niet opslaan",
+          details: dbError.message || "Database error",
+        },
         { status: 500 }
       );
     }
 
-    console.log("Inmeetservice request created:", savedRequest.id);
+    if (!savedRequest) {
+      console.error("No data returned from insert:", { requestData });
+      return NextResponse.json(
+        { error: "Kon aanvraag niet opslaan - geen data teruggekregen" },
+        { status: 500 }
+      );
+    }
+
+    console.log("Inmeetservice request created successfully:", {
+      id: savedRequest.id,
+      name: savedRequest.name,
+      city: savedRequest.city,
+      status: savedRequest.status,
+      createdAt: savedRequest.created_at,
+    });
 
     // Prepare email data
     const emailData = {
@@ -122,9 +169,16 @@ export async function POST(request: NextRequest) {
       message: "Aanvraag succesvol ingediend",
     });
   } catch (error) {
-    console.error("Error creating inmeetservice request:", error);
+    console.error("Error creating inmeetservice request:", {
+      error,
+      message: error instanceof Error ? error.message : "Unknown error",
+      stack: error instanceof Error ? error.stack : undefined,
+    });
     return NextResponse.json(
-      { error: "Er ging iets mis bij het indienen van de aanvraag" },
+      { 
+        error: "Er ging iets mis bij het indienen van de aanvraag",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }
