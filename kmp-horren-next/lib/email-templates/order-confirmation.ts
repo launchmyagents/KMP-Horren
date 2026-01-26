@@ -185,7 +185,7 @@ export function orderConfirmationEmail({ order }: OrderConfirmationProps): strin
     
     <p style="${styles.paragraph}">
       Heb je vragen over je bestelling? Neem gerust contact met ons op via 
-      <a href="mailto:Info@kozijnmontagepartners.nl" style="${styles.link}">Info@kozijnmontagepartners.nl</a> 
+      <a href="mailto:Info@kmphorren.nl" style="${styles.link}">Info@kmphorren.nl</a> 
       of bel ons op <a href="tel:+31643065041" style="${styles.link}">+31 6 43 06 50 41</a>.
     </p>
     

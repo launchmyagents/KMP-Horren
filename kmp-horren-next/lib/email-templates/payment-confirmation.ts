@@ -115,7 +115,7 @@ export function paymentConfirmationEmail({ order }: PaymentConfirmationProps): s
     
     <p style="${styles.paragraph}">
       Heb je vragen? We staan voor je klaar via 
-      <a href="mailto:Info@kozijnmontagepartners.nl" style="${styles.link}">Info@kozijnmontagepartners.nl</a> 
+      <a href="mailto:Info@kmphorren.nl" style="${styles.link}">Info@kmphorren.nl</a> 
       of <a href="tel:+31643065041" style="${styles.link}">+31 6 43 06 50 41</a>.
     </p>
     

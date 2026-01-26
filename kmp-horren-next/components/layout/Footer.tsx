@@ -53,11 +53,11 @@ export function Footer() {
                   <span>+31 6 43 06 50 41</span>
                 </a>
                 <a
-                  href="mailto:Info@kozijnmontagepartners.nl"
+                  href="mailto:Info@kmphorren.nl"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Mail size={16} />
-                  <span>Info@kozijnmontagepartners.nl</span>
+                  <span>Info@kmphorren.nl</span>
                 </a>
               </div>
             </div>

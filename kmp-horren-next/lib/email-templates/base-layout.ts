@@ -124,7 +124,7 @@ export function baseLayout({ previewText, children }: BaseLayoutProps): string {
                     <p style="margin: 0 0 10px 0; font-size: 13px; color: #94a3b8;">
                       <a href="tel:+31643065041" style="color: #94a3b8; text-decoration: none;">+31 6 43 06 50 41</a>
                       &nbsp;|&nbsp;
-                      <a href="mailto:Info@kozijnmontagepartners.nl" style="color: #94a3b8; text-decoration: none;">Info@kozijnmontagepartners.nl</a>
+                      <a href="mailto:Info@kmphorren.nl" style="color: #94a3b8; text-decoration: none;">Info@kmphorren.nl</a>
                     </p>
                     <p style="margin: 20px 0 0 0; font-size: 12px; color: #cbd5e1;">
                       <a href="https://kmp-horren.nl" style="color: ${KMP_ORANGE}; text-decoration: none;">Website</a>

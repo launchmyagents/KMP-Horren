@@ -48,7 +48,7 @@ export const Contact: React.FC = () => {
                                  </li>
                                  <li className="flex items-start gap-3">
                                      <span className="font-bold text-kmp-blue min-w-[80px]">Email:</span>
-                                     <a href="mailto:Info@kozijnmontagepartners.nl" className="hover:text-kmp-orange transition-colors">Info@kozijnmontagepartners.nl</a>
+                                     <a href="mailto:Info@kmphorren.nl" className="hover:text-kmp-orange transition-colors">Info@kmphorren.nl</a>
                                  </li>
                                  <li className="flex items-start gap-3">
                                      <span className="font-bold text-kmp-blue min-w-[80px]">KVK:</span>

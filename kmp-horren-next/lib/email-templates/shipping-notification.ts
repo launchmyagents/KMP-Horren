@@ -166,7 +166,7 @@ export function shippingNotificationEmail({
     
     <p style="${styles.paragraph}">
       Vragen over je levering? Neem contact op via 
-      <a href="mailto:Info@kozijnmontagepartners.nl" style="${styles.link}">Info@kozijnmontagepartners.nl</a> 
+      <a href="mailto:Info@kmphorren.nl" style="${styles.link}">Info@kmphorren.nl</a> 
       of <a href="tel:+31643065041" style="${styles.link}">+31 6 43 06 50 41</a>.
     </p>
     
@@ -237,7 +237,7 @@ export function deliveredNotificationEmail({ order }: { order: Order }): string 
     
     <p style="${styles.paragraph}">
       Niet tevreden of schade geconstateerd? Neem binnen 14 dagen contact met ons op via 
-      <a href="mailto:Info@kozijnmontagepartners.nl" style="${styles.link}">Info@kozijnmontagepartners.nl</a>.
+      <a href="mailto:Info@kmphorren.nl" style="${styles.link}">Info@kmphorren.nl</a>.
     </p>
     
     <p style="${styles.paragraph}">

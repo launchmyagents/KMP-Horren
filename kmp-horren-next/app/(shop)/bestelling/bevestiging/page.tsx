@@ -201,11 +201,11 @@ function OrderConfirmationContent() {
                 <span>+31 6 43 06 50 41</span>
               </a>
               <a
-                href="mailto:Info@kozijnmontagepartners.nl"
+                href="mailto:Info@kmphorren.nl"
                 className="flex items-center gap-2 text-gray-600 hover:text-kmp-orange transition-colors"
               >
                 <Mail className="w-5 h-5" />
-                <span>Info@kozijnmontagepartners.nl</span>
+                <span>Info@kmphorren.nl</span>
               </a>
             </div>
           </motion.div>

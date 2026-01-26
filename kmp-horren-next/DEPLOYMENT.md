@@ -70,8 +70,8 @@ Ga naar je project in Railway → **Variables** tab en voeg de volgende variabel
 | `STRIPE_SECRET_KEY` | Stripe secret API key | `sk_live_xxx...` |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | `whsec_xxx...` |
 | `RESEND_API_KEY` | Resend API key | `re_xxx...` |
-| `EMAIL_FROM` | Afzender e-mailadres | `info@kozijnmontagepartners.nl` |
-| `ADMIN_EMAIL` | Admin notificatie e-mail | `info@kozijnmontagepartners.nl` |
+| `EMAIL_FROM` | Afzender e-mailadres | `info@kmphorren.nl` |
+| `ADMIN_EMAIL` | Admin notificatie e-mail | `info@kmphorren.nl` |
 | `NEXT_PUBLIC_APP_URL` | Publieke URL van je app | `https://kmp-horren.nl` |
 
 ### Optionele Variabelen

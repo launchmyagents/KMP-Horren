@@ -18,7 +18,7 @@ export const getResendClient = () => {
 };
 
 // Default sender email
-export const EMAIL_FROM = process.env.EMAIL_FROM || "KMP Horren <Info@kozijnmontagepartners.nl>";
+export const EMAIL_FROM = process.env.EMAIL_FROM || "KMP Horren <Info@kmphorren.nl>";
 
 // Email sending helper with fallback to console logging
 interface SendEmailOptions {
@@ -85,7 +85,7 @@ export async function sendAdminNotification(
   html: string,
   replyTo?: string
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  const adminEmail = process.env.ADMIN_EMAIL || "Info@kozijnmontagepartners.nl";
+  const adminEmail = process.env.ADMIN_EMAIL || "Info@kmphorren.nl";
   
   return sendEmail({
     to: adminEmail,

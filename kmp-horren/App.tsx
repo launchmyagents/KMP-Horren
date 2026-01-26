@@ -113,7 +113,7 @@ const Footer = () => (
                     </li>
                     <li className="flex items-start gap-3">
                          <span className="text-white font-bold min-w-[60px]">Email:</span> 
-                         <span>Info@kozijnmontagepartners.nl</span>
+                         <span>Info@kmphorren.nl</span>
                     </li>
                     <li className="flex items-start gap-3">
                          <span className="text-white font-bold min-w-[60px]">Adres:</span> 
