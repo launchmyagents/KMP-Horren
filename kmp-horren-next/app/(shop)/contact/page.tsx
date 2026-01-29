@@ -217,15 +217,22 @@ export default function ContactPage() {
                           <SelectItem value="Vraag over bestelling">
                             Vraag over bestelling
                           </SelectItem>
-                          <SelectItem value="Inmeetservice aanvragen">
-                            Inmeetservice aanvragen
-                          </SelectItem>
                           <SelectItem value="Garantie / Reparatie">
                             Garantie / Reparatie
                           </SelectItem>
                           <SelectItem value="Overig">Overig</SelectItem>
                         </SelectContent>
                       </Select>
+                      <p className="text-sm text-slate-500 mt-2">
+                        Wilt u een inmeetafspraak? Gebruik ons{" "}
+                        <Link
+                          href="/inmeetservice#aanvraag-formulier"
+                          className="text-kmp-orange font-medium hover:underline"
+                        >
+                          inmeetservice-formulier
+                        </Link>
+                        .
+                      </p>
                     </div>
 
                     <div className="space-y-2">
