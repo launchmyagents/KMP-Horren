@@ -84,7 +84,16 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Update product with new image URL (only for main image)
+    // For new product (productId === "new"), product doesn't exist yet - just return imageUrl.
+    // The frontend stores it in form state and will save it when creating the product.
+    if (productId === "new") {
+      return NextResponse.json({
+        message: "Afbeelding geüpload",
+        imageUrl,
+      });
+    }
+
+    // Update existing product with new image URL (main image)
     const updatedProduct = await updateProduct(productId, {
       image_url: imageUrl,
     });
