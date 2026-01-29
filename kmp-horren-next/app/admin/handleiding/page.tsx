@@ -14,7 +14,6 @@ import {
   Info,
   ArrowRight,
 } from "lucide-react";
-import Link from "next/link";
 
 export default function HandleidingPage() {
   return (
@@ -155,7 +154,7 @@ export default function HandleidingPage() {
             </h3>
             <p>
               Onderaan het dashboard ziet u de laatste 5 bestellingen. Klik op
-              "Alle bestellingen" om naar de volledige lijst te gaan.
+              &quot;Alle bestellingen&quot; om naar de volledige lijst te gaan.
             </p>
           </div>
         </div>
@@ -254,7 +253,7 @@ export default function HandleidingPage() {
                     Update de status regelmatig zodat klanten op de hoogte blijven
                   </li>
                   <li>
-                    Controleer betalingen voordat u de status naar "Betaald" zet
+                    Controleer betalingen voordat u de status naar &quot;Betaald&quot; zet
                   </li>
                   <li>
                     Gebruik notities om belangrijke informatie vast te leggen
@@ -348,7 +347,7 @@ export default function HandleidingPage() {
               Nieuw product toevoegen
             </h3>
             <p className="mb-2">
-              Klik op "Nieuw product" om een product toe te voegen:
+              Klik op &quot;Nieuw product&quot; om een product toe te voegen:
             </p>
             <ul className="list-disc list-inside space-y-1 ml-4">
               <li>Vul productnaam en beschrijving in</li>
@@ -416,7 +415,7 @@ export default function HandleidingPage() {
               Kortingscode aanmaken
             </h3>
             <ul className="list-disc list-inside space-y-1 ml-4">
-              <li>Kies een unieke code (bijv. "WELKOM10")</li>
+              <li>Kies een unieke code (bijv. &quot;WELKOM10&quot;)</li>
               <li>Stel kortingspercentage of vast bedrag in</li>
               <li>Bepaal minimale bestelwaarde (optioneel)</li>
               <li>Stel geldigheidsperiode in</li>
@@ -579,7 +578,7 @@ export default function HandleidingPage() {
             </h3>
             <p className="text-gray-700">
               Ga naar de bestellingen pagina, klik op de bestelling en wijzig de
-              status naar "Geannuleerd". De klant ontvangt automatisch een
+              status naar &quot;Geannuleerd&quot;. De klant ontvangt automatisch een
               melding.
             </p>
           </div>

@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Link from "next/link";
 import Image from "next/image";
 import { Check, Ruler, Users, Calendar, Phone, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
