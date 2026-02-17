@@ -11,6 +11,9 @@ import { Product } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
+// Revalidate every 60 seconds so admin product updates (e.g. min_price) are reflected
+export const revalidate = 60;
+
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
