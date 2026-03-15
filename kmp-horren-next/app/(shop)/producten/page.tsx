@@ -7,6 +7,8 @@ import { getProductsByType as getDbProductsByType } from "@/lib/supabase/databas
 import { ProductsBreadcrumb, ProductListSchema } from "@/components/seo";
 import { Product } from "@/types";
 
+export const revalidate = 60;
+
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {

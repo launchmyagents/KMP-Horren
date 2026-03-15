@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/admin-auth";
-import { uploadProductImage, updateProduct } from "@/lib/supabase/database";
+import { uploadProductImage, updateProduct, getProductById } from "@/lib/supabase/database";
 
 // POST upload product image
 export async function POST(request: NextRequest) {
@@ -104,6 +105,10 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    revalidatePath("/producten");
+    revalidatePath(`/producten/${updatedProduct.slug}`);
+    revalidatePath("/");
 
     return NextResponse.json({
       message: "Afbeelding geüpload",

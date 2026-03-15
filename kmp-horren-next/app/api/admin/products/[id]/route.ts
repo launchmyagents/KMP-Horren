@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { getProductById, updateProduct, deleteProduct } from "@/lib/supabase/database";
 
@@ -70,6 +71,10 @@ export async function PUT(
       );
     }
 
+    revalidatePath("/producten");
+    revalidatePath(`/producten/${product.slug}`);
+    revalidatePath("/");
+
     return NextResponse.json({
       message: "Product bijgewerkt",
       product,
@@ -100,6 +105,7 @@ export async function DELETE(
       );
     }
 
+    const product = await getProductById(id);
     const success = await deleteProduct(id);
 
     if (!success) {
@@ -108,6 +114,12 @@ export async function DELETE(
         { status: 500 }
       );
     }
+
+    revalidatePath("/producten");
+    if (product) {
+      revalidatePath(`/producten/${product.slug}`);
+    }
+    revalidatePath("/");
 
     return NextResponse.json({
       message: "Product verwijderd",

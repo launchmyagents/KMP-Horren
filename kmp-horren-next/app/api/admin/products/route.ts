@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/supabase/admin-auth";
 import { getAllProducts, createProduct } from "@/lib/supabase/database";
 import { PRODUCTS } from "@/data/products";
@@ -120,6 +121,10 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    revalidatePath("/producten");
+    revalidatePath(`/producten/${product.slug}`);
+    revalidatePath("/");
 
     return NextResponse.json({
       message: "Product aangemaakt",
