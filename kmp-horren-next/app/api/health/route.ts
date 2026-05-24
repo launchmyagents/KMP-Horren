@@ -89,13 +89,9 @@ export async function GET() {
   const [seconds, nanoseconds] = process.hrtime(startTime);
   const responseTimeMs = (seconds * 1000 + nanoseconds / 1e6).toFixed(2);
 
-  // Return appropriate status code
-  let statusCode = 200;
-  if (healthStatus.status === "unhealthy") {
-    statusCode = 503;
-  } else if (healthStatus.status === "degraded") {
-    statusCode = 200; // Still return 200 for degraded to prevent restarts
-  }
+  // Always return 200 — Railway healthcheck only checks HTTP status.
+  // Unhealthy/degraded state is visible in the response body.
+  const statusCode = 200;
 
   return NextResponse.json(
     {
