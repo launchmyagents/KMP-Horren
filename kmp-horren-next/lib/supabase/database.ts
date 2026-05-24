@@ -156,7 +156,7 @@ export async function getProductBySlug(slug: string): Promise<DbProduct | null> 
     .select("*")
     .eq("slug", slug)
     .eq("is_active", true)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Error fetching product:", error);
@@ -210,7 +210,7 @@ export async function getProductById(productId: string): Promise<DbProduct | nul
     .from("products")
     .select("*")
     .eq("id", productId)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error("Error fetching product by id:", error);
