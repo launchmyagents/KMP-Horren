@@ -22,4 +22,4 @@ next = ".next/cache"
 
 # Start command
 [start]
-cmd = "npm run start"
+cmd = "node .next/standalone/server.js"

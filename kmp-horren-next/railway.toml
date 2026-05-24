@@ -9,8 +9,8 @@ builder = "nixpacks"
 buildCommand = "npm ci && npm run build"
 
 [deploy]
-# Start command - Next.js production server
-startCommand = "npm run start"
+# Standalone output requires running server.js directly (next start is incompatible)
+startCommand = "cd kmp-horren-next && node .next/standalone/server.js"
 
 # Number of replicas (adjust based on traffic)
 numReplicas = 1
