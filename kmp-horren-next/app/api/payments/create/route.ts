@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getStripe, formatAmountForStripe, mapPaymentMethodToStripe } from "@/lib/stripe";
+import { BASE_URL } from "@/lib/seo-config";
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,15 +15,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
-
     // Check if Stripe is configured
     if (!process.env.STRIPE_SECRET_KEY) {
       console.log("Stripe not configured, returning demo checkout URL");
       // Return demo URL for development
       return NextResponse.json({
         id: `demo_${orderId}`,
-        checkoutUrl: `${appUrl}/bestelling/bevestiging?order=${orderNumber}&demo=true`,
+        checkoutUrl: `${BASE_URL}/bestelling/bevestiging?order=${orderNumber}&demo=true`,
         status: "open",
       });
     }
@@ -54,8 +53,8 @@ export async function POST(request: NextRequest) {
             quantity: 1,
           },
         ],
-        success_url: `${appUrl}/bestelling/bevestiging?order=${orderNumber}&session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${appUrl}/checkout?cancelled=true`,
+        success_url: `${BASE_URL}/bestelling/bevestiging?order=${orderNumber}&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${BASE_URL}/checkout?cancelled=true`,
         locale: "nl",
         // Expiration time: 30 minutes
         expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest) {
       // Fallback to demo mode if Stripe fails
       return NextResponse.json({
         id: `fallback_${orderId}`,
-        checkoutUrl: `${appUrl}/bestelling/bevestiging?order=${orderNumber}&demo=true`,
+        checkoutUrl: `${BASE_URL}/bestelling/bevestiging?order=${orderNumber}&demo=true`,
         status: "open",
       });
     }
