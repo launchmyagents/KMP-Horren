@@ -5,7 +5,7 @@ import { FAQS } from "@/data/faqs";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Veelgestelde Vragen (FAQ) - KMP Horren",
+  title: "Veelgestelde Vragen (FAQ)",
   description:
     "Antwoorden op veelgestelde vragen over horren, meten, monteren, bestellen en garantie. Vind snel het antwoord op uw vraag bij KMP Horren.",
   keywords: [
