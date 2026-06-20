@@ -8,7 +8,7 @@ import { AboutBreadcrumb, OrganizationSchema } from "@/components/seo";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Over Ons - KMP Horren | Al 20+ Jaar Specialist in Maatwerk Horren",
+  title: "Over Ons | Al 20+ Jaar Specialist in Maatwerk Horren",
   description:
     "Leer meer over KMP Horren - De specialist in maatwerk insectenwering uit Nederland. ✓ Eigen fabriek ✓ Nederlands vakmanschap ✓ Persoonlijke service",
   keywords: [

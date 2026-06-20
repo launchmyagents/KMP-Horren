@@ -5,7 +5,7 @@ import { OrganizationSchema, LocalBusinessSchema, HomeBreadcrumb } from "@/compo
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "KMP Horren - Maatwerk Horren voor elk Raam en Deur",
+  title: "Maatwerk Horren voor elk Raam en Deur",
   description:
     "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat. Gemaakt in onze eigen Nederlandse fabriek. ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie",
   keywords: [

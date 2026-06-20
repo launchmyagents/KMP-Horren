@@ -8,7 +8,7 @@ import { InmeetserviceForm } from "@/components/inmeetservice";
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Inmeetservice - KMP Horren | Professionele Metingen voor Perfecte Horren",
+  title: "Inmeetservice | Professionele Metingen voor Perfecte Horren",
   description:
     "Professionele inmeetservice voor perfecte horren. Onze ervaren specialisten zorgen voor nauwkeurige metingen bij u thuis. ✓ Ervaren specialisten ✓ Perfecte pasvorm ✓ Door heel Nederland",
   keywords: [
