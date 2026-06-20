@@ -56,7 +56,7 @@ export function CategoriesSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
             >
-              <Link href={`/producten?type=${category.slug}`} className="group block">
+              <Link href={`/producten/${category.slug}`} className="group block">
                 <div className="relative overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 transition-all duration-300 group-hover:shadow-2xl group-hover:border-kmp-orange/30">
                   {/* Image */}
                   <div className="aspect-[16/9] overflow-hidden relative">
