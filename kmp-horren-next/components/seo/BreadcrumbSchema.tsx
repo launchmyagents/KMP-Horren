@@ -64,6 +64,24 @@ export function ProductDetailBreadcrumb({
   );
 }
 
+export function CategoryBreadcrumb({
+  categoryName,
+  categorySlug,
+}: {
+  categoryName: string;
+  categorySlug: string;
+}) {
+  return (
+    <BreadcrumbSchema
+      items={[
+        { name: "Home", url: "/" },
+        { name: "Producten", url: "/producten" },
+        { name: categoryName, url: `/producten/${categorySlug}` },
+      ]}
+    />
+  );
+}
+
 export function ContactBreadcrumb() {
   return (
     <BreadcrumbSchema
