@@ -1,5 +1,6 @@
 import { JsonLd } from "./JsonLd";
 import { FAQ } from "@/data/faqs";
+import { BASE_URL } from "@/lib/seo-config";
 
 interface FAQSchemaProps {
   faqs: FAQ[];
@@ -34,8 +35,6 @@ export function FAQPageSchema({
   title = "Veelgestelde Vragen - KMP Horren",
   description = "Antwoorden op veelgestelde vragen over horren, meten, monteren, bestellen en garantie bij KMP Horren.",
 }: FAQPageSchemaProps) {
-  const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
-
   const pageData = {
     "@context": "https://schema.org",
     "@type": "WebPage",

@@ -8,8 +8,7 @@ import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
 import { ProductImageGallery } from "@/components/products";
 import { Product } from "@/types";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 // Revalidate every 60 seconds so admin product updates (e.g. min_price) are reflected
 export const revalidate = 60;

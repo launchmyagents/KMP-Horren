@@ -4,8 +4,7 @@ import Link from "next/link";
 import { Award, Users, Factory, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AboutBreadcrumb, OrganizationSchema } from "@/components/seo";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title: "Over Ons - KMP Horren | Al 20+ Jaar Specialist in Maatwerk Horren",

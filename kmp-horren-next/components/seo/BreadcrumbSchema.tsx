@@ -1,6 +1,5 @@
 import { JsonLd } from "./JsonLd";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 interface BreadcrumbItem {
   name: string;

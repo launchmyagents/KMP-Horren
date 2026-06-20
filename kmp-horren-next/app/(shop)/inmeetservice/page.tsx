@@ -4,8 +4,7 @@ import { Check, Ruler, Users, Calendar, Phone, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { InmeetserviceBreadcrumb } from "@/components/seo";
 import { InmeetserviceForm } from "@/components/inmeetservice";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title: "Inmeetservice - KMP Horren | Professionele Metingen voor Perfecte Horren",
