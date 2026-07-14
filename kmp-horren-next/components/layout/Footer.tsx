@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
 
 const footerNavigation = {
   producten: [
@@ -45,13 +46,13 @@ export function Footer() {
                 Nederlandse bodem, direct geleverd uit eigen fabriek.
               </p>
               <div className="space-y-3">
-                <a
+                <TrackedTelLink
                   href="tel:+31643065041"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Phone size={16} />
                   <span>+31 6 43 06 50 41</span>
-                </a>
+                </TrackedTelLink>
                 <a
                   href="mailto:Info@kmphorren.nl"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"

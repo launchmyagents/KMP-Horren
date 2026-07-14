@@ -6,6 +6,7 @@ import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getFAQsByCategory } from "@/data/faqs";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 
 export default function FAQPage() {
   const [openIndex, setOpenIndex] = useState<string | null>("0-0");
@@ -99,7 +100,10 @@ export default function FAQPage() {
                 Contact Opnemen
               </Button>
             </Link>
-            <a href="tel:+31643065041">
+            <a
+              href="tel:+31643065041"
+              onClick={() => trackEvent("tel_click", { link_url: "tel:+31643065041" })}
+            >
               <Button variant="outline">
                 Bel +31 6 43 06 50 41
               </Button>

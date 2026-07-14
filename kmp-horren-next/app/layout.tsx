@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { GtagScript } from "@/components/analytics/GtagScript";
+import { CookieBanner } from "@/components/consent/CookieBanner";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
@@ -114,6 +116,8 @@ export default function RootLayout({
       <body className={`${archivo.variable} font-sans antialiased`}>
         {children}
         <Toaster />
+        <CookieBanner />
+        <GtagScript />
       </body>
     </html>
   );

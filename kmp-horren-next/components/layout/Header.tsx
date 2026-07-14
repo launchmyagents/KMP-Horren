@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 import {
   Menu,
   X,
@@ -66,6 +67,7 @@ export function Header() {
           </div>
           <a
             href="tel:+31643065041"
+            onClick={() => trackEvent("tel_click", { link_url: "tel:+31643065041" })}
             className="flex items-center gap-2 hover:text-kmp-orange transition-colors"
           >
             <Phone size={14} />

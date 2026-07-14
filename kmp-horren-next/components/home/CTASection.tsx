@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { trackEvent } from "@/lib/analytics";
 
 export function CTASection() {
   return (
@@ -46,7 +47,10 @@ export function CTASection() {
                 <ArrowRight className="ml-2" size={20} />
               </Button>
             </Link>
-            <a href="tel:+31643065041">
+            <a
+              href="tel:+31643065041"
+              onClick={() => trackEvent("tel_click", { link_url: "tel:+31643065041" })}
+            >
               <Button
                 variant="outline"
                 size="lg"
