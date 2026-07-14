@@ -65,16 +65,25 @@ const nextConfig = {
     ],
   },
 
-  // Single-threaded compilation: the parallel build workers were
-  // getting OOM-killed on Railway's build server, which webpack then
-  // misreports as random "Module not found" errors for files that do
-  // exist. This trades some build speed for reliability under memory
-  // constraints. See: https://nextjs.org/docs/messages/webpack5
-  webpack: (config) => {
+  // Build reliability on Railway: three consecutive Railway builds each
+  // reported spurious "Module not found" for a DIFFERENT-but-consistent
+  // set of files that verifiably exist in the repo (correct casing,
+  // correct imports, git-tracked). The log line
+  // "[webpack.cache.PackFileCacheStrategy] Serializing big strings ...
+  // impacts deserialization performance" right before each failure
+  // points at webpack's persistent filesystem cache getting corrupted
+  // during serialization on Railway's build server. Disabling that
+  // cache for production builds removes the corruption source at the
+  // cost of slightly slower (but reliable) builds. Single-threaded
+  // compilation (config.parallelism = 1) is kept as a secondary
+  // safeguard against build-worker memory pressure.
+  webpack: (config, { dev }) => {
     config.parallelism = 1;
+    if (!dev) {
+      config.cache = false;
+    }
     return config;
   },
-  cpus: 1,
   
   // ===========================================
   // LOGGING
