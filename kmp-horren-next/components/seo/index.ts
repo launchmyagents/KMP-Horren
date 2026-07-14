@@ -13,6 +13,7 @@ export {
   HomeBreadcrumb,
   ProductsBreadcrumb,
   ProductDetailBreadcrumb,
+  CategoryBreadcrumb,
   ContactBreadcrumb,
   FAQBreadcrumb,
   AboutBreadcrumb,
