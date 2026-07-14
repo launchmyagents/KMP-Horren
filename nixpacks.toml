@@ -10,7 +10,7 @@ nixPkgs = ["nodejs_20"]
 cmds = ["cd kmp-horren-next && npm ci"]
 
 [phases.build]
-cmds = ["cd kmp-horren-next && npm run build"]
+cmds = ["cd kmp-horren-next && NODE_OPTIONS='--max-old-space-size=4096' npm run build"]
 
 [start]
 cmd = "cd kmp-horren-next && npm run start"

@@ -64,6 +64,17 @@ const nextConfig = {
       "@radix-ui/react-select",
     ],
   },
+
+  // Single-threaded compilation: the parallel build workers were
+  // getting OOM-killed on Railway's build server, which webpack then
+  // misreports as random "Module not found" errors for files that do
+  // exist. This trades some build speed for reliability under memory
+  // constraints. See: https://nextjs.org/docs/messages/webpack5
+  webpack: (config) => {
+    config.parallelism = 1;
+    return config;
+  },
+  cpus: 1,
   
   // ===========================================
   // LOGGING
