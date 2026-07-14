@@ -82,9 +82,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add your verification codes when available
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: "wz7wjN7TLuBsDyYT86zdtwxJFJjPmWossW_Gl2enbr0",
   },
   category: "e-commerce",
 };
