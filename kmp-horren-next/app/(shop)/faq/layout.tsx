@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { FAQBreadcrumb, FAQPageSchema } from "@/components/seo";
 import { FAQS } from "@/data/faqs";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title: "Veelgestelde Vragen (FAQ)",

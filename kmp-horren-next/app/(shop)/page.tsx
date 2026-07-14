@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { Hero, CategoriesSection, USPSection, CTASection } from "@/components/home";
 import { OrganizationSchema, LocalBusinessSchema, HomeBreadcrumb } from "@/components/seo";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title: "Maatwerk Horren voor elk Raam en Deur",

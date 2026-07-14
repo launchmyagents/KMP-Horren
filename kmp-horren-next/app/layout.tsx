@@ -2,8 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 const archivo = Archivo({
   subsets: ["latin"],
@@ -83,9 +82,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add your verification codes when available
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: "wz7wjN7TLuBsDyYT86zdtwxJFJjPmWossW_Gl2enbr0",
   },
   category: "e-commerce",
 };

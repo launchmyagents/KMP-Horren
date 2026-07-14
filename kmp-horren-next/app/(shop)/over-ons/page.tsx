@@ -4,11 +4,10 @@ import Link from "next/link";
 import { Award, Users, Factory, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AboutBreadcrumb, OrganizationSchema } from "@/components/seo";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
-  title: "Over Ons | Al 20+ Jaar Specialist in Maatwerk Horren",
+  title: "Over Ons | Specialist in Maatwerk Horren",
   description:
     "Leer meer over KMP Horren - De specialist in maatwerk insectenwering uit Nederland. ✓ Eigen fabriek ✓ Nederlands vakmanschap ✓ Persoonlijke service",
   keywords: [
@@ -16,7 +15,6 @@ export const metadata: Metadata = {
     "horren fabriek",
     "nederlands fabricaat",
     "maatwerk horren",
-    "familiebedrijf",
     "insectenwering specialist",
   ],
   alternates: {
@@ -66,7 +64,7 @@ const values = [
   {
     icon: Heart,
     title: "Passie",
-    description: "Met passie en vakmanschap maken wij al meer dan 20 jaar de beste horren.",
+    description: "Met passie en vakmanschap maken wij maatwerk horren van Nederlandse kwaliteit.",
   },
 ];
 
@@ -83,8 +81,8 @@ export default function OverOnsPage() {
             Over KMP Horren
           </h1>
           <p className="text-xl text-slate-300 max-w-2xl">
-            De specialist in maatwerk insectenwering. 
-            Een familiebedrijf met passie voor kwaliteit en vakmanschap.
+            De specialist in maatwerk insectenwering.
+            Sinds 2017 actief in kunststof kozijnen en horren op maat.
           </p>
         </div>
       </section>
@@ -102,21 +100,21 @@ export default function OverOnsPage() {
                   Ons verhaal begint met een passie voor perfect afgewerkte woningen. Niet alleen met mooie kozijnen, maar met alles wat bijdraagt aan comfort, uitstraling en gebruiksgemak. Vanuit diezelfde passie zijn wij ons steeds verder gaan specialiseren in het fabriceren en monteren van hoogwaardige insectenhorren.
                 </p>
                 <p>
-                  Met jarenlange ervaring in de montagewereld weten we als geen ander hoe belangrijk maatwerk is. Geen raam is hetzelfde, geen situatie identiek. Daarom produceren wij onze horren volledig op maat, met oog voor detail, duurzaamheid en een strakke afwerking die naadloos aansluit op het kozijn. Of het nu gaat om nieuwbouw of renovatie — wij zorgen ervoor dat alles klopt.
+                  Met jarenlange ervaring in de montagewereld weten we als geen ander hoe belangrijk maatwerk is. Geen raam is hetzelfde, geen situatie identiek. Daarom produceren wij onze horren volledig op maat, met oog voor detail, duurzaamheid en een strakke afwerking die naadloos aansluit op het kozijn. Of het nu gaat om nieuwbouw of renovatie, wij zorgen ervoor dat alles klopt.
                 </p>
                 <p>
-                  Bij Kozijn Montage Partners geloven we dat kwaliteit zit in de combinatie van vakmanschap en betrouwbaarheid. We begeleiden het volledige traject: van inmeten en adviseren tot het vakkundig monteren van de horren. Onze monteurs werken nauwkeurig, netjes en met respect voor de woning van de klant.
+                  Bij KMP Horren geloven we dat kwaliteit zit in de combinatie van vakmanschap en betrouwbaarheid. We begeleiden het volledige traject: van inmeten en adviseren tot het vakkundig monteren van de horren. Onze monteurs werken nauwkeurig, netjes en met respect voor de woning van de klant.
                 </p>
                 <p>
                   Wat ons onderscheidt, is onze manier van samenwerken. We denken mee, communiceren helder en doen wat we beloven. Geen standaardoplossingen, maar maatwerk dat past bij de woning én bij de wensen van de bewoner. Zo leveren we niet alleen perfect functionerende insectenhorren, maar ook rust, comfort en jarenlang woonplezier.
                 </p>
                 <p>
-                  Bij Kozijn Montage Partners bouwen we niet alleen aan producten — we bouwen aan duurzame relaties en oplossingen waar u op kunt vertrouwen.
+                  Bij KMP Horren bouwen we niet alleen aan producten. We bouwen aan duurzame relaties en oplossingen waar u op kunt vertrouwen.
                 </p>
               </div>
               <div className="mt-8 flex gap-8">
                 <div>
-                  <div className="text-4xl font-black text-kmp-orange">10+</div>
+                  <div className="text-4xl font-black text-kmp-orange">9+</div>
                   <div className="text-sm text-slate-500 uppercase font-semibold">Jaar ervaring</div>
                 </div>
                 <div>
