@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { InmeetserviceBreadcrumb } from "@/components/seo";
 import { InmeetserviceForm } from "@/components/inmeetservice";
 import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
   title: "Inmeetservice - KMP Horren | Professionele Metingen voor Perfecte Horren",

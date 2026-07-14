@@ -1,6 +1,5 @@
 import { JsonLd } from "./JsonLd";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 interface BreadcrumbItem {
   name: string;
@@ -59,6 +58,24 @@ export function ProductDetailBreadcrumb({
         { name: "Home", url: "/" },
         { name: "Producten", url: "/producten" },
         { name: productName, url: `/producten/${productSlug}` },
+      ]}
+    />
+  );
+}
+
+export function CategoryBreadcrumb({
+  categoryName,
+  categorySlug,
+}: {
+  categoryName: string;
+  categorySlug: string;
+}) {
+  return (
+    <BreadcrumbSchema
+      items={[
+        { name: "Home", url: "/" },
+        { name: "Producten", url: "/producten" },
+        { name: categoryName, url: `/producten/${categorySlug}` },
       ]}
     />
   );

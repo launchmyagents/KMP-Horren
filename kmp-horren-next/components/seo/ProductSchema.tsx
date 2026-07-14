@@ -1,7 +1,6 @@
 import { JsonLd } from "./JsonLd";
 import { Product } from "@/types";
-
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
+import { BASE_URL } from "@/lib/seo-config";
 
 interface ProductSchemaProps {
   product: Product;
