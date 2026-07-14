@@ -4,6 +4,7 @@ import { Check, Ruler, Users, Calendar, Phone, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button";
 import { InmeetserviceBreadcrumb } from "@/components/seo";
 import { InmeetserviceForm } from "@/components/inmeetservice";
+import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
 import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
@@ -292,10 +293,10 @@ export default function InmeetservicePage() {
                 Afspraak Maken
               </Button>
             </a>
-            <a href="tel:0643065041" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
+            <TrackedTelLink href="tel:0643065041" className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors">
               <Phone size={20} />
               <span className="font-semibold">0643065041</span>
-            </a>
+            </TrackedTelLink>
           </div>
         </div>
       </section>

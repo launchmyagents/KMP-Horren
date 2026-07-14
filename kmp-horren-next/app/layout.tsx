@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Archivo } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { GtagScript } from "@/components/analytics/GtagScript";
+import { CookieBanner } from "@/components/consent/CookieBanner";
 import { BASE_URL } from "@/lib/seo-config";
 
 const archivo = Archivo({
@@ -111,6 +113,8 @@ export default function RootLayout({
       <body className={`${archivo.variable} font-sans antialiased`}>
         {children}
         <Toaster />
+        <CookieBanner />
+        <GtagScript />
       </body>
     </html>
   );

@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -46,6 +47,7 @@ export default function ContactPage() {
       }
 
       setSubmitted(true);
+      trackEvent("contact_form_submit", { form_name: "contact" });
       toast.success("Bericht verzonden!");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Er ging iets mis bij het verzenden");
@@ -95,6 +97,7 @@ export default function ContactPage() {
                   <span className="font-bold text-kmp-blue min-w-[80px]">Tel:</span>
                   <a
                     href="tel:+31643065041"
+                    onClick={() => trackEvent("tel_click", { link_url: "tel:+31643065041" })}
                     className="hover:text-kmp-orange transition-colors"
                   >
                     +31 6 43 06 50 41

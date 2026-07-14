@@ -15,6 +15,7 @@ import {
   Clock,
   Loader2,
 } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 function OrderConfirmationContent() {
   const searchParams = useSearchParams();
@@ -27,6 +28,18 @@ function OrderConfirmationContent() {
     const timer = setTimeout(() => setIsLoading(false), 1500);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (!orderNumber || isDemo) return;
+    // GA4 standard `purchase` event. Value is unknown on this page (only
+    // order_number from URL); operator can enrich via server-side Measurement
+    // Protocol in a follow-up if order totals must be attributed to channels.
+    trackEvent("purchase", {
+      transaction_id: orderNumber,
+      currency: "EUR",
+      value: 0,
+    });
+  }, [orderNumber, isDemo]);
 
   if (isLoading) {
     return (
@@ -195,6 +208,7 @@ function OrderConfirmationContent() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href="tel:+31643065041"
+                onClick={() => trackEvent("tel_click", { link_url: "tel:+31643065041" })}
                 className="flex items-center gap-2 text-gray-600 hover:text-kmp-orange transition-colors"
               >
                 <Phone className="w-5 h-5" />

@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | KMP Horren",
@@ -190,9 +191,9 @@ export default function PrivacyPage() {
                     Info@kmphorren.nl
                   </a>{" "}
                   of bel ons op{" "}
-                  <a href="tel:+31643065041" className="text-kmp-orange hover:underline">
+                  <TrackedTelLink href="tel:+31643065041" className="text-kmp-orange hover:underline">
                     +31 6 43 06 50 41
-                  </a>.
+                  </TrackedTelLink>.
                 </p>
               </div>
             </div>
