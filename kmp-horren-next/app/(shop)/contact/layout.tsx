@@ -3,7 +3,7 @@ import { ContactBreadcrumb } from "@/components/seo";
 import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
-  title: "Contact - Neem Contact Op met KMP Horren",
+  title: "Contact - Neem Contact Op",
   description:
     "Heeft u vragen over onze horren of wilt u advies op maat? Neem contact op met KMP Horren. ✓ Reactie binnen 1 werkdag ✓ Telefonisch bereikbaar ma-vr 08:30-17:00",
   keywords: [

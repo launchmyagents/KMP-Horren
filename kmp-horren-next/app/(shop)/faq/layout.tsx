@@ -4,7 +4,7 @@ import { FAQS } from "@/data/faqs";
 import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
-  title: "Veelgestelde Vragen (FAQ) - KMP Horren",
+  title: "Veelgestelde Vragen (FAQ)",
   description:
     "Antwoorden op veelgestelde vragen over horren, meten, monteren, bestellen en garantie. Vind snel het antwoord op uw vraag bij KMP Horren.",
   keywords: [

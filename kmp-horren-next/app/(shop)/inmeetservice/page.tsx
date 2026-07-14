@@ -7,7 +7,7 @@ import { InmeetserviceForm } from "@/components/inmeetservice";
 import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
-  title: "Inmeetservice - KMP Horren | Professionele Metingen voor Perfecte Horren",
+  title: "Inmeetservice | Professionele Metingen voor Perfecte Horren",
   description:
     "Professionele inmeetservice voor perfecte horren. Onze ervaren specialisten zorgen voor nauwkeurige metingen bij u thuis. ✓ Ervaren specialisten ✓ Perfecte pasvorm ✓ Door heel Nederland",
   keywords: [

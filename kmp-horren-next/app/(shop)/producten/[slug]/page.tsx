@@ -8,6 +8,7 @@ import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
 import { ProductImageGallery } from "@/components/products";
 import { Product } from "@/types";
+import { getProductSeo } from "@/lib/seo-products";
 import { BASE_URL } from "@/lib/seo-config";
 
 // Revalidate every 60 seconds so admin product updates (e.g. min_price) are reflected
@@ -103,10 +104,19 @@ export async function generateMetadata({
   }
 
   const productType = product.type === "WINDOW" ? "Raamhor" : "Deurhor";
+  const seo = getProductSeo(product.slug);
+
+  // Title and description: prefer curated, SEO-targeted copy when mapped;
+  // otherwise fall back to the previous generic "Name - Raamhor/Deurhor op Maat" pattern.
+  // The title intentionally has no "| KMP Horren" suffix — the root layout adds it.
+  const title = seo?.title ?? `${product.name} - ${productType} op Maat`;
+  const description =
+    seo?.description ??
+    `${product.description} Vanaf €${product.minPrice},-. ✓ Op maat gemaakt ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie`;
 
   return {
-    title: `${product.name} - ${productType} op Maat | KMP Horren`,
-    description: `${product.description} Vanaf €${product.minPrice},-. ✓ Op maat gemaakt ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie`,
+    title,
+    description,
     keywords: [
       product.name.toLowerCase(),
       productType.toLowerCase(),
@@ -124,8 +134,8 @@ export async function generateMetadata({
       locale: "nl_NL",
       url: `${BASE_URL}/producten/${product.slug}`,
       siteName: "KMP Horren",
-      title: `${product.name} - ${productType} op Maat`,
-      description: product.description,
+      title,
+      description,
       images: [
         {
           url: product.imageUrl,
@@ -137,8 +147,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: `${product.name} - KMP Horren`,
-      description: product.description,
+      title,
+      description,
       images: [product.imageUrl],
     },
   };
@@ -151,6 +161,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   if (!product) {
     notFound();
   }
+
+  const seo = getProductSeo(product.slug);
+  const heading = seo?.h1 ?? product.name;
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -198,7 +211,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             {/* Product Info */}
             <div>
               <h1 className="text-4xl md:text-5xl font-black text-kmp-blue uppercase tracking-tight mb-4">
-                {product.name}
+                {heading}
               </h1>
               <p className="text-lg text-slate-600 mb-6 leading-relaxed">
                 {product.description}
