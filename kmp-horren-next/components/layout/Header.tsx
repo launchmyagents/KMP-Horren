@@ -12,9 +12,6 @@ import {
   ShoppingCart,
   Phone,
   User,
-  Package,
-  MapPin,
-  Settings,
   LogOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -133,43 +130,6 @@ export function Header() {
                           </p>
                         </div>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/account"
-                            className="flex items-center gap-2"
-                          >
-                            <User className="w-4 h-4" />
-                            Mijn Account
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/account/bestellingen"
-                            className="flex items-center gap-2"
-                          >
-                            <Package className="w-4 h-4" />
-                            Mijn Bestellingen
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/account/adressen"
-                            className="flex items-center gap-2"
-                          >
-                            <MapPin className="w-4 h-4" />
-                            Adresboek
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                          <Link
-                            href="/account/instellingen"
-                            className="flex items-center gap-2"
-                          >
-                            <Settings className="w-4 h-4" />
-                            Instellingen
-                          </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={handleSignOut}
                           className="text-red-600 focus:text-red-600 focus:bg-red-50"
@@ -256,14 +216,6 @@ export function Header() {
               <div className="pt-4 border-t border-slate-200 mt-4">
                 {isAuthenticated ? (
                   <>
-                    <Link
-                      href="/account"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-4 py-3 text-kmp-blue font-semibold hover:bg-slate-50 rounded-lg"
-                    >
-                      <User className="w-5 h-5" />
-                      Mijn Account
-                    </Link>
                     <button
                       onClick={() => {
                         setMobileMenuOpen(false);
