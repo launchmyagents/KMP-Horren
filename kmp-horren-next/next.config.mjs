@@ -94,6 +94,22 @@ const nextConfig = {
     },
   },
   
+  // www -> non-www consolidation (SEO fix #5): kmp-horren.nl is the canonical
+  // host everywhere else (BASE_URL, canonicals, sitemap), but www.kmp-horren.nl
+  // was reachable as a separate 200 instead of redirecting, creating duplicate
+  // content. Host-based redirect requires the `has` matcher; a plain source
+  // rewrite can't distinguish hosts.
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "www.kmp-horren.nl" }],
+        destination: "https://kmp-horren.nl/:path*",
+        permanent: true,
+      },
+    ];
+  },
+
   // Headers for security and caching
   async headers() {
     return [
