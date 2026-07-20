@@ -1,4 +1,5 @@
 import { createClient, createAdminClient } from "./server";
+import { VERDUISTEREND_SLUGS } from "@/data/products";
 import type {
   Profile,
   Address,
@@ -183,11 +184,6 @@ export async function getProductsByType(
   }
   return data || [];
 }
-
-// "Verduisterend" is a marketing category, not a `type` value (the DB
-// constrains type to WINDOW/DOOR) — products in it are still type WINDOW,
-// selected here by slug instead.
-const VERDUISTEREND_SLUGS = ["duo-plisse-hor-verduisterend"];
 
 export async function getVerduisterendProducts(): Promise<DbProduct[]> {
   // Use admin client to bypass RLS

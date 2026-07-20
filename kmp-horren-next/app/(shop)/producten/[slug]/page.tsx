@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Check, Ruler, Palette, Shield } from "lucide-react";
-import { getProductBySlug, PRODUCTS } from "@/data/products";
+import { getProductBySlug, PRODUCTS, VERDUISTEREND_SLUGS } from "@/data/products";
 import { getProductBySlug as getDbProductBySlug, getProducts } from "@/lib/supabase/database";
 import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
@@ -164,6 +164,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const seo = getProductSeo(product.slug);
   const heading = seo?.h1 ?? product.name;
+  const isVerduisterend = VERDUISTEREND_SLUGS.includes(product.slug);
+  const categoryHref = isVerduisterend
+    ? "/producten/verduisterend"
+    : `/producten/${product.type === "WINDOW" ? "raamhorren" : "deurhorren"}`;
+  const categoryLabel = isVerduisterend
+    ? "Verduisterend"
+    : product.type === "WINDOW" ? "Raamhorren" : "Deurhorren";
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -185,10 +192,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Link>
             <ChevronRight size={14} />
             <Link
-              href={`/producten/${product.type === "WINDOW" ? "raamhorren" : "deurhorren"}`}
+              href={categoryHref}
               className="hover:text-kmp-blue transition-colors"
             >
-              {product.type === "WINDOW" ? "Raamhorren" : "Deurhorren"}
+              {categoryLabel}
             </Link>
             <ChevronRight size={14} />
             <span className="text-kmp-blue font-semibold">{product.name}</span>

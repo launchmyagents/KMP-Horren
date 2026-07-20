@@ -41,11 +41,11 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
     h1: "Inzet plissé hor op maat",
   },
 
-  "voorzethor": {
-    title: "Voorzethor op maat | Op het kozijn",
+  "voorzet-plisse-hor": {
+    title: "Voorzet plissé hor op maat | Op het kozijn",
     description:
-      "Voorzethor op maat, geplaatst op het kozijn — dé oplossing bij onvoldoende inbouwdiepte. Vanaf €55. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Voorzethor op maat",
+      "Voorzet plissé hor op maat, geplaatst op het kozijn: dé oplossing bij onvoldoende inbouwdiepte. Vanaf €55. ✓ Maatwerk ✓ 3 jaar garantie",
+    h1: "Voorzet plissé hor op maat",
   },
 
   "plisse-hor-dakraam": {
@@ -71,6 +71,14 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
     h1: "Dubbele plissé hordeur op maat",
   },
 
+  // ---------- VERDUISTEREND ----------
+
+  "duo-plisse-hor-verduisterend": {
+    title: "Duo plissé hor verduisterend | 2-in-1",
+    description:
+      "Duo plissé hor verduisterend op maat: een verduisterend deel en een insectenhor in één frame, onafhankelijk bedienbaar. Vanaf €250. ✓ Maatwerk ✓ 3 jaar garantie",
+    h1: "Duo plissé hor verduisterend op maat",
+  },
 };
 
 export function getProductSeo(slug: string): ProductSeo | undefined {

@@ -53,26 +53,26 @@ export const PRODUCTS: Product[] = [
     sortOrder: 2,
   },
   {
-    id: "voorzethor",
-    name: "Voorzethor",
-    slug: "voorzethor",
+    id: "voorzet-plisse-hor",
+    name: "Voorzet Plissé Hor",
+    slug: "voorzet-plisse-hor",
     type: "WINDOW",
-    basePricePerM2: 60.0,
+    basePricePerM2: 155.0,
     minPrice: 55.0,
     minWidthMm: 300,
     maxWidthMm: 1500,
     minHeightMm: 300,
     maxHeightMm: 2000,
     description:
-      "Wordt op het kozijn geplaatst. Ideaal bij onvoldoende inbouwdiepte.",
+      "Wordt op het kozijn geplaatst, met geplisseerd gaas. Ideaal bij onvoldoende inbouwdiepte.",
     features: [
       "Montage op kozijn",
+      "Geplisseerd gaas",
       "Geschikt bij weinig inbouwruimte",
       "Duurzaam aluminium",
-      "Diverse kleuren",
     ],
     imageUrl: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800",
-    options: ["frameType"],
+    options: ["frameType", "foldDirection"],
     isActive: true,
     sortOrder: 3,
   },
@@ -169,3 +169,8 @@ export const getFeaturedProducts = (count: number = 4): Product[] => {
     .sort((a, b) => a.sortOrder - b.sortOrder)
     .slice(0, count);
 };
+
+// "Verduisterend" is a marketing category, not a `type` value (WINDOW/DOOR
+// is the only DB-level type) — these products are selected by slug instead,
+// both here and in lib/supabase/database.ts's getVerduisterendProducts().
+export const VERDUISTEREND_SLUGS = ["duo-plisse-hor-verduisterend"];
