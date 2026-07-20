@@ -8,7 +8,7 @@ import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
 import { ProductImageGallery } from "@/components/products";
 import { Product } from "@/types";
-import { getProductSeo } from "@/lib/seo-products";
+import { getProductSeo, getRelatedProducts } from "@/lib/seo-products";
 import { BASE_URL } from "@/lib/seo-config";
 
 // Revalidate every 60 seconds so admin product updates (e.g. min_price) are reflected
@@ -171,6 +171,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const categoryLabel = isVerduisterend
     ? "Verduisterend"
     : product.type === "WINDOW" ? "Raamhorren" : "Deurhorren";
+  const categoryLinkAnchor = isVerduisterend
+    ? "Bekijk alle verduisterende horren op maat"
+    : `Bekijk alle ${product.type === "WINDOW" ? "raamhorren" : "hordeuren"} op maat`;
+  const relatedProducts = getRelatedProducts(product.slug);
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -306,6 +310,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <ProductConfigurator product={product} />
+        </div>
+      </section>
+
+      {/* Related links */}
+      <section className="pb-12">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-3">
+            {relatedProducts.map((related) => (
+              <Link
+                key={related.slug}
+                href={`/producten/${related.slug}`}
+                className="inline-flex items-center text-kmp-orange font-semibold hover:underline"
+              >
+                {related.anchor}
+                <ChevronRight size={16} className="ml-1" />
+              </Link>
+            ))}
+            <Link
+              href={categoryHref}
+              className="inline-flex items-center text-kmp-blue font-semibold hover:underline"
+            >
+              {categoryLinkAnchor}
+              <ChevronRight size={16} className="ml-1" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

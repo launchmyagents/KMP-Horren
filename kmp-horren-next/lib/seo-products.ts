@@ -30,14 +30,14 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
   "luxe-inzethor": {
     title: "Inzethor op maat | Klemt zonder boren",
     description:
-      "Inzethor op maat voor draai-kiepramen — klemt zichzelf vast zonder boren. Vanaf €64. ✓ Maatwerk ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie",
+      "Inzethor op maat voor draai-kiepramen: klemt zichzelf vast zonder boren. Vanaf €64. ✓ Maatwerk ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie",
     h1: "Luxe inzethor op maat",
   },
 
   "inzet-plisse-hor": {
     title: "Inzet plissé hor op maat | Raamhor",
     description:
-      "Inzet plissé hor op maat met geplisseerd gaas — decoratief én functioneel, ideaal voor grote ramen. Vanaf €100. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Inzet plissé hor op maat met geplisseerd gaas: decoratief én functioneel, ideaal voor grote ramen. Vanaf €100. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Inzet plissé hor op maat",
   },
 
@@ -51,7 +51,7 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
   "plisse-hor-dakraam": {
     title: "Dakraamhor op maat | Velux & Fakro",
     description:
-      "Plissé dakraamhor op maat, compatibel met Velux en Fakro — speciaal voor dakramen. Vanaf €95. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Plissé dakraamhor op maat, compatibel met Velux en Fakro: speciaal voor dakramen. Vanaf €95. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Plissé hor voor dakraam op maat",
   },
 
@@ -60,14 +60,14 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
   "plisse-hordeur-enkel": {
     title: "Plissé hordeur op maat (enkel)",
     description:
-      "Plissé hordeur op maat — de meest verkochte hordeur van Nederland, gebruiksvriendelijk en duurzaam. Vanaf €215. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Plissé hordeur op maat: de meest verkochte hordeur van Nederland, gebruiksvriendelijk en duurzaam. Vanaf €215. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Plissé hordeur op maat (enkel)",
   },
 
   "plisse-hordeur-dubbel": {
     title: "Dubbele plissé hordeur op maat",
     description:
-      "Dubbele plissé hordeur op maat voor brede doorgangen — twee plissédelen die in het midden sluiten. Vanaf €350. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Dubbele plissé hordeur op maat voor brede doorgangen: twee plissédelen die in het midden sluiten. Vanaf €350. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Dubbele plissé hordeur op maat",
   },
 
@@ -83,4 +83,72 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
 
 export function getProductSeo(slug: string): ProductSeo | undefined {
   return PRODUCT_SEO[slug];
+}
+
+/**
+ * Cross-links between individual product pages, shown in a "related links"
+ * block on the product detail page. Rebuilt against the confirmed 7-product
+ * catalog (2026-07-20) — replaces an earlier version (PR #19,
+ * feat/onpage-productpaginas-seo) that was never merged and had gone stale
+ * against several catalog changes since (Verduisterend category, Voorzet
+ * Plissé Hor rename, 9 discontinued products removed).
+ */
+export interface RelatedProductLink {
+  /** Slug of the product to link to. */
+  slug: string;
+  /** Full anchor text shown on the linking page. */
+  anchor: string;
+}
+
+export const RELATED_PRODUCTS: Record<string, RelatedProductLink[]> = {
+  "luxe-inzethor": [
+    {
+      slug: "inzet-plisse-hor",
+      anchor: "Liever geplisseerd gaas? Bekijk de Inzet Plissé Hor",
+    },
+  ],
+  "inzet-plisse-hor": [
+    {
+      slug: "luxe-inzethor",
+      anchor: "Liever een vlak profiel zonder plissé? Bekijk de Luxe Inzethor",
+    },
+    {
+      slug: "voorzet-plisse-hor",
+      anchor: "Past de hor niet aan de binnenzijde? Bekijk de Voorzet Plissé Hor",
+    },
+  ],
+  "voorzet-plisse-hor": [
+    {
+      slug: "inzet-plisse-hor",
+      anchor: "Wel genoeg ruimte aan de binnenzijde? Bekijk de Inzet Plissé Hor",
+    },
+  ],
+  "plisse-hor-dakraam": [
+    {
+      slug: "duo-plisse-hor-verduisterend",
+      anchor: "Wilt u bij uw dakraam ook verduisteren? Bekijk de Duo Plissé Hor Verduisterend",
+    },
+  ],
+  "duo-plisse-hor-verduisterend": [
+    {
+      slug: "plisse-hor-dakraam",
+      anchor: "Alleen insectenwering nodig, zonder verduistering? Bekijk de Plissé Hor Dakraam",
+    },
+  ],
+  "plisse-hordeur-enkel": [
+    {
+      slug: "plisse-hordeur-dubbel",
+      anchor: "Bredere deuropening? Bekijk de Plissé Hordeur (Dubbel)",
+    },
+  ],
+  "plisse-hordeur-dubbel": [
+    {
+      slug: "plisse-hordeur-enkel",
+      anchor: "Standaard deuropening? Bekijk de Plissé Hordeur (Enkel)",
+    },
+  ],
+};
+
+export function getRelatedProducts(slug: string): RelatedProductLink[] {
+  return RELATED_PRODUCTS[slug] ?? [];
 }
