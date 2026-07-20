@@ -41,39 +41,11 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
     h1: "Inzet plissé hor op maat",
   },
 
-  "luxe-rolhor": {
-    title: "Rolhor voor raam op maat | Soft-close",
-    description:
-      "Rolhor voor uw raam op maat met soft-close systeem — perfect voor naar buiten draaiende ramen. Vanaf €90. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Luxe rolhor voor raam op maat",
-  },
-
-  "luxe-klemhor": {
-    title: "Klemhor op maat | Zonder boren plaatsen",
-    description:
-      "Klemhor op maat, eenvoudig te plaatsen zonder boren — ideaal voor huurwoningen. Vanaf €65. ✓ Maatwerk ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie",
-    h1: "Luxe klemhor op maat",
-  },
-
-  "luxe-veerstifthor": {
-    title: "Veerstifthor op maat | Onzichtbare montage",
-    description:
-      "Veerstifthor op maat met onzichtbare bevestiging — strak resultaat voor elk kozijn. Vanaf €62. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Luxe veerstifthor op maat",
-  },
-
   "voorzethor": {
     title: "Voorzethor op maat | Op het kozijn",
     description:
       "Voorzethor op maat, geplaatst op het kozijn — dé oplossing bij onvoldoende inbouwdiepte. Vanaf €55. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Voorzethor op maat",
-  },
-
-  "vaste-raamhor": {
-    title: "Vaste raamhor op maat | Voor vaste ramen",
-    description:
-      "Vaste raamhor op maat — permanente, robuuste en onderhoudsarme hor voor vaste ramen. Vanaf €50. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Vaste raamhor op maat",
   },
 
   "plisse-hor-dakraam": {
@@ -99,40 +71,6 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
     h1: "Dubbele plissé hordeur op maat",
   },
 
-  "scharnier-hordeur": {
-    title: "Scharnier hordeur op maat",
-    description:
-      "Scharnier hordeur op maat — klassieke, robuuste hordeur met scharnieren en tijdloos design. Vanaf €250. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Scharnier hordeur op maat",
-  },
-
-  "royal-22-enkel": {
-    title: "Royal 22 hordeur op maat | Slank 22 mm",
-    description:
-      "Royal 22 hordeur op maat — premium scharnierdeur met slank 22 mm-profiel en maximale sterkte. Vanaf €240. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Royal 22 hordeur op maat",
-  },
-
-  "royal-32-enkel": {
-    title: "Royal 32 hordeur op maat | Extra stevig",
-    description:
-      "Royal 32 hordeur op maat met extra stevig 32 mm-profiel — ideaal voor intensief gebruik. Vanaf €260. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Royal 32 hordeur op maat",
-  },
-
-  "royal-32-dubbel": {
-    title: "Royal 32 dubbele hordeur op maat",
-    description:
-      "Royal 32 dubbele hordeur op maat — dubbele openslaande deur, perfect voor tuindeuren en terrassen. Vanaf €420. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Royal 32 dubbele hordeur op maat",
-  },
-
-  "schuifpui-hor": {
-    title: "Schuifpui hor op maat | Voor schuifpuien",
-    description:
-      "Schuifpui hor op maat — glijdt soepel mee met uw schuifpui, speciaal voor grote openingen. Vanaf €280. ✓ Maatwerk ✓ 3 jaar garantie",
-    h1: "Schuifpui hor op maat",
-  },
 };
 
 export function getProductSeo(slug: string): ProductSeo | undefined {

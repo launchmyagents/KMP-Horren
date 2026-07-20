@@ -16,9 +16,9 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Hordeuren op maat | Plissé, scharnier & schuifpui",
+  title: "Hordeuren op maat | Plissé hordeur enkel & dubbel",
   description:
-    "Hordeuren op maat: plissé, scharnier & schuifpui. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
+    "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
     "hordeur",
     "hordeuren",
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     url: `${BASE_URL}/producten/deurhorren`,
     siteName: "KMP Horren",
-    title: "Hordeuren op maat | Plissé, scharnier & schuifpui | KMP Horren",
+    title: "Hordeuren op maat | Plissé hordeur enkel & dubbel | KMP Horren",
     description:
-      "Hordeuren op maat: plissé, scharnier & schuifpui. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
+      "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
     images: [
       {
         url: `${BASE_URL}/images/deurhorren-category.png`,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hordeuren op maat — KMP Horren",
     description:
-      "Hordeuren op maat: plissé, scharnier & schuifpui. 100% maatwerk uit eigen productie.",
+      "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk uit eigen productie.",
   },
 };
 
@@ -75,9 +75,9 @@ const faqs = [
   },
   {
     category: "Hordeuren",
-    question: "Wat is het verschil tussen een plissé hordeur en een scharnier hordeur?",
+    question: "Wat is het verschil tussen een enkele en een dubbele plissé hordeur?",
     answer:
-      "Een plissé hordeur schuift als een harmonica opzij en is ideaal bij veel doorloop; een scharnier hordeur opent als een gewone deur en is steviger, geschikt voor naar-binnen of naar-buiten draaiende deuren.",
+      "De enkele plissé hordeur is onze meestgekozen oplossing voor een standaard deuropening. Bij een brede opening of openslaande dubbele deuren kiest u de dubbele uitvoering: twee plissédelen die vanuit het midden naar beide zijden openen.",
   },
   {
     category: "Hordeuren",
@@ -101,7 +101,7 @@ const faqs = [
     category: "Hordeuren",
     question: "Is een hordeur geschikt voor dubbele (openslaande) deuren?",
     answer:
-      "Ja, voor dubbele deuren leveren wij dubbele plissé hordeuren en de Royal 32 dubbel, beide op maat.",
+      "Ja, voor dubbele deuren leveren wij de dubbele plissé hordeur, op maat gemaakt voor brede openingen.",
   },
 ];
 
@@ -120,49 +120,11 @@ const productTypes = [
     description:
       "Voor brede openingen en openslaande dubbele deuren. Twee plissédelen die in het midden sluiten, vanuit het midden te openen naar beide zijden.",
   },
-  {
-    slug: "scharnier-hordeur",
-    name: "Scharnier hordeur",
-    subtitle: "Klassiek, robuust, sluit met magneet",
-    description:
-      "Opent als een gewone deur op scharnieren en is daarmee uitermate geschikt voor naar-binnen of naar-buiten draaiende deuren. Steviger in het gebruik, sluit met een magneet- of kliksluiting.",
-  },
-  {
-    slug: "schuifpui-hor",
-    name: "Schuifpui hor",
-    subtitle: "Voor schuifpuien en grote glazen puien",
-    description:
-      "Loopt soepel mee met de breedte van uw schuifpui en is speciaal ontworpen voor grote openingen waar een gewone hordeur tekortschiet.",
-  },
-  {
-    slug: "royal-22-enkel",
-    name: "Royal 22 hordeur",
-    subtitle: "Slank 22 mm-profiel, premium aluminium",
-    description:
-      "Premium scharnierdeur met slank 22 mm-profiel. Vormvast en duurzaam, voor wie strak design en kwaliteit wil combineren.",
-  },
-  {
-    slug: "royal-32-enkel",
-    name: "Royal 32 hordeur",
-    subtitle: "Extra stevig 32 mm-profiel",
-    description:
-      "Bredere, extra stevige variant met 32 mm-profiel voor grotere of intensief gebruikte deuren. Geschikt voor zwaar dagelijks gebruik.",
-  },
-  {
-    slug: "royal-32-dubbel",
-    name: "Royal 32 dubbele hordeur",
-    subtitle: "Dubbel uitgevoerd, voor tuindeuren",
-    description:
-      "Dubbele openslaande Royal 32 — perfect voor tuindeuren en terrassen waar twee deuren naar buiten openen.",
-  },
 ];
 
 const decisionTable = [
   { situation: "Terrasdeur / balkondeur (veel doorloop)", recommended: "Plissé hordeur (enkel)" },
-  { situation: "Tuindeur / openslaande dubbele deuren", recommended: "Plissé hordeur (dubbel) of Royal 32 dubbel" },
-  { situation: "Naar binnen of buiten draaiende deur", recommended: "Scharnier hordeur of Royal 22/32" },
-  { situation: "Intensief gebruikte, brede deur", recommended: "Royal 32" },
-  { situation: "Schuifpui of grote glazen pui", recommended: "Schuifpui hor" },
+  { situation: "Tuindeur / brede of openslaande dubbele deuren", recommended: "Plissé hordeur (dubbel)" },
 ];
 
 export default async function DeurhorrenPage() {
@@ -218,9 +180,10 @@ export default async function DeurhorrenPage() {
             Hordeuren op maat
           </h1>
           <p className="text-slate-300 text-lg max-w-3xl leading-relaxed">
-            Bij KMP Horren maken wij hordeuren voor elke deur — van plissé en scharnier tot schuifpui —
-            volledig op de millimeter op maat, in onze eigen productie in Nederland. Elke hordeur krijgt een
-            premium aluminium frame met UV-bestendig gaas en 3 jaar garantie op constructie en onderdelen.
+            Bij KMP Horren maken wij de plissé hordeur voor elke deur: enkel voor een standaard deuropening,
+            dubbel voor een brede of openslaande opening. Alles wordt op de millimeter op maat gemaakt, in onze
+            eigen productie in Nederland. Elke hordeur krijgt een premium aluminium frame met UV-bestendig gaas
+            en 3 jaar garantie op constructie en onderdelen.
           </p>
         </div>
       </section>
@@ -245,8 +208,9 @@ export default async function DeurhorrenPage() {
             Welke soorten hordeuren zijn er?
           </h2>
           <p className="text-slate-600 leading-relaxed mb-8 max-w-3xl">
-            Een hordeur is geen standaardproduct. De juiste keuze hangt af van uw deur, de doorloop en uw
-            wensen. Wij leveren vier hoofdtypen, elk in maatwerk.
+            Een hordeur is geen standaardproduct. De juiste keuze hangt vooral af van de breedte van uw
+            deuropening. Wij leveren de plissé hordeur in een enkele en een dubbele uitvoering, allebei in
+            maatwerk.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {productTypes.map((type) => (
@@ -274,9 +238,9 @@ export default async function DeurhorrenPage() {
             Welke hordeur past bij mijn deur?
           </h2>
           <p className="text-slate-600 leading-relaxed mb-8 max-w-3xl">
-            Kort gezegd: voor de meeste terras- en tuindeuren kiest u een plissé hordeur, voor draaiende deuren
-            een scharnier- of Royal-hordeur, en voor een schuifpui de schuifpui hor. De onderstaande tabel
-            helpt u snel op weg.
+            Kort gezegd: voor de meeste terras- en tuindeuren kiest u een plissé hordeur, enkel bij een
+            standaard deuropening en dubbel bij een brede of openslaande opening. De onderstaande tabel helpt
+            u snel op weg.
           </p>
           <div className="overflow-hidden rounded-xl border border-slate-200">
             <table className="w-full bg-white">

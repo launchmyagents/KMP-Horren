@@ -38,7 +38,7 @@ export default function PrivacyPage() {
               </p>
               <div className="bg-slate-50 p-6 rounded-lg mt-4">
                 <p className="font-semibold">KMP Horren</p>
-                <p>100land 111</p>
+                <p>Honderdland 111B</p>
                 <p>2676 LT Maasdijk</p>
                 <p className="mt-2">
                   <strong>Telefoon:</strong> +31 6 43 06 50 41
