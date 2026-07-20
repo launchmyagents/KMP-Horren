@@ -50,10 +50,11 @@ const rows = [
   {
     slug: "voorzet-plisse-hor",
     name: "Voorzet Plissé Hor",
+    aka: "zelfde werking en prijs als de Inzet Plissé Hor",
     situatie: "Te weinig ruimte aan de binnenzijde, afwijkend kozijn",
-    gaas: "Geplisseerd gaas",
+    gaas: "Geplisseerd gaas (harmonicavouw)",
     montage: "Aan de buitenzijde van het kozijn",
-    vanaf: "€55",
+    vanaf: "€100",
   },
   {
     slug: "plisse-hor-dakraam",
@@ -106,7 +107,7 @@ const beslisfactoren = [
     icon: Ruler,
     title: "Ruimte in of op het kozijn?",
     description:
-      "Past de hor niet aan de binnenzijde? Dan is een voorzethor, gemonteerd aan de buitenzijde van het kozijn, de oplossing.",
+      "Past de hor niet aan de binnenzijde? Dan is een voorzet plissé hor, gemonteerd aan de buitenzijde van het kozijn, de oplossing.",
   },
   {
     icon: Moon,

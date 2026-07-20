@@ -233,9 +233,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h1 className="text-4xl md:text-5xl font-black text-kmp-blue uppercase tracking-tight mb-4">
                 {heading}
               </h1>
-              <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+              <p className="text-lg text-slate-600 mb-2 leading-relaxed">
                 {product.description}
               </p>
+              <Link
+                href="/vergelijk"
+                className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1 mb-6"
+              >
+                Bekijk hoe deze hor zich verhoudt tot onze andere horren
+                <ChevronRight size={14} />
+              </Link>
 
               {/* Features */}
               <div className="space-y-3 mb-8">
