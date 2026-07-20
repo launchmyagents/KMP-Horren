@@ -44,7 +44,7 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
   "voorzet-plisse-hor": {
     title: "Voorzet plissé hor op maat | Op het kozijn",
     description:
-      "Voorzet plissé hor op maat, geplaatst op het kozijn: dé oplossing bij onvoldoende inbouwdiepte. Vanaf €55. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Voorzet plissé hor op maat, geplaatst op het kozijn: dé oplossing bij onvoldoende inbouwdiepte. Vanaf €100. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Voorzet plissé hor op maat",
   },
 
