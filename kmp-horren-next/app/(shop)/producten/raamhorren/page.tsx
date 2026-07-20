@@ -204,6 +204,19 @@ export default async function RaamhorrenPage() {
         </div>
       </section>
 
+      {/* Vergelijk-link */}
+      <div className="bg-kmp-orange/5 border-b border-kmp-orange/10">
+        <div className="container mx-auto px-4 py-3">
+          <Link
+            href="/vergelijk"
+            className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1"
+          >
+            Twijfelt u welke raamhor bij u past? Bekijk het volledige vergelijkingsoverzicht
+            <ChevronRight size={14} />
+          </Link>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-12 space-y-16">
         {/* Product grid */}
         <section>
