@@ -184,6 +184,28 @@ export async function getProductsByType(
   return data || [];
 }
 
+// "Verduisterend" is a marketing category, not a `type` value (the DB
+// constrains type to WINDOW/DOOR) — products in it are still type WINDOW,
+// selected here by slug instead.
+const VERDUISTEREND_SLUGS = ["duo-plisse-hor-verduisterend"];
+
+export async function getVerduisterendProducts(): Promise<DbProduct[]> {
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .in("slug", VERDUISTEREND_SLUGS)
+    .eq("is_active", true)
+    .order("sort_order");
+
+  if (error) {
+    console.error("Error fetching verduisterend products:", error);
+    return [];
+  }
+  return data || [];
+}
+
 // ============================================
 // ADMIN PRODUCT FUNCTIONS
 // ============================================
