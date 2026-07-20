@@ -203,6 +203,19 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </div>
       </div>
 
+      {/* Vergelijk-link */}
+      <div className="bg-kmp-orange/5 border-b border-kmp-orange/10">
+        <div className="container mx-auto px-4 py-3">
+          <Link
+            href="/vergelijk"
+            className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1"
+          >
+            Twijfelt u of dit de juiste hor is? Bekijk welke hor bij uw situatie past
+            <ChevronRight size={14} />
+          </Link>
+        </div>
+      </div>
+
       {/* Product Header */}
       <section className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4 py-12">
