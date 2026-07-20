@@ -16,9 +16,9 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Raamhorren op maat | Inzet-, plissé- & voorzethor",
+  title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor",
   description:
-    "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
+    "Raamhorren op maat: inzet-, plissé-, voorzet plissé- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
     "raamhor",
     "raamhorren",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     url: `${BASE_URL}/producten/raamhorren`,
     siteName: "KMP Horren",
-    title: "Raamhorren op maat | Inzet-, plissé- & voorzethor | KMP Horren",
+    title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor | KMP Horren",
     description:
       "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
     images: [
@@ -81,9 +81,9 @@ const faqs = [
   },
   {
     category: "Raamhorren",
-    question: "Wat is het verschil tussen een inzethor en een voorzethor?",
+    question: "Wat is het verschil tussen een inzethor en een voorzet plissé hor?",
     answer:
-      "Een inzethor wordt vlak in het kozijn geplaatst; een voorzethor komt aan de buitenzijde van het kozijn. Dat laatste is de oplossing wanneer er aan de binnenzijde te weinig ruimte is of het kozijn een afwijkende vorm heeft.",
+      "Een inzethor wordt vlak in het kozijn geplaatst; een voorzet plissé hor komt aan de buitenzijde van het kozijn. Dat laatste is de oplossing wanneer er aan de binnenzijde te weinig ruimte is of het kozijn een afwijkende vorm heeft.",
   },
   {
     category: "Raamhorren",
@@ -121,11 +121,11 @@ const productTypes = [
       "Combineert het strakke uiterlijk van een inzethor met de bedienbaarheid van plisségaas. Het gaas schuift als een harmonica opzij, zodat u de hor alleen sluit wanneer u dat wilt.",
   },
   {
-    slug: "voorzethor",
-    name: "Voorzethor",
+    slug: "voorzet-plisse-hor",
+    name: "Voorzet plissé hor",
     subtitle: "Aan de buitenzijde van het kozijn",
     description:
-      "Wordt aan de buitenzijde van het kozijn gemonteerd. Handig wanneer er aan de binnenzijde te weinig ruimte is of bij afwijkende kozijnen.",
+      "Wordt aan de buitenzijde van het kozijn gemonteerd, met geplisseerd gaas. Handig wanneer er aan de binnenzijde te weinig ruimte is of bij afwijkende kozijnen.",
   },
   {
     slug: "plisse-hor-dakraam",
@@ -139,7 +139,7 @@ const productTypes = [
 const decisionTable = [
   { situation: "Draai-kiepraam / kantelraam", recommended: "Inzethor of plissé inzethor" },
   { situation: "Vast raam", recommended: "Inzethor (ook wel 'vaste hor' genoemd)" },
-  { situation: "Te weinig ruimte aan binnenzijde", recommended: "Voorzethor" },
+  { situation: "Te weinig ruimte aan binnenzijde", recommended: "Voorzet plissé hor" },
   { situation: "Dakraam", recommended: "Plissé hor voor dakraam" },
 ];
 
@@ -197,8 +197,8 @@ export default async function RaamhorrenPage() {
           </h1>
           <p className="text-slate-300 text-lg max-w-3xl leading-relaxed">
             Bij KMP Horren maken wij raamhorren voor elk raam: van de inzethor en plissé inzethor tot de
-            voorzethor en de hor voor uw dakraam. Alles wordt op de millimeter op maat gemaakt, in onze eigen
-            productie in Nederland. Elke raamhor heeft een premium aluminium frame met UV-bestendig gaas en
+            voorzet plissé hor en de hor voor uw dakraam. Alles wordt op de millimeter op maat gemaakt, in onze
+            eigen productie in Nederland. Elke raamhor heeft een premium aluminium frame met UV-bestendig gaas en
             3 jaar garantie op constructie en onderdelen.
           </p>
         </div>
@@ -254,8 +254,8 @@ export default async function RaamhorrenPage() {
           </h2>
           <p className="text-slate-600 leading-relaxed mb-8 max-w-3xl">
             Kort gezegd: voor een draai-kiepraam kiest u meestal een inzethor of plissé inzethor, voor een vast
-            raam de inzethor als vaste hor, en bij te weinig ruimte aan de binnenzijde een voorzethor. De
-            onderstaande tabel helpt u verder.
+            raam de inzethor als vaste hor, en bij te weinig ruimte aan de binnenzijde een voorzet plissé hor.
+            De onderstaande tabel helpt u verder.
           </p>
           <div className="overflow-hidden rounded-xl border border-slate-200">
             <table className="w-full bg-white">

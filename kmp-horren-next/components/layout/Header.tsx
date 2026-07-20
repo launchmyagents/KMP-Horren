@@ -29,6 +29,7 @@ import { useUser } from "@/hooks/useUser";
 const navigation = [
   { name: "Raamhorren", href: "/producten#raamhorren" },
   { name: "Deurhorren", href: "/producten#deurhorren" },
+  { name: "Verduisterend", href: "/producten/verduisterend" },
   { name: "Inmeetservice", href: "/inmeetservice" },
   { name: "Over Ons", href: "/over-ons" },
   { name: "Contact", href: "/contact" },
