@@ -119,7 +119,7 @@ export function baseLayout({ previewText, children }: BaseLayoutProps): string {
                       KMP Horren - Maatwerk horren voor elk raam en deur
                     </p>
                     <p style="margin: 0 0 10px 0; font-size: 13px; color: #94a3b8;">
-                      100land 111, 2676 LT Maasdijk
+                      Honderdland 111B, 2676 LT Maasdijk
                     </p>
                     <p style="margin: 0 0 10px 0; font-size: 13px; color: #94a3b8;">
                       <a href="tel:+31643065041" style="color: #94a3b8; text-decoration: none;">+31 6 43 06 50 41</a>
