@@ -2,13 +2,13 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, Check, Ruler, Palette, Shield } from "lucide-react";
-import { getProductBySlug, PRODUCTS } from "@/data/products";
+import { getProductBySlug, PRODUCTS, VERDUISTEREND_SLUGS } from "@/data/products";
 import { getProductBySlug as getDbProductBySlug, getProducts } from "@/lib/supabase/database";
 import { ProductConfigurator } from "@/components/configurator";
 import { ProductSchema, ProductDetailBreadcrumb } from "@/components/seo";
 import { ProductImageGallery } from "@/components/products";
 import { Product } from "@/types";
-import { getProductSeo } from "@/lib/seo-products";
+import { getProductSeo, getRelatedProducts } from "@/lib/seo-products";
 import { BASE_URL } from "@/lib/seo-config";
 
 // Revalidate every 60 seconds so admin product updates (e.g. min_price) are reflected
@@ -164,6 +164,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const seo = getProductSeo(product.slug);
   const heading = seo?.h1 ?? product.name;
+  const isVerduisterend = VERDUISTEREND_SLUGS.includes(product.slug);
+  const categoryHref = isVerduisterend
+    ? "/producten/verduisterend"
+    : `/producten/${product.type === "WINDOW" ? "raamhorren" : "deurhorren"}`;
+  const categoryLabel = isVerduisterend
+    ? "Verduisterend"
+    : product.type === "WINDOW" ? "Raamhorren" : "Deurhorren";
+  const categoryLinkAnchor = isVerduisterend
+    ? "Bekijk alle verduisterende horren op maat"
+    : `Bekijk alle ${product.type === "WINDOW" ? "raamhorren" : "hordeuren"} op maat`;
+  const relatedProducts = getRelatedProducts(product.slug);
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -185,14 +196,27 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </Link>
             <ChevronRight size={14} />
             <Link
-              href={`/producten/${product.type === "WINDOW" ? "raamhorren" : "deurhorren"}`}
+              href={categoryHref}
               className="hover:text-kmp-blue transition-colors"
             >
-              {product.type === "WINDOW" ? "Raamhorren" : "Deurhorren"}
+              {categoryLabel}
             </Link>
             <ChevronRight size={14} />
             <span className="text-kmp-blue font-semibold">{product.name}</span>
           </div>
+        </div>
+      </div>
+
+      {/* Vergelijk-link */}
+      <div className="bg-kmp-orange/5 border-b border-kmp-orange/10">
+        <div className="container mx-auto px-4 py-3">
+          <Link
+            href="/vergelijk"
+            className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1"
+          >
+            Twijfelt u of dit de juiste hor is? Bekijk welke hor bij uw situatie past
+            <ChevronRight size={14} />
+          </Link>
         </div>
       </div>
 
@@ -213,9 +237,16 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h1 className="text-4xl md:text-5xl font-black text-kmp-blue uppercase tracking-tight mb-4">
                 {heading}
               </h1>
-              <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+              <p className="text-lg text-slate-600 mb-2 leading-relaxed">
                 {product.description}
               </p>
+              <Link
+                href="/vergelijk"
+                className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1 mb-6"
+              >
+                Bekijk hoe deze hor zich verhoudt tot onze andere horren
+                <ChevronRight size={14} />
+              </Link>
 
               {/* Features */}
               <div className="space-y-3 mb-8">
@@ -279,6 +310,31 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
 
           <ProductConfigurator product={product} />
+        </div>
+      </section>
+
+      {/* Related links */}
+      <section className="pb-12">
+        <div className="container mx-auto px-4">
+          <div className="bg-white p-6 rounded-xl border border-slate-200 flex flex-col gap-3">
+            {relatedProducts.map((related) => (
+              <Link
+                key={related.slug}
+                href={`/producten/${related.slug}`}
+                className="inline-flex items-center text-kmp-orange font-semibold hover:underline"
+              >
+                {related.anchor}
+                <ChevronRight size={16} className="ml-1" />
+              </Link>
+            ))}
+            <Link
+              href={categoryHref}
+              className="inline-flex items-center text-kmp-blue font-semibold hover:underline"
+            >
+              {categoryLinkAnchor}
+              <ChevronRight size={16} className="ml-1" />
+            </Link>
+          </div>
         </div>
       </section>
     </div>

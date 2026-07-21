@@ -16,9 +16,9 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Raamhorren op maat | Inzet-, rol- & plisséhor",
+  title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor",
   description:
-    "Raamhorren op maat: inzet-, rol-, plissé- en klemhor. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
+    "Raamhorren op maat: inzet-, plissé-, voorzet plissé- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
     "raamhor",
     "raamhorren",
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     url: `${BASE_URL}/producten/raamhorren`,
     siteName: "KMP Horren",
-    title: "Raamhorren op maat | Inzet-, rol- & plisséhor | KMP Horren",
+    title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor | KMP Horren",
     description:
-      "Raamhorren op maat: inzet-, rol-, plissé- en klemhor. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
+      "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
     images: [
       {
         url: `${BASE_URL}/images/raamhorren-category.png`,
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Raamhorren op maat — KMP Horren",
     description:
-      "Raamhorren op maat: inzet-, rol-, plissé- en klemhor. 100% maatwerk uit eigen productie.",
+      "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk uit eigen productie.",
   },
 };
 
@@ -75,15 +75,15 @@ const faqs = [
   },
   {
     category: "Raamhorren",
-    question: "Wat is het verschil tussen een inzethor en een rolhor?",
+    question: "Wat is het verschil tussen een inzethor en een plissé inzethor?",
     answer:
-      "Een inzethor zit vast in het kozijn en is altijd aanwezig; een rolhor kunt u oprollen en alleen gebruiken wanneer u het raam openzet — handig als u de hor niet permanent in beeld wilt.",
+      "Een inzethor zit vast in het kozijn en houdt insecten altijd buiten. Een plissé inzethor heeft hetzelfde strakke plaatsing, maar het gaas schuift als een harmonica opzij, zodat u de hor alleen sluit wanneer u dat wilt.",
   },
   {
     category: "Raamhorren",
-    question: "Heeft u een raamhor zonder boren?",
+    question: "Wat is het verschil tussen een inzethor en een voorzet plissé hor?",
     answer:
-      "Ja. Een klemhor klemt in het kozijn en wordt zonder boren geplaatst — ideaal voor huurwoningen of wie geen gaten wil maken.",
+      "Een inzethor wordt vlak in het kozijn geplaatst; een voorzet plissé hor komt aan de buitenzijde van het kozijn. Dat laatste is de oplossing wanneer er aan de binnenzijde te weinig ruimte is of het kozijn een afwijkende vorm heeft.",
   },
   {
     category: "Raamhorren",
@@ -121,39 +121,11 @@ const productTypes = [
       "Combineert het strakke uiterlijk van een inzethor met de bedienbaarheid van plisségaas. Het gaas schuift als een harmonica opzij, zodat u de hor alleen sluit wanneer u dat wilt.",
   },
   {
-    slug: "luxe-rolhor",
-    name: "Rolhor",
-    subtitle: "Oprolbaar, alleen wanneer u hem nodig heeft",
-    description:
-      "Wilt u de hor niet permanent in beeld? Dan is de rolhor de oplossing. U rolt het gaas omlaag wanneer het raam openstaat en rolt het weer op wanneer u de hor niet nodig heeft.",
-  },
-  {
-    slug: "luxe-klemhor",
-    name: "Klemhor",
-    subtitle: "Zonder boren, klemt in het kozijn",
-    description:
-      "Wordt zonder boren in het kozijn geklemd. Daarmee is dit type bij uitstek geschikt voor huurwoningen of voor iedereen die geen gaten in het kozijn wil maken.",
-  },
-  {
-    slug: "luxe-veerstifthor",
-    name: "Veerstifthor",
-    subtitle: "Onzichtbare montage met veerstiften",
-    description:
-      "Voor vaste ramen. Klikt met veerstiften in het kozijn en is eenvoudig uitneembaar. Strak resultaat, geen zichtbare bevestiging.",
-  },
-  {
-    slug: "vaste-raamhor",
-    name: "Vaste raamhor",
-    subtitle: "Permanent gemonteerd voor blijvende oplossing",
-    description:
-      "Voor ramen die altijd dicht blijven. Wordt permanent gemonteerd, robuust en onderhoudsarm.",
-  },
-  {
-    slug: "voorzethor",
-    name: "Voorzethor",
+    slug: "voorzet-plisse-hor",
+    name: "Voorzet plissé hor",
     subtitle: "Aan de buitenzijde van het kozijn",
     description:
-      "Wordt aan de buitenzijde van het kozijn gemonteerd. Handig wanneer er aan de binnenzijde te weinig ruimte is of bij afwijkende kozijnen.",
+      "Wordt aan de buitenzijde van het kozijn gemonteerd, met geplisseerd gaas. Handig wanneer er aan de binnenzijde te weinig ruimte is of bij afwijkende kozijnen.",
   },
   {
     slug: "plisse-hor-dakraam",
@@ -166,10 +138,8 @@ const productTypes = [
 
 const decisionTable = [
   { situation: "Draai-kiepraam / kantelraam", recommended: "Inzethor of plissé inzethor" },
-  { situation: "Vast raam", recommended: "Veerstifthor of vaste raamhor" },
-  { situation: "Schuifraam / veel gebruik", recommended: "Rolhor" },
-  { situation: "Huurwoning / niet boren", recommended: "Klemhor" },
-  { situation: "Te weinig ruimte aan binnenzijde", recommended: "Voorzethor" },
+  { situation: "Vast raam", recommended: "Inzethor (ook wel 'vaste hor' genoemd)" },
+  { situation: "Te weinig ruimte aan binnenzijde", recommended: "Voorzet plissé hor" },
   { situation: "Dakraam", recommended: "Plissé hor voor dakraam" },
 ];
 
@@ -226,13 +196,26 @@ export default async function RaamhorrenPage() {
             Raamhorren op maat
           </h1>
           <p className="text-slate-300 text-lg max-w-3xl leading-relaxed">
-            Bij KMP Horren maken wij raamhorren voor elk raam — van inzet-, rol- en plisséhorren tot klem-,
-            veerstift- en vaste horren — volledig op de millimeter op maat, in onze eigen productie in Nederland.
-            Elke raamhor heeft een premium aluminium frame met UV-bestendig gaas en 3 jaar garantie op
-            constructie en onderdelen.
+            Bij KMP Horren maken wij raamhorren voor elk raam: van de inzethor en plissé inzethor tot de
+            voorzet plissé hor en de hor voor uw dakraam. Alles wordt op de millimeter op maat gemaakt, in onze
+            eigen productie in Nederland. Elke raamhor heeft een premium aluminium frame met UV-bestendig gaas en
+            3 jaar garantie op constructie en onderdelen.
           </p>
         </div>
       </section>
+
+      {/* Vergelijk-link */}
+      <div className="bg-kmp-orange/5 border-b border-kmp-orange/10">
+        <div className="container mx-auto px-4 py-3">
+          <Link
+            href="/vergelijk"
+            className="text-sm font-semibold text-kmp-orange hover:underline inline-flex items-center gap-1"
+          >
+            Twijfelt u welke raamhor bij u past? Bekijk het volledige vergelijkingsoverzicht
+            <ChevronRight size={14} />
+          </Link>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 py-12 space-y-16">
         {/* Product grid */}
@@ -284,8 +267,8 @@ export default async function RaamhorrenPage() {
           </h2>
           <p className="text-slate-600 leading-relaxed mb-8 max-w-3xl">
             Kort gezegd: voor een draai-kiepraam kiest u meestal een inzethor of plissé inzethor, voor een vast
-            raam een veerstift- of vaste hor, en wie niet wil boren kiest een klemhor. De onderstaande tabel
-            helpt u verder.
+            raam de inzethor als vaste hor, en bij te weinig ruimte aan de binnenzijde een voorzet plissé hor.
+            De onderstaande tabel helpt u verder.
           </p>
           <div className="overflow-hidden rounded-xl border border-slate-200">
             <table className="w-full bg-white">

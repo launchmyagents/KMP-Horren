@@ -32,6 +32,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/producten/verduisterend`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      // Live in Supabase only (marketing category, not a static `type`), so
+      // not covered by the PRODUCTS-derived productPages loop below.
+      url: `${BASE_URL}/producten/duo-plisse-hor-verduisterend`,
+      lastModified: currentDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/vergelijk`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
       url: `${BASE_URL}/over-ons`,
       lastModified: currentDate,
       changeFrequency: "monthly",

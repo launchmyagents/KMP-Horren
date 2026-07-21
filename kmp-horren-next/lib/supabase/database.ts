@@ -1,4 +1,5 @@
 import { createClient, createAdminClient } from "./server";
+import { VERDUISTEREND_SLUGS } from "@/data/products";
 import type {
   Profile,
   Address,
@@ -179,6 +180,23 @@ export async function getProductsByType(
 
   if (error) {
     console.error("Error fetching products by type:", error);
+    return [];
+  }
+  return data || [];
+}
+
+export async function getVerduisterendProducts(): Promise<DbProduct[]> {
+  // Use admin client to bypass RLS
+  const supabase = createAdminClient();
+  const { data, error } = await supabase
+    .from("products")
+    .select("*")
+    .in("slug", VERDUISTEREND_SLUGS)
+    .eq("is_active", true)
+    .order("sort_order");
+
+  if (error) {
+    console.error("Error fetching verduisterend products:", error);
     return [];
   }
   return data || [];

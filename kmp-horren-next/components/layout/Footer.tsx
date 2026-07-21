@@ -110,7 +110,7 @@ export function Footer() {
                 <div className="flex items-start gap-3 text-slate-400">
                   <MapPin size={16} className="mt-1 flex-shrink-0" />
                   <div>
-                    <p>100land 111</p>
+                    <p>Honderdland 111B</p>
                     <p>2676 LT, Maasdijk</p>
                   </div>
                 </div>

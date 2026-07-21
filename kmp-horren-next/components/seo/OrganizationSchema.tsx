@@ -14,7 +14,7 @@ export function OrganizationSchema() {
     foundingDate: "2010",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "100land 111",
+      streetAddress: "Honderdland 111B",
       addressLocality: "Maasdijk",
       postalCode: "2676 LT",
       addressCountry: "NL",
@@ -74,7 +74,7 @@ export function LocalBusinessSchema() {
     telephone: "+31-6-43065041",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "100land 111",
+      streetAddress: "Honderdland 111B",
       addressLocality: "Maasdijk",
       postalCode: "2676 LT",
       addressCountry: "NL",
