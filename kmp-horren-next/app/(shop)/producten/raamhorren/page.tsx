@@ -134,6 +134,13 @@ const productTypes = [
     description:
       "Ook uw dakraam houdt u eenvoudig insectvrij. Op maat gemaakt en bedienbaar, compatibel met Velux en Fakro.",
   },
+  {
+    slug: "duo-plisse-hor-verduisterend",
+    name: "Duo plissé hor verduisterend",
+    subtitle: "2-in-1: insectenhor en verduistering",
+    description:
+      "Combineert een insectenhor met een verduisterend deel in één frame, onafhankelijk van elkaar te bedienen. Geschikt voor elk type raam, ook uw dakraam.",
+  },
 ];
 
 const decisionTable = [
