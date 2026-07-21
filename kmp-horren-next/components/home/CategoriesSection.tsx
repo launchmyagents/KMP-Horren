@@ -5,6 +5,12 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+// productCount is hardcoded (not fetched from Supabase) because this is a client
+// component rendered on the homepage above the fold — update these manually when
+// the live catalog changes. Verified against the `products` table (type=WINDOW/DOOR,
+// is_active=true) on 2026-07-21: 4 raamhorren, 2 deurhorren. The 7th active product,
+// duo-plisse-hor-verduisterend, lives in its own "Verduisterend" category and is
+// intentionally excluded from both counts below.
 const categories = [
   {
     id: "raamhorren",
@@ -12,7 +18,7 @@ const categories = [
     slug: "raamhorren",
     description: "Inzethorren, rolhorren en plissé horren voor elk type raam. Van draai-kiep tot dakraam.",
     imageUrl: "/images/raamhorren-category.png",
-    productCount: 8,
+    productCount: 4,
     startingPrice: 50,
   },
   {
@@ -21,7 +27,7 @@ const categories = [
     slug: "deurhorren",
     description: "Plissé hordeuren, scharnier hordeuren en schuifpui horren. Perfect voor elke doorgang.",
     imageUrl: "/images/deurhorren-category.png",
-    productCount: 7,
+    productCount: 2,
     startingPrice: 250,
   },
 ];
