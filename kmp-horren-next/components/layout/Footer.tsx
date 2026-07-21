@@ -163,6 +163,14 @@ export function Footer() {
               >
                 Privacy Policy
               </Link>
+              <a
+                href="https://launchmyagents.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Website door Launch My Agents
+              </a>
             </div>
           </div>
         </div>
