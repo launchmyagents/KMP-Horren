@@ -8,9 +8,9 @@ import { ArrowRight } from "lucide-react";
 // productCount is hardcoded (not fetched from Supabase) because this is a client
 // component rendered on the homepage above the fold — update these manually when
 // the live catalog changes. Verified against the `products` table (type=WINDOW/DOOR,
-// is_active=true) on 2026-07-21: 4 raamhorren, 2 deurhorren. The 7th active product,
-// duo-plisse-hor-verduisterend, lives in its own "Verduisterend" category and is
-// intentionally excluded from both counts below.
+// is_active=true) on 2026-07-21: 5 raamhorren, 2 deurhorren. duo-plisse-hor-verduisterend
+// is cross-listed on operator request — it's type=WINDOW so it counts toward raamhorren
+// (5, not 4) AND has its own separate "Verduisterend" category/page.
 const categories = [
   {
     id: "raamhorren",
@@ -18,7 +18,7 @@ const categories = [
     slug: "raamhorren",
     description: "Inzethorren, rolhorren en plissé horren voor elk type raam. Van draai-kiep tot dakraam.",
     imageUrl: "/images/raamhorren-category.png",
-    productCount: 4,
+    productCount: 5,
     startingPrice: 50,
   },
   {
