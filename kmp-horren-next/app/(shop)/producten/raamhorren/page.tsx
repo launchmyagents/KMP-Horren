@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, Check, Award, Factory, Shield, Truck, Headphones } from "lucide-react";
 import { ProductGrid } from "@/components/products";
-import { getProductsByType, VERDUISTEREND_SLUGS } from "@/data/products";
+import { getProductsByType } from "@/data/products";
 import { getProductsByType as getDbProductsByType } from "@/lib/supabase/database";
 import {
   CategoryBreadcrumb,
@@ -147,9 +147,10 @@ export default async function RaamhorrenPage() {
   let windowProducts: Product[] = [];
 
   try {
-    const dbWindowProducts = (await getDbProductsByType("WINDOW")).filter(
-      (p) => !VERDUISTEREND_SLUGS.includes(p.slug)
-    );
+    // Intentionally includes the verduisterend product (type=WINDOW in the DB) —
+    // it's cross-listed here AND in its own "Verduisterend" category on operator
+    // request (2026-07-21), not excluded.
+    const dbWindowProducts = await getDbProductsByType("WINDOW");
     if (dbWindowProducts.length > 0) {
       windowProducts = dbWindowProducts.map((p) => ({
         id: p.id,
