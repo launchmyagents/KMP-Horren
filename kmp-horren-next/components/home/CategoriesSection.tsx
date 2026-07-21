@@ -22,7 +22,7 @@ const categories = [
     description: "Plissé hordeuren, scharnier hordeuren en schuifpui horren. Perfect voor elke doorgang.",
     imageUrl: "/images/deurhorren-category.png",
     productCount: 7,
-    startingPrice: 215,
+    startingPrice: 250,
   },
 ];
 

@@ -78,7 +78,7 @@ const rows = [
     situatie: "Terras- of tuindeur, standaard deuropening",
     gaas: "Geplisseerd harmonicagaas",
     montage: "Schuift opzij, lage struikelvrije drempel",
-    vanaf: "€215",
+    vanaf: "€250",
   },
   {
     slug: "plisse-hordeur-dubbel",
@@ -86,7 +86,7 @@ const rows = [
     situatie: "Brede of openslaande dubbele deuropening",
     gaas: "Geplisseerd harmonicagaas, twee delen",
     montage: "Sluit in het midden met magneetsluiting",
-    vanaf: "€350",
+    vanaf: "€450",
   },
 ];
 
