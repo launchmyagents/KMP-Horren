@@ -33,7 +33,11 @@ export function useAuth(): UseAuthReturn {
     isAuthenticated: false,
   });
 
-  const supabase = createClient();
+  // Lazy useState initializer so the client (and its mock fallback) is
+  // created once per component instance, not on every render — a fresh
+  // mock client each render gave `supabase.auth` a new identity every
+  // time, retriggering the effect below in an infinite loop.
+  const [supabase] = useState(() => createClient());
 
   // Initialize auth state
   useEffect(() => {
