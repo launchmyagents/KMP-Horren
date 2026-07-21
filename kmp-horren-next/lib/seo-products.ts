@@ -60,14 +60,14 @@ export const PRODUCT_SEO: Record<string, ProductSeo> = {
   "plisse-hordeur-enkel": {
     title: "Plissé hordeur op maat (enkel)",
     description:
-      "Plissé hordeur op maat: de meest verkochte hordeur van Nederland, gebruiksvriendelijk en duurzaam. Vanaf €215. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Plissé hordeur op maat: de meest verkochte hordeur van Nederland, gebruiksvriendelijk en duurzaam. Vanaf €250. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Plissé hordeur op maat (enkel)",
   },
 
   "plisse-hordeur-dubbel": {
     title: "Dubbele plissé hordeur op maat",
     description:
-      "Dubbele plissé hordeur op maat voor brede doorgangen: twee plissédelen die in het midden sluiten. Vanaf €350. ✓ Maatwerk ✓ 3 jaar garantie",
+      "Dubbele plissé hordeur op maat voor brede doorgangen: twee plissédelen die in het midden sluiten. Vanaf €450. ✓ Maatwerk ✓ 3 jaar garantie",
     h1: "Dubbele plissé hordeur op maat",
   },
 
