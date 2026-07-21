@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useAnimationControls } from "framer-motion";
 import { ShoppingCart, Truck, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -25,6 +26,30 @@ export function PriceSummary({
   isValid,
   errors,
 }: PriceSummaryProps) {
+  // lineTotal is always defined (falls back to 0 while priceCalculation is null)
+  // so the hooks below can run unconditionally before the early return.
+  const lineTotal = priceCalculation ? priceCalculation.unitPrice * quantity : 0;
+
+  // Decorative "pulse" on the total: the displayed number itself is plain React
+  // state/render, never gated behind this. Framer's AnimatePresence + mode="wait"
+  // + key={lineTotal} used to remount the number on every change and wait for the
+  // *previous* node's exit animation to finish (via requestAnimationFrame) before
+  // showing the new value — in a throttled/backgrounded tab that rAF can stall
+  // indefinitely, which froze the total on the very first price shown. This
+  // imperative pulse never blocks the text content from updating.
+  const controls = useAnimationControls();
+  const prevLineTotalRef = useRef(lineTotal);
+
+  useEffect(() => {
+    if (prevLineTotalRef.current !== lineTotal) {
+      prevLineTotalRef.current = lineTotal;
+      controls.start({
+        scale: [1, 1.08, 1],
+        transition: { duration: 0.35, ease: "easeOut" },
+      });
+    }
+  }, [lineTotal, controls]);
+
   if (!priceCalculation) {
     return (
       <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
@@ -33,7 +58,6 @@ export function PriceSummary({
     );
   }
 
-  const lineTotal = priceCalculation.unitPrice * quantity;
   const hasErrors = Object.keys(errors).length > 0;
 
   return (
@@ -105,17 +129,15 @@ export function PriceSummary({
         <div className="flex justify-between items-end">
           <span className="text-kmp-blue font-bold text-lg">Totaal</span>
           <div className="text-right">
-            <AnimatePresence mode="wait">
-              <motion.span
-                key={lineTotal}
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="text-3xl font-black text-kmp-blue block"
-              >
-                €{lineTotal.toFixed(2)}
-              </motion.span>
-            </AnimatePresence>
+            {/* Stable DOM node: always renders the current lineTotal directly.
+                `controls` only plays a decorative scale pulse on change and can
+                never delay or hide this text — see the hooks above. */}
+            <motion.span
+              animate={controls}
+              className="text-3xl font-black text-kmp-blue block"
+            >
+              €{lineTotal.toFixed(2)}
+            </motion.span>
             <span className="text-xs text-slate-500">incl. BTW</span>
           </div>
         </div>
