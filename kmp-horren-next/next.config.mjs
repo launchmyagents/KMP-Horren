@@ -99,12 +99,36 @@ const nextConfig = {
   // was reachable as a separate 200 instead of redirecting, creating duplicate
   // content. Host-based redirect requires the `has` matcher; a plain source
   // rewrite can't distinguish hosts.
+  // Removed-product redirects (weekly health-check 2026-W31): the 2026-07-20
+  // catalog cleanup (PR #20) took the product count from 15 to 7 confirmed
+  // items but never added redirects for the 9 dropped slugs, so they've been
+  // serving hard 404s ever since, right as Google started re-crawling the
+  // site after the domain move. None of the 9 has a confirmed 1:1 replacement
+  // product, so each redirects to its category page rather than guessing an
+  // equivalence that hasn't been confirmed by the client. `voorzethor` is a
+  // straight rename (2026-07-20) to `voorzet-plisse-hor`, so that one does
+  // get a specific product-to-product redirect.
   async redirects() {
     return [
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.kmp-horren.nl" }],
         destination: "https://kmp-horren.nl/:path*",
+        permanent: true,
+      },
+      {
+        source: "/producten/voorzethor",
+        destination: "/producten/voorzet-plisse-hor",
+        permanent: true,
+      },
+      {
+        source: "/producten/:slug(luxe-rolhor|luxe-klemhor|luxe-veerstifthor|vaste-raamhor)",
+        destination: "/producten/raamhorren",
+        permanent: true,
+      },
+      {
+        source: "/producten/:slug(scharnier-hordeur|royal-22-enkel|royal-32-enkel|royal-32-dubbel|schuifpui-hor)",
+        destination: "/producten/deurhorren",
         permanent: true,
       },
     ];
