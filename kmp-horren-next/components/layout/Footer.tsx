@@ -164,7 +164,7 @@ export function Footer() {
                 Privacy Policy
               </Link>
               <a
-                href="https://launchmyagents.com"
+                href="https://launchmyagents.ai"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
