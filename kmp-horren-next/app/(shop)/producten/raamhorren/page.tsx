@@ -18,7 +18,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 export const metadata: Metadata = {
   title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor",
   description:
-    "Raamhorren op maat: inzet-, plissé-, voorzet plissé- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
+    "Raamhorren op maat: luxe inzethor, inzet- en voorzet plissé hor en dakraamhor. Eigen productie, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
     "raamhor",
     "raamhorren",
@@ -45,13 +45,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/images/raamhorren-category.png`,
         width: 1200,
         height: 630,
-        alt: "Raamhorren op maat — KMP Horren",
+        alt: "Raamhorren op maat | KMP Horren",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Raamhorren op maat — KMP Horren",
+    title: "Raamhorren op maat | KMP Horren",
     description:
       "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk uit eigen productie.",
   },
@@ -299,7 +299,7 @@ export default async function RaamhorrenPage() {
             </table>
           </div>
           <p className="text-slate-600 leading-relaxed mt-6 max-w-3xl">
-            Het kozijnmateriaal — kunststof, hout of aluminium — bepaalt mede of er geboord wordt of geklemd.
+            Of er geboord wordt of geklemd, hangt mede af van het kozijnmateriaal: kunststof, hout of aluminium.
             Twijfelt u? Als familiebedrijf met ruim 10 jaar ervaring adviseren wij u graag persoonlijk via onze{" "}
             <Link href="/inmeetservice" className="text-kmp-orange font-semibold hover:underline">inmeetservice</Link>{" "}
             of{" "}

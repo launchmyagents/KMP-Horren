@@ -17,7 +17,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 export const metadata: Metadata = {
   title: "Verduisterende horren op maat | Duo plissé 2-in-1",
   description:
-    "Verduisterende hor op maat: één plissésysteem met een verduisterend deel en een insectenhor in hetzelfde frame. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
+    "Duo plissé hor: een verduisterend deel en een insectenhor in hetzelfde frame. Op maat, eigen productie, 3 jaar garantie. Vanaf 250 euro, online te bestellen.",
   keywords: [
     "verduisterende hor",
     "duo plissé hor",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Verduisterende horren op maat — KMP Horren",
+    title: "Verduisterende horren op maat | KMP Horren",
     description:
       "Eén plissésysteem met een verduisterend deel en een insectenhor in hetzelfde frame.",
   },

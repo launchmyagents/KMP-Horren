@@ -1,9 +1,16 @@
 import { Metadata } from "next";
 import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
+import { BASE_URL } from "@/lib/seo-config";
 
+// `title` deliberately omits "| KMP Horren": the root layout already appends
+// it via `title.template`, so repeating it here produced the double brand name
+// "Privacy Policy | KMP Horren | KMP Horren" that was live until 2026-08-05.
 export const metadata: Metadata = {
-  title: "Privacy Policy | KMP Horren",
-  description: "Lees hoe KMP Horren omgaat met uw persoonsgegevens en privacy.",
+  title: "Privacy Policy",
+  description: "Privacyverklaring van KMP Horren: welke persoonsgegevens wij verwerken bij een bestelling of aanvraag, waarom wij dat doen en hoe lang wij ze bewaren.",
+  alternates: {
+    canonical: `${BASE_URL}/privacy`,
+  },
 };
 
 export default function PrivacyPage() {

@@ -69,6 +69,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    {
+      // Money page: the inmeetservice is how KMP wins the jobs it cannot sell
+      // straight from the webshop. It was live, indexable and canonicalised but
+      // missing from the sitemap until 2026-08-05.
+      url: `${BASE_URL}/inmeetservice`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      // Indexable legal pages belong in the sitemap too, otherwise the sitemap
+      // no longer matches the set of indexable URLs.
+      url: `${BASE_URL}/privacy`,
+      lastModified: currentDate,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
+    {
+      url: `${BASE_URL}/algemene-voorwaarden`,
+      lastModified: currentDate,
+      changeFrequency: "yearly",
+      priority: 0.3,
+    },
   ];
 
   // Product pages - dynamically generated from products data
