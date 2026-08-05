@@ -40,10 +40,16 @@ export function Hero() {
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-5xl md:text-7xl font-black text-white mb-8 leading-[1.1] uppercase tracking-tight"
           >
-            Maatwerk horren
+            Horren op maat
             <br />
+            {/* Deliberate line break: at md:text-7xl the left hero column fits
+                about twelve characters, so "Voor raam en deur" wraps on its own
+                and leaves "deur" stranded on a third line. Breaking it here
+                keeps three intentional, descending lines instead. */}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400">
-              Voor elk raam
+              Voor raam
+              <br />
+              en deur
             </span>
           </motion.h1>
 
