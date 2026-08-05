@@ -132,6 +132,7 @@ export default function OverOnsPage() {
                 src="/KMP.jpg"
                 alt="KMP Horren productie"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>

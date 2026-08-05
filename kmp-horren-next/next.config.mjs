@@ -117,6 +117,19 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // Pre-launch URLs that predate the /producten/ prefix. They have been
+        // falling through to the global not-found (307 to the homepage) since
+        // the June audit; a 301 to the real category page is what they need.
+        source: "/raamhorren",
+        destination: "/producten/raamhorren",
+        permanent: true,
+      },
+      {
+        source: "/deurhorren",
+        destination: "/producten/deurhorren",
+        permanent: true,
+      },
+      {
         source: "/producten/voorzethor",
         destination: "/producten/voorzet-plisse-hor",
         permanent: true,

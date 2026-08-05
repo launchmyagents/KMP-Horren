@@ -27,6 +27,8 @@ export function ProductImageGallery({
           src={allImages[selectedIndex]}
           alt={productName}
           fill
+          // Left column of a two-column product layout on desktop, full width below.
+          sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-cover"
           priority
         />
@@ -52,6 +54,8 @@ export function ProductImageGallery({
                 src={image}
                 alt={`${productName} ${index + 1}`}
                 fill
+                // Thumbnail button is a fixed w-20 h-20, so 80px is all that is needed.
+                sizes="80px"
                 className="object-cover"
               />
             </button>
