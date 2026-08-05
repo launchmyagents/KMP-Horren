@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import { createServerClient } from "@supabase/ssr";
+import { BASE_URL } from "@/lib/seo-config";
 
 // Routes that require authentication
 const protectedRoutes = ["/account"];
@@ -13,6 +14,25 @@ const authRoutes = ["/login", "/registreren"];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  // Send the Railway-generated host to the real domain.
+  //
+  // Google has been treating https://kmp-horren-production.up.railway.app as
+  // the canonical version of the homepage: URL inspection on 2026-08-05 still
+  // reported "Duplicate, Google chose different canonical than user", and
+  // kmp-horren.nl/ had not had a single impression between 1 June and 5 August.
+  // The on-page canonicals already point at the real domain, but the preview
+  // host stayed reachable with HTTP 200 and its own self-referencing canonical,
+  // so both hosts served the same site.
+  //
+  // /api/ is deliberately excluded. Railway's healthcheck hits /api/health
+  // (railway.toml) and would fail on a redirect, and the payment and webhook
+  // routes under /api are POST endpoints that must not be redirected either.
+  const host = request.headers.get("host") ?? "";
+  if (host.endsWith(".up.railway.app") && !pathname.startsWith("/api/")) {
+    const target = new URL(`${pathname}${request.nextUrl.search}`, BASE_URL);
+    return NextResponse.redirect(target, 301);
+  }
 
   // Check route types
   const isProtectedRoute = protectedRoutes.some((route) =>
