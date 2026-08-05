@@ -6,7 +6,7 @@ import { BASE_URL } from "@/lib/seo-config";
 export const metadata: Metadata = {
   title: "Maatwerk Horren voor elk Raam en Deur",
   description:
-    "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat. Gemaakt in onze eigen Nederlandse fabriek. ✓ Gratis verzending vanaf €250 ✓ 3 jaar garantie",
+    "De specialist in maatwerk insectenwering. Bestel online uw inzethorren, hordeuren en rolhorren op maat, uit onze eigen Nederlandse fabriek.",
   keywords: [
     "horren",
     "inzethorren",

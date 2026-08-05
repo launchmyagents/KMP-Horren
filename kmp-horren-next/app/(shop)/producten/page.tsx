@@ -13,7 +13,7 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: "Alle Horren Producten - Raamhorren & Deurhorren op Maat",
   description:
-    "Bekijk ons complete assortiment maatwerk horren. Raamhorren, deurhorren, plissé horren en meer. Direct online configureren en bestellen. ✓ Gratis verzending vanaf €250",
+    "Bekijk het complete assortiment horren op maat: inzethorren, plissé horren, hordeuren en dakraamhorren. Online configureren, gratis verzending vanaf 250 euro.",
   keywords: [
     "horren",
     "raamhorren",

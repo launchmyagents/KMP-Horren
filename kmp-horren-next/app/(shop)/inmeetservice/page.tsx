@@ -8,9 +8,9 @@ import { TrackedTelLink } from "@/components/analytics/TrackedTelLink";
 import { BASE_URL } from "@/lib/seo-config";
 
 export const metadata: Metadata = {
-  title: "Inmeetservice | Professionele Metingen voor Perfecte Horren",
+  title: "Inmeetservice aan huis",
   description:
-    "Professionele inmeetservice voor perfecte horren. Onze ervaren specialisten zorgen voor nauwkeurige metingen bij u thuis. ✓ Ervaren specialisten ✓ Perfecte pasvorm ✓ Door heel Nederland",
+    "Professionele inmeetservice voor perfecte horren. Onze specialisten meten nauwkeurig bij u thuis. ✓ Perfecte pasvorm ✓ Door heel Nederland",
   keywords: [
     "inmeetservice",
     "horren opmeten",

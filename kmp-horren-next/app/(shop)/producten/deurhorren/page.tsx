@@ -45,13 +45,13 @@ export const metadata: Metadata = {
         url: `${BASE_URL}/images/deurhorren-category.png`,
         width: 1200,
         height: 630,
-        alt: "Hordeuren op maat — KMP Horren",
+        alt: "Hordeuren op maat | KMP Horren",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hordeuren op maat — KMP Horren",
+    title: "Hordeuren op maat | KMP Horren",
     description:
       "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk uit eigen productie.",
   },
@@ -111,7 +111,7 @@ const productTypes = [
     name: "Plissé hordeur (enkel)",
     subtitle: "Meestgekozen, harmonicagaas",
     description:
-      "Onze meestgekozen oplossing. Het gaas vouwt als een harmonica opzij en neemt weinig ruimte in — bijzonder geschikt voor plekken met veel doorloop, zoals een terras- of tuindeur. Kind- en huisdiervriendelijk, met een nagenoeg struikelvrije drempel.",
+      "Onze meestgekozen oplossing. Het gaas vouwt als een harmonica opzij en neemt weinig ruimte in. Daardoor is deze hordeur geschikt voor plekken met veel doorloop, zoals een terras- of tuindeur. Kind- en huisdiervriendelijk, met een nagenoeg struikelvrije drempel.",
   },
   {
     slug: "plisse-hordeur-dubbel",
@@ -274,8 +274,7 @@ export default async function DeurhorrenPage() {
             </table>
           </div>
           <p className="text-slate-600 leading-relaxed mt-6 max-w-3xl">
-            Twijfelt u over de juiste keuze? Als familiebedrijf met ruim 10 jaar ervaring denken wij graag met
-            u mee — via onze{" "}
+            Twijfelt u over de juiste keuze? Als familiebedrijf met ruim 10 jaar ervaring denken wij graag met u mee via onze{" "}
             <Link href="/inmeetservice" className="text-kmp-orange font-semibold hover:underline">inmeetservice</Link>{" "}
             of{" "}
             <Link href="/contact" className="text-kmp-orange font-semibold hover:underline">het contactformulier</Link>.
@@ -285,7 +284,7 @@ export default async function DeurhorrenPage() {
         {/* How it works */}
         <section>
           <h2 className="text-3xl font-black text-kmp-blue uppercase tracking-tight mb-4">
-            Hordeur op maat laten maken — zo werkt het
+            Hordeur op maat laten maken: zo werkt het
           </h2>
           <p className="text-slate-600 leading-relaxed mb-6 max-w-3xl">
             Elke hordeur die wij maken, wordt op de millimeter op maat geproduceerd op basis van uw eigen
@@ -298,8 +297,7 @@ export default async function DeurhorrenPage() {
                 U kunt zelf opmeten aan de hand van onze duidelijke meetinstructie. Wilt u zekerheid?{" "}
                 <Link href="/inmeetservice" className="text-kmp-orange font-semibold hover:underline">
                   Vraag onze inmeetservice aan
-                </Link>{" "}
-                — wij komen langs en meten alles nauwkeurig in.
+                </Link>. Wij komen langs en meten alles nauwkeurig in.
               </p>
             </div>
             <div className="bg-white p-6 rounded-xl border border-slate-200">

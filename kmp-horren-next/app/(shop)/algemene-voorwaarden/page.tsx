@@ -1,8 +1,14 @@
 import { Metadata } from "next";
+import { BASE_URL } from "@/lib/seo-config";
 
+// `title` deliberately omits "| KMP Horren": the root layout already appends
+// it via `title.template`. See the same note in app/(shop)/privacy/page.tsx.
 export const metadata: Metadata = {
-  title: "Algemene Voorwaarden | KMP Horren",
-  description: "Lees onze algemene voorwaarden voor het bestellen van horren en insectenwering bij KMP Horren.",
+  title: "Algemene Voorwaarden",
+  description: "Algemene voorwaarden van KMP Horren. Hierin staan de regels voor bestellen, betalen, levering en retour, inclusief de garantie op maatwerkhorren.",
+  alternates: {
+    canonical: `${BASE_URL}/algemene-voorwaarden`,
+  },
 };
 
 export default function AlgemeneVoorwaardenPage() {

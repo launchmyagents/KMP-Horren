@@ -12,6 +12,15 @@ export function OrganizationSchema() {
     description:
       "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat. Gemaakt in onze eigen Nederlandse fabriek.",
     foundingDate: "2010",
+    // KvK number, confirmed by the client on 2026-07-20. Without a registration
+    // identifier an AI assistant cannot tie this site to the company in the
+    // trade register: measured 2026-08-05, ChatGPT found KMP Horren through
+    // companyinfo.nl and goudengids.nl but not through kmp-horren.nl itself.
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "KVK",
+      value: "93094698",
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: "Honderdland 111B",
@@ -72,6 +81,15 @@ export function LocalBusinessSchema() {
     "@id": BASE_URL,
     url: BASE_URL,
     telephone: "+31-6-43065041",
+    // Same registration identifier as the Organization block above. This is the
+    // block that carries the local-business signals, so it needs the KvK number
+    // too: an assistant reading only this block would otherwise have no way to
+    // tie the business to the trade register.
+    identifier: {
+      "@type": "PropertyValue",
+      propertyID: "KVK",
+      value: "93094698",
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: "Honderdland 111B",
