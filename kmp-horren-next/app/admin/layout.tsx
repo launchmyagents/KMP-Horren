@@ -54,7 +54,7 @@ export default async function AdminLayout({
     const userName = profile?.first_name
       ? `${profile.first_name} ${profile.last_name || ""}`
       : "Admin";
-    const userEmail = user.email || "admin@kmphorren.nl";
+    const userEmail = user.email || "admin@kmp-horren.nl";
 
     return (
       <div className="min-h-screen bg-gray-100">
@@ -73,7 +73,7 @@ export default async function AdminLayout({
   } = await supabase.auth.getUser();
 
   let userName = "Demo Admin";
-  let userEmail = "admin@demo.kmphorren.nl";
+  let userEmail = "admin@demo.kmp-horren.nl";
 
   if (user && isAdminClientConfigured()) {
     // User is logged in and admin client is configured - verify admin role
@@ -93,7 +93,7 @@ export default async function AdminLayout({
     userName = profile?.first_name
       ? `${profile.first_name} ${profile.last_name || ""}`
       : "Admin";
-    userEmail = user.email || "admin@kmphorren.nl";
+    userEmail = user.email || "admin@kmp-horren.nl";
   }
 
   return (
