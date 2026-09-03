@@ -32,7 +32,21 @@ interface SendEmailOptions {
 export async function sendEmail(options: SendEmailOptions): Promise<{ success: boolean; id?: string; error?: string }> {
   const { to, subject, html, text, replyTo } = options;
 
-  // If Resend is not configured, log to console (demo mode)
+  // If Resend is not configured, log to console (demo mode).
+  //
+  // In production this must NOT count as success. Returning `success: true`
+  // here means an unconfigured or expired RESEND_API_KEY looks identical to a
+  // delivered mail, all the way up to the visitor, who is told "Bericht
+  // verzonden!" while nothing left the building. Demo mode stays available for
+  // local development, where there is no key and no one is waiting for the mail.
+  if (!isResendConfigured() && process.env.NODE_ENV === "production") {
+    console.error(
+      "RESEND_API_KEY ontbreekt of is ongeldig in productie. E-mail is NIET verzonden.",
+      { to: Array.isArray(to) ? to.join(", ") : to, subject }
+    );
+    return { success: false, error: "E-mailverzending is niet geconfigureerd" };
+  }
+
   if (!isResendConfigured()) {
     console.log("=".repeat(60));
     console.log("📧 E-MAIL (Demo Mode - Not Sent)");

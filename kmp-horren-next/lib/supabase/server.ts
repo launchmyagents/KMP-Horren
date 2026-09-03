@@ -8,8 +8,22 @@ export function createAdminClient() {
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    // Return a mock client if env vars are missing
-    // This mock supports method chaining
+    // Return a mock client if env vars are missing. This mock supports chaining.
+    //
+    // In production the mock must report an error instead of `error: null`.
+    // Resolving with no error makes a missing or wrong Supabase configuration
+    // indistinguishable from a successful write: /api/contact concluded the
+    // message was stored, told the visitor "Bericht verzonden!", and nothing
+    // had been written anywhere. Locally the silent mock stays, because there
+    // is no database there and nothing depends on the write.
+    const mockError =
+      process.env.NODE_ENV === "production"
+        ? {
+            message:
+              "Supabase is niet geconfigureerd: NEXT_PUBLIC_SUPABASE_URL of SUPABASE_SERVICE_ROLE_KEY ontbreekt",
+          }
+        : null;
+    if (mockError) console.error("createAdminClient: " + mockError.message);
     const mockQueryBuilder = {
       select: () => mockQueryBuilder,
       insert: () => mockQueryBuilder,
@@ -21,11 +35,13 @@ export function createAdminClient() {
       single: () => mockQueryBuilder,
       limit: () => mockQueryBuilder,
       range: () => mockQueryBuilder,
-      then: (resolve: (value: { data: null; error: null }) => void) => {
-        resolve({ data: null, error: null });
+      then: (
+        resolve: (value: { data: null; error: { message: string } | null }) => void
+      ) => {
+        resolve({ data: null, error: mockError });
       },
       data: null,
-      error: null,
+      error: mockError,
     };
     return {
       from: () => mockQueryBuilder,
