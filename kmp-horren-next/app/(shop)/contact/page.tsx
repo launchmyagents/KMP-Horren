@@ -106,10 +106,10 @@ export default function ContactPage() {
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-kmp-blue min-w-[80px]">Email:</span>
                   <a
-                    href="mailto:Info@kmphorren.nl"
+                    href="mailto:Info@kmp-horren.nl"
                     className="hover:text-kmp-orange transition-colors"
                   >
-                    Info@kmphorren.nl
+                    Info@kmp-horren.nl
                   </a>
                 </li>
                 <li className="flex items-start gap-3">

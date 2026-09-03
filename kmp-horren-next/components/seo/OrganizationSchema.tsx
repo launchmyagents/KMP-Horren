@@ -48,7 +48,7 @@ export function OrganizationSchema() {
         availableLanguage: ["Dutch"],
       },
     ],
-    email: "Info@kmphorren.nl",
+    email: "Info@kmp-horren.nl",
     sameAs: [
       "https://www.facebook.com/kmphorren",
       "https://www.instagram.com/kmphorren",

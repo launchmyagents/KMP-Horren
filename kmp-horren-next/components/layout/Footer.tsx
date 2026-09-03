@@ -54,11 +54,11 @@ export function Footer() {
                   <span>+31 6 43 06 50 41</span>
                 </TrackedTelLink>
                 <a
-                  href="mailto:Info@kmphorren.nl"
+                  href="mailto:Info@kmp-horren.nl"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Mail size={16} />
-                  <span>Info@kmphorren.nl</span>
+                  <span>Info@kmp-horren.nl</span>
                 </a>
               </div>
             </div>
