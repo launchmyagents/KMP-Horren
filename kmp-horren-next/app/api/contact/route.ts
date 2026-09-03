@@ -62,9 +62,10 @@ export async function POST(request: NextRequest) {
       .from("contact_messages")
       .insert(contactMessage);
 
+    const persisted = !dbError;
     if (dbError) {
       console.error("Failed to save contact message:", dbError);
-      // Continue anyway - we still want to send emails
+      // Continue anyway: the admin notification can still get the message out.
     }
 
     console.log("Contact message received:", {
@@ -105,6 +106,26 @@ export async function POST(request: NextRequest) {
 
     if (!customerEmailResult.success) {
       console.error("Failed to send customer confirmation:", customerEmailResult.error);
+    }
+
+    // A message counts as received when it is either stored in the database or
+    // delivered to the inbox. If neither worked it is gone, and the visitor has
+    // to hear that instead of "Bericht verzonden!", so they can call instead.
+    // Until 2026-09-03 this route returned success unconditionally, which meant
+    // a failing database and a failing mailer were invisible to everyone.
+    if (!persisted && !adminEmailResult.success) {
+      console.error("Contact message lost: neither stored nor e-mailed", {
+        id: contactMessage.id,
+        dbError: dbError?.message,
+        mailError: adminEmailResult.error,
+      });
+      return NextResponse.json(
+        {
+          error:
+            "Je bericht kon niet worden verstuurd. Bel ons op 06 43 06 50 41, dan helpen we je direct.",
+        },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({
