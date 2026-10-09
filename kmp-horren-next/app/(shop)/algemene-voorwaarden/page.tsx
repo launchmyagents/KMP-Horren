@@ -151,7 +151,7 @@ export default function AlgemeneVoorwaardenPage() {
                   <strong>Telefoon:</strong> +31 6 43 06 50 41
                 </p>
                 <p>
-                  <strong>E-mail:</strong> Info@kmp-horren.nl
+                  <strong>E-mail:</strong> info@kmp-horren.nl
                 </p>
               </div>
             </div>

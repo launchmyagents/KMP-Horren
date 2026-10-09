@@ -185,7 +185,7 @@ export function orderConfirmationEmail({ order }: OrderConfirmationProps): strin
     
     <p style="${styles.paragraph}">
       Heb je vragen over je bestelling? Neem gerust contact met ons op via 
-      <a href="mailto:Info@kmp-horren.nl" style="${styles.link}">Info@kmp-horren.nl</a> 
+      <a href="mailto:info@kmp-horren.nl" style="${styles.link}">info@kmp-horren.nl</a> 
       of bel ons op <a href="tel:+31643065041" style="${styles.link}">+31 6 43 06 50 41</a>.
     </p>
     

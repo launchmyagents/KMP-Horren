@@ -51,7 +51,7 @@ export default function PrivacyPage() {
                   <strong>Telefoon:</strong> +31 6 43 06 50 41
                 </p>
                 <p>
-                  <strong>E-mail:</strong> Info@kmp-horren.nl
+                  <strong>E-mail:</strong> info@kmp-horren.nl
                 </p>
               </div>
 
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
                 KMP Horren neemt de bescherming van uw gegevens serieus en neemt passende maatregelen om misbruik, verlies, onbevoegde toegang, ongewenste openbaarmaking en ongeoorloofde wijziging tegen te gaan. Onze website maakt gebruik van een betrouwbaar SSL Certificaat om te borgen dat uw persoonsgegevens niet in verkeerde handen vallen.
               </p>
               <p className="mt-4">
-                Als u de indruk heeft dat uw gegevens niet goed beveiligd zijn of er aanwijzingen zijn van misbruik, neem dan contact op via Info@kmp-horren.nl.
+                Als u de indruk heeft dat uw gegevens niet goed beveiligd zijn of er aanwijzingen zijn van misbruik, neem dan contact op via info@kmp-horren.nl.
               </p>
 
               <h2 className="text-2xl font-bold text-kmp-blue mt-8 mb-4">
@@ -171,7 +171,7 @@ export default function PrivacyPage() {
                 <li><strong>Recht van bezwaar:</strong> u kunt bezwaar maken tegen de verwerking</li>
               </ul>
               <p className="mt-4">
-                U kunt een verzoek tot inzage, correctie, verwijdering of gegevensoverdraging sturen naar Info@kmp-horren.nl. Om er zeker van te zijn dat het verzoek door u is gedaan, vragen wij u een kopie van uw identiteitsbewijs met het verzoek mee te sturen.
+                U kunt een verzoek tot inzage, correctie, verwijdering of gegevensoverdraging sturen naar info@kmp-horren.nl. Om er zeker van te zijn dat het verzoek door u is gedaan, vragen wij u een kopie van uw identiteitsbewijs met het verzoek mee te sturen.
               </p>
 
               <h2 className="text-2xl font-bold text-kmp-blue mt-8 mb-4">
@@ -194,8 +194,8 @@ export default function PrivacyPage() {
                 </h3>
                 <p className="text-slate-600">
                   Heeft u vragen of opmerkingen over ons privacybeleid? Neem dan gerust contact met ons op via{" "}
-                  <a href="mailto:Info@kmp-horren.nl" className="text-kmp-orange hover:underline">
-                    Info@kmp-horren.nl
+                  <a href="mailto:info@kmp-horren.nl" className="text-kmp-orange hover:underline">
+                    info@kmp-horren.nl
                   </a>{" "}
                   of bel ons op{" "}
                   <TrackedTelLink href="tel:+31643065041" className="text-kmp-orange hover:underline">

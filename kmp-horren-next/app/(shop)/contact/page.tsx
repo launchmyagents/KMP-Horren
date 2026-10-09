@@ -90,7 +90,7 @@ export default function ContactPage() {
                   <span>
                     Honderdland 111B
                     <br />
-                    2676 LT, Maasdijk
+                    2676 LT Maasdijk
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
@@ -106,10 +106,10 @@ export default function ContactPage() {
                 <li className="flex items-start gap-3">
                   <span className="font-bold text-kmp-blue min-w-[80px]">Email:</span>
                   <a
-                    href="mailto:Info@kmp-horren.nl"
+                    href="mailto:info@kmp-horren.nl"
                     className="hover:text-kmp-orange transition-colors"
                   >
-                    Info@kmp-horren.nl
+                    info@kmp-horren.nl
                   </a>
                 </li>
                 <li className="flex items-start gap-3">
