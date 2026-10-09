@@ -16,7 +16,7 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Hordeuren op maat | Plissé hordeur enkel & dubbel",
+  title: "Hordeuren op maat | Plissé enkel & dubbel",
   description:
     "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk, eigen productie NL, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
@@ -42,7 +42,9 @@ export const metadata: Metadata = {
       "Hordeuren op maat: plissé hordeur enkel en dubbel. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
     images: [
       {
-        url: `${BASE_URL}/images/deurhorren-category.png`,
+        // Wees de categoriefoto van 2,3 MB aan (1536x1024), terwijl hieronder
+        // 1200x630 werd aangekondigd. Nu een echte 1200x630-uitsnede van 199 kB.
+        url: `${BASE_URL}/og-deurhorren.jpg`,
         width: 1200,
         height: 630,
         alt: "Hordeuren op maat | KMP Horren",

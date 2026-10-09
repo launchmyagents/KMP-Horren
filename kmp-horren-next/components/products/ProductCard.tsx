@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import { Product } from "@/types";
+import { getProductImageAlt } from "@/lib/product-image-alts";
 
 interface ProductCardProps {
   product: Product;
@@ -25,7 +26,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
           <div className="aspect-[4/5] overflow-hidden relative">
             <Image
               src={product.imageUrl}
-              alt={product.name}
+              alt={getProductImageAlt(product.imageUrl, product.name)}
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover group-hover:scale-105 transition-transform duration-700"

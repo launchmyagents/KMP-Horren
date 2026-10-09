@@ -15,7 +15,7 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Verduisterende horren op maat | Duo plissé 2-in-1",
+  title: "Verduisterende horren op maat | Duo plissé",
   description:
     "Duo plissé hor: een verduisterend deel en een insectenhor in hetzelfde frame. Op maat, eigen productie, 3 jaar garantie. Vanaf 250 euro, online te bestellen.",
   keywords: [
@@ -37,6 +37,17 @@ export const metadata: Metadata = {
     title: "Verduisterende horren op maat | Duo plissé 2-in-1 | KMP Horren",
     description:
       "Eén plissésysteem met een verduisterend deel en een insectenhor in hetzelfde frame. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
+    // Deze pagina had wel een openGraph-blok maar geen afbeelding erin, en een
+    // openGraph-blok erft de afbeelding van de hoofdlayout niet. Wie de pagina deelde
+    // in WhatsApp of op LinkedIn kreeg dus een voorbeeld zonder beeld.
+    images: [
+      {
+        url: `${BASE_URL}/og-verduisterend.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Duo plissé hor in een dakraam, met het verduisterende deel half neergelaten",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",

@@ -16,7 +16,7 @@ export const revalidate = 60;
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://kmp-horren.nl";
 
 export const metadata: Metadata = {
-  title: "Raamhorren op maat | Inzet-, plissé- & voorzet plissé hor",
+  title: "Raamhorren op maat | Inzet- en plissé horren",
   description:
     "Raamhorren op maat: luxe inzethor, inzet- en voorzet plissé hor en dakraamhor. Eigen productie, 3 jaar garantie. Bestel online of vraag de inmeetservice aan.",
   keywords: [
@@ -42,7 +42,9 @@ export const metadata: Metadata = {
       "Raamhorren op maat: inzet-, plissé-, voorzet- en dakraamhor. 100% maatwerk, eigen productie NL, 3 jaar garantie.",
     images: [
       {
-        url: `${BASE_URL}/images/raamhorren-category.png`,
+        // Zie de toelichting op de deurhorren-pagina: was een PNG van 2,0 MB
+        // (1232x928) die als 1200x630 werd aangekondigd.
+        url: `${BASE_URL}/og-raamhorren.jpg`,
         width: 1200,
         height: 630,
         alt: "Raamhorren op maat | KMP Horren",

@@ -1,6 +1,12 @@
 import { JsonLd } from "./JsonLd";
 import { BASE_URL } from "@/lib/seo-config";
 
+// Canonical Google Maps address of the Google Business Profile, built from the place
+// id as Google documents it. Verified against the live profile on 2026-10-09:
+// KMP-Horren, Honderdland 111B Maasdijk, category Horrenwinkel, claimed, 12 reviews.
+const GOOGLE_BUSINESS_PROFILE_URL =
+  "https://www.google.com/maps/place/?q=place_id:ChIJLcf-K2KzxUcRzY9IMDXVzJ0";
+
 export function OrganizationSchema() {
   const organizationData = {
     "@context": "https://schema.org",
@@ -49,10 +55,16 @@ export function OrganizationSchema() {
       },
     ],
     email: "Info@kmp-horren.nl",
-    sameAs: [
-      "https://www.facebook.com/kmphorren",
-      "https://www.instagram.com/kmphorren",
-    ],
+    // `sameAs` is the field that lets a search engine or an AI assistant tie this
+    // website to the same company elsewhere on the web. Until 2026-10-09 it listed
+    // facebook.com/kmphorren and instagram.com/kmphorren. Both return HTTP 200, so a
+    // status check never flagged them, but opening them shows "Deze inhoud is
+    // momenteel niet beschikbaar" and "Profile is niet beschikbaar": neither profile
+    // exists. Two dead references are worse than none, because they point an assistant
+    // at nothing. They are replaced by the Google Business Profile, which has been
+    // claimed since 2026-08-31 and carries the same address and telephone number.
+    // Add a social profile back the moment there is a real one.
+    sameAs: [GOOGLE_BUSINESS_PROFILE_URL],
     areaServed: {
       "@type": "Country",
       name: "Netherlands",
@@ -113,6 +125,10 @@ export function LocalBusinessSchema() {
     priceRange: "€€",
     paymentAccepted: ["Cash", "Credit Card", "iDEAL", "Bank Transfer"],
     currenciesAccepted: "EUR",
+    // Same reasoning as the Organization block above: this is the block that carries
+    // the local signals, so the link to the Google Business Profile belongs here too.
+    sameAs: [GOOGLE_BUSINESS_PROFILE_URL],
+    hasMap: GOOGLE_BUSINESS_PROFILE_URL,
   };
 
   return <JsonLd data={localBusinessData} />;
