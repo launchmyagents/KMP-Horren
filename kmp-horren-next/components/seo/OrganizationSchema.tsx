@@ -7,6 +7,15 @@ import { BASE_URL } from "@/lib/seo-config";
 const GOOGLE_BUSINESS_PROFILE_URL =
   "https://www.google.com/maps/place/?q=place_id:ChIJLcf-K2KzxUcRzY9IMDXVzJ0";
 
+// Het echte Instagram-account. Het schema noemde tot 2026-10-09
+// instagram.com/kmphorren, dat niet bestaat. Het bestaande account heet
+// kmp_horren met een lage streep, heeft een bio over maatwerk plisse- en
+// inzethorren en verwijst zelf naar kmp-horren.nl. Gecontroleerd op 2026-10-09.
+// Een Facebook-bedrijfspagina is er niet: een zoekopdracht over facebook.com
+// levert alleen een bericht in een woongroep op waarin het e-mailadres genoemd
+// wordt, geen eigen pagina.
+const INSTAGRAM_URL = "https://www.instagram.com/kmp_horren/";
+
 export function OrganizationSchema() {
   const organizationData = {
     "@context": "https://schema.org",
@@ -64,7 +73,7 @@ export function OrganizationSchema() {
     // at nothing. They are replaced by the Google Business Profile, which has been
     // claimed since 2026-08-31 and carries the same address and telephone number.
     // Add a social profile back the moment there is a real one.
-    sameAs: [GOOGLE_BUSINESS_PROFILE_URL],
+    sameAs: [GOOGLE_BUSINESS_PROFILE_URL, INSTAGRAM_URL],
     areaServed: {
       "@type": "Country",
       name: "Netherlands",
@@ -127,7 +136,7 @@ export function LocalBusinessSchema() {
     currenciesAccepted: "EUR",
     // Same reasoning as the Organization block above: this is the block that carries
     // the local signals, so the link to the Google Business Profile belongs here too.
-    sameAs: [GOOGLE_BUSINESS_PROFILE_URL],
+    sameAs: [GOOGLE_BUSINESS_PROFILE_URL, INSTAGRAM_URL],
     hasMap: GOOGLE_BUSINESS_PROFILE_URL,
   };
 
