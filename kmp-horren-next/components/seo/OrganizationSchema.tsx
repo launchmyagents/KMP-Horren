@@ -63,7 +63,7 @@ export function OrganizationSchema() {
         availableLanguage: ["Dutch"],
       },
     ],
-    email: "Info@kmp-horren.nl",
+    email: "info@kmp-horren.nl",
     // `sameAs` is the field that lets a search engine or an AI assistant tie this
     // website to the same company elsewhere on the web. Until 2026-10-09 it listed
     // facebook.com/kmphorren and instagram.com/kmphorren. Both return HTTP 200, so a

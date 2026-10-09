@@ -54,11 +54,11 @@ export function Footer() {
                   <span>+31 6 43 06 50 41</span>
                 </TrackedTelLink>
                 <a
-                  href="mailto:Info@kmp-horren.nl"
+                  href="mailto:info@kmp-horren.nl"
                   className="flex items-center gap-3 text-slate-300 hover:text-kmp-orange transition-colors text-sm"
                 >
                   <Mail size={16} />
-                  <span>Info@kmp-horren.nl</span>
+                  <span>info@kmp-horren.nl</span>
                 </a>
               </div>
             </div>
@@ -111,7 +111,7 @@ export function Footer() {
                   <MapPin size={16} className="mt-1 flex-shrink-0" />
                   <div>
                     <p>Honderdland 111B</p>
-                    <p>2676 LT, Maasdijk</p>
+                    <p>2676 LT Maasdijk</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3 text-slate-400">

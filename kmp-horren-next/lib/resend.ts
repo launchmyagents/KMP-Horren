@@ -17,8 +17,17 @@ export const getResendClient = () => {
   return new Resend(process.env.RESEND_API_KEY);
 };
 
-// Default sender email
-export const EMAIL_FROM = process.env.EMAIL_FROM || "KMP Horren <Info@kmp-horren.nl>";
+// Default sender email.
+//
+// The local part is lower case as of 2026-10-09, in line with the rest of the site.
+// Mail servers treat the local part of an address as case-insensitive in practice, so
+// this changes nothing about delivery; it is there so that the address is written one
+// way everywhere, which is what the citation and directory listings are matched on.
+//
+// Note that `EMAIL_FROM` and `ADMIN_EMAIL` can also be set as environment variables on
+// the server, and those win over these defaults. They still have to be checked in the
+// Railway dashboard.
+export const EMAIL_FROM = process.env.EMAIL_FROM || "KMP Horren <info@kmp-horren.nl>";
 
 // Email sending helper with fallback to console logging
 interface SendEmailOptions {
@@ -99,7 +108,7 @@ export async function sendAdminNotification(
   html: string,
   replyTo?: string
 ): Promise<{ success: boolean; id?: string; error?: string }> {
-  const adminEmail = process.env.ADMIN_EMAIL || "Info@kmp-horren.nl";
+  const adminEmail = process.env.ADMIN_EMAIL || "info@kmp-horren.nl";
   
   return sendEmail({
     to: adminEmail,
