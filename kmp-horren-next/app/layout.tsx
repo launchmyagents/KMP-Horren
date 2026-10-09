@@ -58,7 +58,10 @@ export const metadata: Metadata = {
       "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat.",
     images: [
       {
-        url: "/KMP.jpg", // Fallback to existing image
+        // Was /KMP.jpg: een vierkante foto van 1000x1000 die hier als 1200x630
+        // werd aangekondigd, zodat elke deelpreview vervormde. Zie de PR van
+        // 2026-10-09; de foto zelf is ook een los punt voor de eigenaar.
+        url: "/og-home.jpg",
         width: 1200,
         height: 630,
         alt: "KMP Horren - Maatwerk Horren",
@@ -70,7 +73,7 @@ export const metadata: Metadata = {
     title: "KMP Horren - Maatwerk Horren voor elk Raam en Deur",
     description:
       "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat.",
-    images: ["/KMP.jpg"], // Fallback to existing image
+    images: ["/og-home.jpg"],
   },
   robots: {
     index: true,

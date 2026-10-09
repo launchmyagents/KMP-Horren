@@ -26,6 +26,17 @@ export const metadata: Metadata = {
     title: "Welke hor past bij u? | Vergelijk alle horren | KMP Horren",
     description:
       "Vergelijk al onze horren op maat: geschikt raamtype, type gaas en montage.",
+    // Zelfde reden als op de verduisterend-pagina: een openGraph-blok zonder
+    // afbeelding erft er geen van de hoofdlayout, dus deze pagina werd zonder beeld
+    // gedeeld.
+    images: [
+      {
+        url: `${BASE_URL}/og-products.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Schuifpui met een hordeur ervoor, met zicht op een groene tuin",
+      },
+    ],
   },
 };
 

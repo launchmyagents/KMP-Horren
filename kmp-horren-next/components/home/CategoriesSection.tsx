@@ -18,6 +18,11 @@ const categories = [
     slug: "raamhorren",
     description: "Inzethorren, rolhorren en plissé horren voor elk type raam. Van draai-kiep tot dakraam.",
     imageUrl: "/images/raamhorren-category.png",
+    // Described after looking at the photo (2026-10-09). The card already shows the
+    // category name as a heading, so the alt describes the picture instead of
+    // repeating that word. Same reasoning for the deurhorren card below.
+    imageAlt:
+      "Wit driedelig raamkozijn in een bakstenen gevel, met een hor in het middelste deel",
     productCount: 5,
     startingPrice: 50,
   },
@@ -27,6 +32,8 @@ const categories = [
     slug: "deurhorren",
     description: "Plissé hordeuren, scharnier hordeuren en schuifpui horren. Perfect voor elke doorgang.",
     imageUrl: "/images/deurhorren-category.png",
+    imageAlt:
+      "Lichte woonkamer met een schuifpui met een hordeur ervoor, met zicht op een groene tuin",
     productCount: 2,
     startingPrice: 250,
   },
@@ -68,7 +75,7 @@ export function CategoriesSection() {
                   <div className="aspect-[16/9] overflow-hidden relative">
                     <Image
                       src={category.imageUrl}
-                      alt={category.name}
+                      alt={category.imageAlt}
                       fill
                       sizes="(max-width: 768px) 100vw, 50vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-700"

@@ -11,7 +11,7 @@ import { BASE_URL } from "@/lib/seo-config";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Alle Horren Producten - Raamhorren & Deurhorren op Maat",
+  title: "Alle horren op maat | Raamhorren en hordeuren",
   description:
     "Bekijk het complete assortiment horren op maat: inzethorren, plissé horren, hordeuren en dakraamhorren. Online configureren, gratis verzending vanaf 250 euro.",
   keywords: [

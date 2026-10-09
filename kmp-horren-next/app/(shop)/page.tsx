@@ -32,7 +32,7 @@ export const metadata: Metadata = {
       "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat.",
     images: [
       {
-        url: `${BASE_URL}/KMP.jpg`,
+        url: `${BASE_URL}/og-home.jpg`,
         width: 1200,
         height: 630,
         alt: "KMP Horren - Maatwerk Horren",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     title: "KMP Horren - Maatwerk Horren voor elk Raam en Deur",
     description:
       "De specialist in maatwerk insectenwering. Bestel direct online uw inzethorren, hordeuren en rolhorren op maat.",
-    images: [`${BASE_URL}/KMP.jpg`],
+    images: [`${BASE_URL}/og-home.jpg`],
   },
 };
 

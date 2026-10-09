@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { getProductImageAlt } from "@/lib/product-image-alts";
 
 interface ProductImageGalleryProps {
   mainImage: string;
@@ -25,7 +26,7 @@ export function ProductImageGallery({
       <div className="relative aspect-square rounded-2xl overflow-hidden bg-slate-100">
         <Image
           src={allImages[selectedIndex]}
-          alt={productName}
+          alt={getProductImageAlt(allImages[selectedIndex], productName, selectedIndex)}
           fill
           // Left column of a two-column product layout on desktop, full width below.
           sizes="(max-width: 1024px) 100vw, 50vw"
@@ -52,7 +53,7 @@ export function ProductImageGallery({
             >
               <Image
                 src={image}
-                alt={`${productName} ${index + 1}`}
+                alt={getProductImageAlt(image, productName, index)}
                 fill
                 // Thumbnail button is a fixed w-20 h-20, so 80px is all that is needed.
                 sizes="80px"
