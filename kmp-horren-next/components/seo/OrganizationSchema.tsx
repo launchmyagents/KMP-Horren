@@ -21,7 +21,13 @@ export function OrganizationSchema() {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "KMP Horren",
-    alternateName: "KMP Horren B.V.",
+    // De statutaire naam en de handelsnaam zijn allebei "KMP Horren B.V.", bevestigd
+    // in het handelsregister op 2026-10-09 bij KvK 93094698. Dat hoort in `legalName`
+    // en niet in `alternateName`: `alternateName` is een willekeurige andere naam,
+    // `legalName` zegt dat dit de ingeschreven naam van de rechtspersoon is. Samen met
+    // het KvK-nummer hieronder kan een zoekmachine of een AI-assistent deze site
+    // daarmee eenduidig aan het bedrijf in het register koppelen.
+    legalName: "KMP Horren B.V.",
     url: BASE_URL,
     logo: `${BASE_URL}/logo.svg`,
     description:
@@ -98,6 +104,9 @@ export function LocalBusinessSchema() {
     "@context": "https://schema.org",
     "@type": "HomeAndConstructionBusiness",
     name: "KMP Horren",
+    // Zie de toelichting in het Organization-blok hierboven. Dit blok draagt de lokale
+    // signalen en wordt soms los uitgelezen, dus de ingeschreven naam staat hier ook.
+    legalName: "KMP Horren B.V.",
     image: `${BASE_URL}/logo.svg`,
     "@id": BASE_URL,
     url: BASE_URL,
