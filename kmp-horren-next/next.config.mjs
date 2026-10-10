@@ -32,8 +32,28 @@ const nextConfig = {
         hostname: "*.supabase.co",
       },
     ],
-    // Modern image formats for better compression
-    formats: ["image/avif", "image/webp"],
+    // WebP only, AVIF deliberately dropped on 2026-10-10.
+    //
+    // Cloudflare does not cache /_next/image at all (cf-cache-status: DYNAMIC on every
+    // response), so every image variant has to be produced by the Railway container
+    // itself, and the container's cache is empty again after every deploy. The first
+    // visitor to a page after a deploy therefore pays the full optimisation cost, and
+    // on a site with this traffic volume that is most visitors.
+    //
+    // Measured on the live site on 2026-10-10, same photo, same width of 750, using
+    // quality values that had never been requested so the cache was guaranteed cold:
+    //
+    //   AVIF   2185 / 1904 / 2209 ms     49 / 52 / 55 kB
+    //   WebP    368 /  471 /  497 ms     61 / 65 / 68 kB
+    //
+    // Warm, both answer in about 220 ms. AVIF is roughly 13 kB smaller, which is about
+    // 65 ms of transfer on a slow mobile connection, and costs about 1,6 seconds of
+    // server time to produce. That is a bad trade here. Lighthouse measured the product
+    // page at 4,1 s LCP with 2474 ms of it spent waiting for exactly this.
+    //
+    // Reconsider the moment /_next/image is cached at the edge: the optimisation cost is
+    // then paid once ever instead of once per deploy, and AVIF becomes worth it again.
+    formats: ["image/webp"],
     // Device sizes for responsive images
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
     // Image sizes for layout optimization
