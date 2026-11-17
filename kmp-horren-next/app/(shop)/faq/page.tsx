@@ -1,21 +1,13 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, ChevronUp, HelpCircle } from "lucide-react";
+import { ChevronDown, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getFAQsByCategory } from "@/data/faqs";
-import { motion, AnimatePresence } from "framer-motion";
 import { trackEvent } from "@/lib/analytics";
 
 export default function FAQPage() {
-  const [openIndex, setOpenIndex] = useState<string | null>("0-0");
   const categorizedFAQs = getFAQsByCategory();
-
-  const toggle = (categoryIndex: number, faqIndex: number) => {
-    const key = `${categoryIndex}-${faqIndex}`;
-    setOpenIndex(openIndex === key ? null : key);
-  };
 
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
@@ -39,46 +31,26 @@ export default function FAQPage() {
               <span className="text-kmp-orange">#</span> {category.category}
             </h2>
             <div className="space-y-4">
-              {category.faqs.map((faq, faqIndex) => {
-                const key = `${catIndex}-${faqIndex}`;
-                const isOpen = openIndex === key;
-
-                return (
-                  <div
-                    key={key}
-                    className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md"
-                  >
-                    <button
-                      onClick={() => toggle(catIndex, faqIndex)}
-                      className="w-full flex justify-between items-center p-6 text-left focus:outline-none"
-                    >
-                      <span className="font-bold text-kmp-blue text-lg pr-4">
-                        {faq.question}
-                      </span>
-                      {isOpen ? (
-                        <ChevronUp className="text-kmp-orange shrink-0" />
-                      ) : (
-                        <ChevronDown className="text-slate-400 shrink-0" />
-                      )}
-                    </button>
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.2 }}
-                          className="overflow-hidden"
-                        >
-                          <div className="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-50 pt-4">
-                            {faq.answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+              {category.faqs.map((faq, faqIndex) => (
+                <details
+                  key={`${catIndex}-${faqIndex}`}
+                  open={catIndex === 0 && faqIndex === 0}
+                  className="group bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm transition-all duration-200 hover:shadow-md"
+                >
+                  <summary className="w-full flex justify-between items-center p-6 text-left cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                    <span className="font-bold text-kmp-blue text-lg pr-4">
+                      {faq.question}
+                    </span>
+                    <ChevronDown
+                      className="text-slate-400 shrink-0 transition-transform duration-200 group-open:rotate-180 group-open:text-kmp-orange"
+                      aria-hidden="true"
+                    />
+                  </summary>
+                  <div className="px-6 pb-6 text-slate-600 leading-relaxed border-t border-slate-50 pt-4">
+                    {faq.answer}
                   </div>
-                );
-              })}
+                </details>
+              ))}
             </div>
           </div>
         ))}
