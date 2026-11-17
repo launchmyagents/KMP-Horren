@@ -64,7 +64,11 @@ export default function FAQPage() {
             Staat uw vraag er niet tussen?
           </h3>
           <p className="text-slate-600 mb-6">
-            Neem contact op met onze klantenservice.
+            Neem contact op met onze klantenservice, of lees onze{" "}
+            <Link href="/advies" className="text-kmp-orange font-semibold hover:underline">
+              uitleg over opmeten, plaatsen en onderhoud
+            </Link>
+            .
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/contact">

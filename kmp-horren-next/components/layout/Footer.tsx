@@ -11,6 +11,7 @@ const footerNavigation = {
   ],
   service: [
     { name: "Inmeetservice", href: "/inmeetservice" },
+    { name: "Advies over horren", href: "/advies" },
     { name: "Montage instructies", href: "/faq#montage" },
     { name: "Garantie & Reparatie", href: "/faq#garantie" },
     { name: "Veelgestelde vragen", href: "/faq" },
