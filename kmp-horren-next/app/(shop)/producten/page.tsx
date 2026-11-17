@@ -10,19 +10,26 @@ import { BASE_URL } from "@/lib/seo-config";
 
 export const revalidate = 60;
 
+// Deze pagina claimde in haar titel, omschrijving en trefwoorden precies de
+// termen waar /producten/raamhorren en /producten/deurhorren op mikken. In
+// Search Console is te zien wat dat kost. Op "deurhorren" verschijnt deze
+// pagina op plek 72, terwijl de categoriepagina op plek 9 staat. Over het hele
+// raamhor-cluster staat ze steeds twintig tot dertig plekken lager dan de
+// categoriepagina die er wel over gaat. Deze pagina mikt nu op de bestelstap,
+// de enige rol die geen van de andere pagina's vervult.
 export const metadata: Metadata = {
-  title: "Alle horren op maat | Raamhorren en hordeuren",
+  title: "Alle horren op maat | Online bestellen",
   description:
-    "Bekijk het complete assortiment horren op maat: inzethorren, plissé horren, hordeuren en dakraamhorren. Online configureren, gratis verzending vanaf 250 euro.",
+    "Ons hele assortiment horren op maat, uit eigen productie. Kies een hor voor uw raam of deur, vul uw maten in en bestel online. Gratis verzending vanaf €250.",
+  // Trefwoorden wegen niet mee in de Google-rangschikking. Ze staan hier alleen
+  // zodat dit bestand niet iets anders beweert dan de titel hierboven.
   keywords: [
-    "horren",
-    "raamhorren",
-    "deurhorren",
-    "plissé horren",
-    "inzethorren",
-    "rolhorren",
+    "horren op maat",
+    "hor bestellen",
+    "hor op maat bestellen",
+    "horren online bestellen",
     "maatwerk",
-    "online bestellen",
+    "insectenwering",
   ],
   alternates: {
     canonical: `${BASE_URL}/producten`,
@@ -32,9 +39,9 @@ export const metadata: Metadata = {
     locale: "nl_NL",
     url: `${BASE_URL}/producten`,
     siteName: "KMP Horren",
-    title: "Alle Horren Producten - KMP Horren",
+    title: "Alle horren op maat | Online bestellen | KMP Horren",
     description:
-      "Bekijk ons complete assortiment maatwerk horren. Raamhorren, deurhorren, plissé horren en meer.",
+      "Ons hele assortiment horren op maat, uit eigen productie. Kies een hor voor uw raam of deur, vul uw maten in en bestel online.",
     images: [
       {
         url: `${BASE_URL}/og-products.jpg`,
@@ -46,9 +53,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alle Horren Producten - KMP Horren",
+    title: "Alle horren op maat | Online bestellen | KMP Horren",
     description:
-      "Bekijk ons complete assortiment maatwerk horren. Direct online configureren en bestellen.",
+      "Ons hele assortiment horren op maat, uit eigen productie. Kies een hor voor uw raam of deur, vul uw maten in en bestel online.",
   },
 };
 

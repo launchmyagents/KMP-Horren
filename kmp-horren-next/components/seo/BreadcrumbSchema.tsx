@@ -45,18 +45,34 @@ export function ProductsBreadcrumb() {
   );
 }
 
+/**
+ * De productpagina toont bezoekers vier niveaus: Home > Producten > categorie >
+ * product. Dit blok liet het categorieniveau weg en meldde dus een andere
+ * hiërarchie dan de pagina zelf laat zien. Daarmee kreeg Google te horen dat
+ * elke productpagina rechtstreeks onder /producten hangt, terwijl de
+ * categoriepagina's juist de sterkst rankende pagina's van de site zijn.
+ * `categoryName` en `categoryHref` zijn optioneel zodat een aanroep zonder
+ * categorie blijft werken en dan de oude keten van drie niveaus oplevert.
+ */
 export function ProductDetailBreadcrumb({
   productName,
   productSlug,
+  categoryName,
+  categoryHref,
 }: {
   productName: string;
   productSlug: string;
+  categoryName?: string;
+  categoryHref?: string;
 }) {
   return (
     <BreadcrumbSchema
       items={[
         { name: "Home", url: "/" },
         { name: "Producten", url: "/producten" },
+        ...(categoryName && categoryHref
+          ? [{ name: categoryName, url: categoryHref }]
+          : []),
         { name: productName, url: `/producten/${productSlug}` },
       ]}
     />
