@@ -179,7 +179,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <div className="bg-slate-50 min-h-screen pb-20">
       <ProductSchema product={product} />
-      <ProductDetailBreadcrumb productName={product.name} productSlug={product.slug} />
+      <ProductDetailBreadcrumb
+        productName={product.name}
+        productSlug={product.slug}
+        categoryName={categoryLabel}
+        categoryHref={categoryHref}
+      />
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="container mx-auto px-4 py-4">
