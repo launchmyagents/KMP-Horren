@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { PRODUCTS } from "@/data/products";
+import { ADVIES } from "@/data/advies";
 import { BASE_URL } from "@/lib/seo-config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -7,6 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE_URL}/advies`,
+      lastModified: currentDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
     {
       url: BASE_URL,
       lastModified: currentDate,
@@ -104,5 +111,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticPages, ...productPages];
+  const adviesPages: MetadataRoute.Sitemap = ADVIES.map((artikel) => ({
+    url: `${BASE_URL}/advies/${artikel.slug}`,
+    lastModified: new Date(artikel.bijgewerkt).toISOString(),
+    changeFrequency: "monthly" as const,
+    priority: 0.6,
+  }));
+
+  return [...staticPages, ...adviesPages, ...productPages];
 }

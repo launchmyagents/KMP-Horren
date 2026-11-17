@@ -22,3 +22,6 @@ export {
 
 // FAQ schemas
 export { FAQSchema, FAQPageSchema } from "./FAQSchema";
+
+// Article schema (adviespagina's)
+export { ArticleSchema } from "./ArticleSchema";
